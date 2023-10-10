@@ -6,9 +6,8 @@ import 'package:model_house/Shared/Views/ProfileUser.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 
 class Profile extends StatefulWidget {
-  User user;
   UserProfile userProfile;
-  Profile(this.user, this.userProfile, {Key? key}) : super(key: key);
+  Profile(this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api

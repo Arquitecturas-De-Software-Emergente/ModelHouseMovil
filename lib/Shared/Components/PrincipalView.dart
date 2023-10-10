@@ -11,8 +11,9 @@ import 'Routes.dart';
 
 // ignore: must_be_immutable
 class PrincipalView extends StatefulWidget {
-  User user;
-  PrincipalView(this.user, {Key? key}) : super(key: key);
+  int? idAccount;
+  String? role;
+  PrincipalView(this.idAccount, this.role, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -48,7 +49,7 @@ class _PrincipalVireState extends State<PrincipalView> {
   }
 
   Future getUserProfile() async {
-    userProfile = await httpUserProfile?.getUserProfileById(widget.user.id);
+    userProfile = await httpUserProfile?.getUserProfileById(widget.idAccount);
     setState(() {
       userProfile = userProfile;
     });
@@ -59,7 +60,7 @@ class _PrincipalVireState extends State<PrincipalView> {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: myNavigation,
-      body: Routes(index, widget.user, userProfile),
+      body: Routes(index, widget.idAccount, widget.role, userProfile),
     );
   }
 }

@@ -10,9 +10,10 @@ import '../../ServicesManagement/Screens/Menu.dart';
 // ignore: must_be_immutable
 class Routes extends StatefulWidget {
   final int index;
-  User user;
+  int? idAccount;
+  String? role;
   UserProfile? userProfile;
-  Routes(this.index, this.user, this.userProfile, {Key? key}) : super(key: key);
+  Routes(this.index, this.idAccount, this.role, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -28,10 +29,10 @@ class _RoutesState extends State<Routes> {
   @override
   Widget build(BuildContext context) {
     List<Widget> myList = [
-      Home(widget.user, widget.userProfile),
-      Options(widget.user, widget.userProfile),
-      Payment(widget.user, widget.userProfile),
-      Menu(widget.user, widget.userProfile),
+      Home(widget.userProfile),
+      Options(widget.idAccount, widget.userProfile),
+      Payment(widget.userProfile),
+      Menu(widget.idAccount, widget.role, widget.userProfile),
     ];
     return myList[widget.index];
   }

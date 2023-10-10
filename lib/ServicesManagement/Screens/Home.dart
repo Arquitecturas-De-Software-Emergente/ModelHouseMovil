@@ -11,9 +11,8 @@ import '../../Security/Services/Business_Profile.dart';
 
 // ignore: must_be_immutable
 class Home extends StatefulWidget {
-  User user;
   UserProfile? userProfile;
-  Home(this.user, this.userProfile, {Key? key}) : super(key: key);
+  Home(this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api

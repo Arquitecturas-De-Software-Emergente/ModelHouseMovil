@@ -11,7 +11,7 @@ class HttpProyect {
 
   Future<List<Proyect>?> getAllByBusinessId(int businessId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/business_profile/$businessId/project");
+    var uri = Uri.parse("$httpBaseSecurity/business_profile/$businessId/project");
     var response = await proyect.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -26,7 +26,7 @@ class HttpProyect {
   Future<Proyect?> createProject(
       int id, String title, String description, String image) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/project/$id/profile");
+    var uri = Uri.parse("$httpBaseSecurity/project/$id/profile");
     var response = await proyect.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -44,7 +44,7 @@ class HttpProyect {
   Future<Proyect?> updateProyect(
       int id, String status, String name, String description) async {
     final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBase/project/$id";
+    final String postUrl = "$httpBaseSecurity/project/$id";
     var uri = Uri.parse(postUrl);
 
     var response = await proyect.post(uri,

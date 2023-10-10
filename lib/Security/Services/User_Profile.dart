@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpUserProfile {
   var businessProfile = http.Client();
-  Future<UserProfile?> getUserProfileById(int id) async {
+  Future<UserProfile?> getUserProfileById(int? id) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse('$httpBase/user/$id/user_profile');
+    var uri = Uri.parse('$httpBaseSecurity/user/$id/user_profile');
     var response = await businessProfile.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
@@ -21,9 +21,9 @@ class HttpUserProfile {
     return null;
   }
 
-  Future<UserProfile?> createProfile(int id, UserProfile userProfile) async {
+  Future<UserProfile?> createProfile(int? id, UserProfile userProfile) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse('$httpBase/user/$id/user_profile');
+    var uri = Uri.parse('$httpBaseSecurity/user/$id/user_profile');
     print(userProfile);
     var response = await businessProfile.post(uri,
         headers: {
@@ -42,7 +42,7 @@ class HttpUserProfile {
   Future<UserProfile?> updateUserProfile(
       int id, UserProfile userProfile) async {
     final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBase/user_profile/$id";
+    final String postUrl = "$httpBaseSecurity/user_profile/$id";
     var uri = Uri.parse(postUrl);
 
     var response = await businessProfile.post(uri,
