@@ -12,7 +12,7 @@ class HttpProyectResource {
 
   Future<List<ProyectResource>?> getAllByProposalId(Long proposalId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/proposal/$proposalId/project_activity");
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectResource.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -27,7 +27,7 @@ class HttpProyectResource {
   Future<ProyectResource?> createProyectResource(
       int proposalId, String description, int quantity, String state) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/proposal/$proposalId/project_activity");
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectResource.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -48,7 +48,7 @@ class HttpProyectResource {
   Future<ProyectResource?> updateProyectResource(
       int id, String description, int quantity, String state) async {
     final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBase/project_activity/$id";
+    final String postUrl = "$httpBaseServiceManagement/project_activity/$id";
     var uri = Uri.parse(postUrl);
 
     var response = await proyectResource.post(uri,

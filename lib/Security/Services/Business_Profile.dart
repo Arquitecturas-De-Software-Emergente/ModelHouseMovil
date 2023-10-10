@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HttpBusinessProfile {
   var business = http.Client();
   Future<List<BusinessProfile>?> getAllBusinessProfile() async {
-    var uri = Uri.parse("$httpBase/business_profile");
+    var uri = Uri.parse("$httpBaseSecurity/business_profile");
     var response = await business.get(uri);
     print(response.body);
     if (response.statusCode == 200) {
@@ -20,7 +20,7 @@ class HttpBusinessProfile {
 
   Future<BusinessProfile?> getbusinessProfileAccountById(int id) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/account/$id/business_profile");
+    var uri = Uri.parse("$httpBaseSecurity/account/$id/business_profile");
     var response = await business.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -35,7 +35,7 @@ class HttpBusinessProfile {
   Future<BusinessProfile?> createProfile(
       BusinessProfile businessProfile, int accountId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/account/$accountId/business_profile");
+    var uri = Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
     var response = await business.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -56,7 +56,7 @@ class HttpBusinessProfile {
       String gender,
       String image,
       int accountId) async {
-    var uri = Uri.parse("$httpBase/business_profile/$accountId");
+    var uri = Uri.parse("$httpBaseSecurity/business_profile/$accountId");
 
     var request = http.MultipartRequest('PUT', uri);
     request.files.add(await http.MultipartFile.fromPath('fotimageo', image));

@@ -9,9 +9,8 @@ import '../../Shared/Widgets/texts/titles.dart';
 
 // ignore: must_be_immutable
 class Payment extends StatefulWidget {
-  User user;
   UserProfile? userProfile;
-  Payment(this.user, this.userProfile, {Key? key}) : super(key: key);
+  Payment(this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api

@@ -11,7 +11,7 @@ class HttpProyectActivity {
 
   Future<List<ProyectActivity>?> getAllByProposalId(int proposalId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/proposal/$proposalId/project_activity");
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectActivity.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -26,7 +26,7 @@ class HttpProyectActivity {
   Future<ProyectActivity?> createProyectActivity(
       int proposalId, String status, String name, String description) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/proposal/$proposalId/project_activity");
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectActivity.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -44,7 +44,7 @@ class HttpProyectActivity {
   Future<ProyectActivity?> updateProyectActivity(
       int id, String status, String name, String description) async {
     final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBase/project_activity/$id";
+    final String postUrl = "$httpBaseServiceManagement/project_activity/$id";
     var uri = Uri.parse(postUrl);
 
     var response = await proyectActivity.post(uri,

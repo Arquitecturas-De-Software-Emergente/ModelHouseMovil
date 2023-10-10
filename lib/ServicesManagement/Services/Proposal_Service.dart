@@ -11,7 +11,7 @@ class HttpProposal {
 
   Future<Proposal?> getByRequestId(int requestId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/request/$requestId/proposal");
+    var uri = Uri.parse("$httpBaseServiceManagement/request/$requestId/proposal");
     var response = await proposal.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -26,7 +26,7 @@ class HttpProposal {
   Future<Proposal?> createByRequestId(int requestId, String description,
       int price, String status, bool isResponse) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/request/$requestId/proposal");
+    var uri = Uri.parse("$httpBaseServiceManagement/request/$requestId/proposal");
     var response = await proposal.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -54,7 +54,7 @@ class HttpProposal {
       bool isResponse,
       String responseDate) async {
     final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBase/user_profile/$id";
+    final String postUrl = "$httpBaseServiceManagement/user_profile/$id";
     var uri = Uri.parse(postUrl);
 
     var response = await proposal.post(uri,

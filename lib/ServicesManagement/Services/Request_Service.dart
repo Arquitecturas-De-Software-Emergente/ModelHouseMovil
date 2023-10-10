@@ -12,7 +12,7 @@ class HttpRequest {
   Future<List<RequestInterface>?> getAllBusinessProfileIdAndStatus(
       int id, String status) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/business/$id/status/$status/request");
+    var uri = Uri.parse("$httpBaseServiceManagement/business/$id/status/$status/request");
     var response = await request.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -29,7 +29,7 @@ class HttpRequest {
   Future<List<RequestInterface>?> getAllUserProfileIdAndStatus(
       int id, String status) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/user/$id/status/$status/request");
+    var uri = Uri.parse("$httpBaseServiceManagement/user/$id/status/$status/request");
     var response = await request.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -45,7 +45,7 @@ class HttpRequest {
   Future<RequestInterface?> createRequest(int userId, int businessId,
       String status, String description, bool accepted) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBase/user/$userId/business/$businessId/request");
+    var uri = Uri.parse("$httpBaseServiceManagement/user/$userId/business/$businessId/request");
     var response = await request.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -65,7 +65,7 @@ class HttpRequest {
 
   Future<RequestInterface?> changeStatus(int id, String status) async {
     final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBase/request/$id";
+    final String postUrl = "$httpBaseServiceManagement/request/$id";
     var uri = Uri.parse(postUrl);
 
     var response = await request.put(uri,

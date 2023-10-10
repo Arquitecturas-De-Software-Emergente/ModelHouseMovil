@@ -33,37 +33,44 @@ class _SigninState extends State<Signin> {
   }
 
   Future signIn() async {
-    user = await httpUser?.signIn(email.text, password.text);
-    final persitence = await SharedPreferences.getInstance();
-    setState(() {
-      user = user;
-      if (user != null) {
-        persitence.setString("token", user!.token!);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return PrincipalView(user!);
+    //user = await httpUser?.signIn(email.text, password.text);
+    //final persitence = await SharedPreferences.getInstance();
+    //setState(() {
+    //  user = user;
+    //  if (user != null) {
+    //    persitence.setString("token", user!.token!);
+    //    Navigator.of(context).push(
+    //      MaterialPageRoute(
+    //        builder: (BuildContext context) {
+    //          return PrincipalView(user?.id);
+    //        },
+    //      ),
+    //    );
+    //  } else {
+    //    showDialog(
+    //        barrierDismissible: false,
+    //        context: context,
+    //        builder: (BuildContext context) {
+    //          return AlertDialog(
+    //            title: const Text("The email or password is incorrect"),
+    //            actions: [
+    //              TextButton(
+    //                  onPressed: () {
+    //                    Navigator.pop(context);
+    //                  },
+    //                  child: const Text("Ok"))
+    //            ],
+    //          );
+    //        });
+    //  }
+    //});
+    Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return PrincipalView(1, "client");
             },
-          ),
-        );
-      } else {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("The email or password is incorrect"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Ok"))
-                ],
-              );
-            });
-      }
-    });
+        ),
+    );
   }
 
   @override

@@ -17,9 +17,9 @@ import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
 class Options extends StatefulWidget {
-  User user;
+  int? idAccount;
   UserProfile? userProfile;
-  Options(this.user, this.userProfile, {Key? key}) : super(key: key);
+  Options(this.idAccount, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -51,7 +51,7 @@ class _OptionsState extends State<Options> {
     httpRequest = HttpRequest();
     httpAccount = HttpAccount();
     httpBusinessProfile = HttpBusinessProfile();
-    if (widget.userProfile != null && widget.user.role != "business") {
+    if (widget.userProfile != null) {
       getRequestUserProfile();
     } else {
       getAccount();
@@ -60,7 +60,7 @@ class _OptionsState extends State<Options> {
   }
 
   Future getAccount() async {
-    account = await httpAccount?.getAccountByUserId(widget.user.id);
+    account = await httpAccount?.getAccountByUserId(widget.idAccount);
     account != null
         ? setState(() {
             account = account;

@@ -7,9 +7,9 @@ import '../../ServicesManagement/Screens/Profile.dart';
 
 // ignore: must_be_immutable
 class Perfil extends StatefulWidget {
-  User user;
+  int? idAccount;
   UserProfile userProfile;
-  Perfil(this.user, this.userProfile, {Key? key}) : super(key: key);
+  Perfil(this.idAccount, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -69,18 +69,18 @@ class _PerfilState extends State<Perfil> {
 
   void redirectPerfil() {
     // ignore: unnecessary_null_comparison
-    widget.user != null
+    widget.idAccount != null
         ? Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return Profile(widget.user, widget.userProfile);
+                return Profile(widget.userProfile);
               },
             ),
           )
         : Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return FormProfileUser(widget.user);
+                return FormProfileUser(widget.idAccount);
               },
             ),
           );

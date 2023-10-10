@@ -1,1 +1,3 @@
-String httpBase = "http://20.80.247.130:8080/api/v1";
+String httpBaseSecurity = "http://localhost:8080/security";
+String httpBaseServiceManagement = "http://localhost:8081/service-management";
+String httpBasePayment = "http://localhost:8082/subscription-payment";
