@@ -87,9 +87,10 @@ class _MenuState extends State<Menu> {
                     ),
                   );
                 }, 18),
+              ),
         Container(
           margin: EdgeInsets.all(25), // Margen general alrededor del contenedor
-          child: const Row(
+          child: Row(
             children: [
               CircleAvatar(
                 radius: 40,
@@ -126,7 +127,7 @@ class _MenuState extends State<Menu> {
           child: MaterialButton(
             height: 45,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             color: const Color(0XFF02AA8B),
             onPressed: () async {
               final persitence = await SharedPreferences.getInstance();
@@ -142,7 +143,7 @@ class _MenuState extends State<Menu> {
             },
             child: Container(
               padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: const Row(
+              child: Row(
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
