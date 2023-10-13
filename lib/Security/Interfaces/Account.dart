@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'BusinessProfile.dart';
+import 'UserProfile.dart';
+
 List<Account> accountFromJson(String str) =>
     List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
 
@@ -8,21 +11,40 @@ String accountToJson(List<Account> data) =>
 
 class Account {
   int id;
+  String emailAddress;
+  String? password;
+  String role;
   bool isActive;
-  int userId;
-  Account({
-    required this.id,
-    required this.isActive,
-    required this.userId,
-  });
+  String? token;
+  BusinessProfile? businessProfile;
+  UserProfile? userProfile;
+  Account(
+      {required this.id,
+        required this.emailAddress,
+        this.password,
+        this.businessProfile,
+        this.userProfile,
+        required this.role,
+        required this.isActive,
+        required this.token});
   factory Account.fromJson(Map<String, dynamic> json) => Account(
-        id: json["id"],
-        isActive: json["isActive"],
-        userId: json["userId"],
-      );
+    id: json["id"],
+    emailAddress: json["emailAddress"],
+    password: json["password"],
+    role: json["role"],
+    isActive: json["isActive"],
+    token: json["token"],
+    businessProfile: json["businessProfile"],
+    userProfile: json["userProfile"],
+  );
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "isActive": isActive,
-        "userId": userId,
-      };
+    "id": id,
+    "emailAddress": emailAddress,
+    "password": password,
+    "role": role,
+    "isActive": isActive,
+    "token": token,
+    "businessProfile": businessProfile,
+    "userProfile": userProfile
+  };
 }

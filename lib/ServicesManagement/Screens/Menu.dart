@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Screens/welcomeApplication.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
@@ -18,11 +17,9 @@ import '../../Shared/Views/Perfil.dart';
 
 // ignore: must_be_immutable
 class Menu extends StatefulWidget {
-  int? idAccount;
-  String? role;
+  Account account;
   UserProfile? userProfile;
-  Menu(this.idAccount, this.role, this.userProfile, {Key? key})
-      : super(key: key);
+  Menu(this.account, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -39,20 +36,10 @@ class _MenuState extends State<Menu> {
   void initState() {
     httpBusinessProfile = HttpBusinessProfile();
     httpAccount = HttpAccount();
-    if (widget.role == "business") {
-      activeBusiness();
+    if (widget.account?.businessProfile != null) {
+      //activeBusiness();
     }
     super.initState();
-  }
-
-  Future activeBusiness() async {
-    account = await httpAccount?.getAccountByUserId(widget.idAccount);
-    if (account != null) {
-      setState(() {
-        account = account;
-      });
-      getBusiness();
-    }
   }
 
   Future getBusiness() async {
@@ -69,6 +56,37 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        widget.userProfile != null
+            ? Perfil(widget.account, widget.userProfile!)
+            : Container(
+                margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+                width: MediaQuery.of(context).size.width,
+                height: 45,
+                child: ActiveButton(12, "Create Business Profile", () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return FormProfileUser(widget.account);
+                      },
+                    ),
+                  );
+                }, 18),
+              ),
+        widget.account.businessProfile != null && businessProfile != null
+            ? PerfilBusiness(account!, businessProfile!)
+            : Container(
+                margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+                width: MediaQuery.of(context).size.width,
+                height: 45,
+                child: ActiveButton(12, "Create Business Profile", () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return FormProfileBusines(account!);
+                      },
+                    ),
+                  );
+                }, 18),
         Container(
           margin: EdgeInsets.all(25), // Margen general alrededor del contenedor
           child: const Row(

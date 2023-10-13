@@ -21,7 +21,7 @@ class HttpUserProfile {
     return null;
   }
 
-  Future<UserProfile?> createProfile(int? id, UserProfile userProfile) async {
+  Future<UserProfile?> createProfile(int id, UserProfile userProfile) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse('$httpBaseSecurity/user/$id/user_profile');
     print(userProfile);

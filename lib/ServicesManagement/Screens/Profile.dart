@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Shared/Views/ProfileUser.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';

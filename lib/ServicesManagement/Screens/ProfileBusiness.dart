@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 
 import '../../Security/Interfaces/Proyect.dart';
-import '../../Security/Interfaces/User.dart';
 import '../../Security/Services/Proyect_Service.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 
 class ProfileBusiness extends StatefulWidget {
-  User user;
+  Account account;
   BusinessProfile businessProfile;
-  ProfileBusiness(this.user, this.businessProfile, {Key? key})
+  ProfileBusiness(this.account, this.businessProfile, {Key? key})
       : super(key: key);
 
   @override

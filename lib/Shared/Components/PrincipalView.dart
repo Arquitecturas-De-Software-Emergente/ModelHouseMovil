@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
 
 import '../../Security/Interfaces/UserProfile.dart';
 import '../../Security/Services/Account_Service.dart';
@@ -11,9 +10,8 @@ import 'Routes.dart';
 
 // ignore: must_be_immutable
 class PrincipalView extends StatefulWidget {
-  int? idAccount;
-  String? role;
-  PrincipalView(this.idAccount, this.role, {Key? key}) : super(key: key);
+  Account account;
+  PrincipalView(this.account, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -49,7 +47,7 @@ class _PrincipalVireState extends State<PrincipalView> {
   }
 
   Future getUserProfile() async {
-    userProfile = await httpUserProfile?.getUserProfileById(widget.idAccount);
+    userProfile = await httpUserProfile?.getUserProfileById(widget.account.id);
     setState(() {
       userProfile = userProfile;
     });
@@ -60,7 +58,7 @@ class _PrincipalVireState extends State<PrincipalView> {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: myNavigation,
-      body: Routes(index, widget.idAccount, widget.role, userProfile),
+      body: Routes(index, widget.account, userProfile),
     );
   }
 }

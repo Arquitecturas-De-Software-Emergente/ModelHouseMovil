@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
@@ -17,9 +16,9 @@ import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
 class Options extends StatefulWidget {
-  int? idAccount;
+  Account? account;
   UserProfile? userProfile;
-  Options(this.idAccount, this.userProfile, {Key? key}) : super(key: key);
+  Options(this.account, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -54,19 +53,9 @@ class _OptionsState extends State<Options> {
     if (widget.userProfile != null) {
       getRequestUserProfile();
     } else {
-      getAccount();
+      //getAccount();
     }
     super.initState();
-  }
-
-  Future getAccount() async {
-    account = await httpAccount?.getAccountByUserId(widget.idAccount);
-    account != null
-        ? setState(() {
-            account = account;
-            getBusinessProfile();
-          })
-        : null;
   }
 
   Future getBusinessProfile() async {
