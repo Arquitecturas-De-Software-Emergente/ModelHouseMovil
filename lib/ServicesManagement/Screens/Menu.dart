@@ -21,7 +21,8 @@ class Menu extends StatefulWidget {
   int? idAccount;
   String? role;
   UserProfile? userProfile;
-  Menu(this.idAccount, this.role, this.userProfile, {Key? key}) : super(key: key);
+  Menu(this.idAccount, this.role, this.userProfile, {Key? key})
+      : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -66,79 +67,80 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(15),
+    return Column(
       children: [
-        widget.userProfile != null
-            ? Perfil(widget.idAccount, widget.userProfile!)
-            : Container(
-                margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                child: ActiveButton(12, "Create Business Profile", () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return FormProfileUser(widget.idAccount);
-                      },
-                    ),
-                  );
-                }, 18),
+        Container(
+          margin: EdgeInsets.all(25), // Margen general alrededor del contenedor
+          child: const Row(
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage('../images/profile.png'),
               ),
-        widget.role == "business" && businessProfile != null
-            ? PerfilBusiness(account!, businessProfile!)
-            : Container(
-                margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                child: ActiveButton(12, "Create Business Profile", () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return FormProfileBusines(account!);
-                      },
-                    ),
-                  );
-                }, 18),
-              ),
-        const Activities(),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
-          child: Adicional(),
-        ),
-        MaterialButton(
-          height: 45,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          color: const Color(0XFF02AA8B),
-          onPressed: () async {
-            final persitence = await SharedPreferences.getInstance();
-            persitence.remove("token");
-            // ignore: use_build_context_synchronously
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return const WelcomeApplication();
-                },
-              ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Row(children: const <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
-                child: Icon(
-                  Icons.logout_outlined,
-                  size: 25,
-                  color: Colors.white,
+              SizedBox(width: 30),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Username',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-              Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 17),
-              )
-            ]),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(15),
+            children: const [
+              Activities(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
+                child: Adicional(),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(15), // Agrega el margen que desees
+          child: MaterialButton(
+            height: 45,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            color: const Color(0XFF02AA8B),
+            onPressed: () async {
+              final persitence = await SharedPreferences.getInstance();
+              persitence.remove("token");
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const WelcomeApplication();
+                  },
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+              child: const Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
+                    child: Icon(
+                      Icons.logout_outlined,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "Log Out",
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],

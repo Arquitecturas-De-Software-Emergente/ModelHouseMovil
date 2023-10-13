@@ -14,7 +14,7 @@ class _ActivitiesState extends State<Activities> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Titles(27, "Activities"),
+        Titles(20, "Activities"),
         Card(
           child: MaterialButton(
             onPressed: () {},
@@ -22,11 +22,11 @@ class _ActivitiesState extends State<Activities> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
                 child: Icon(
-                  Icons.shopping_cart_outlined,
+                  Icons.favorite_border_outlined,
                   size: 30,
                 ),
               ),
-              Text("Your Orders")
+              Text("Favorites")
             ]),
           ),
         ),
@@ -37,11 +37,11 @@ class _ActivitiesState extends State<Activities> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
                 child: Icon(
-                  Icons.polyline_outlined,
+                  Icons.add_box_outlined,
                   size: 30,
                 ),
               ),
-              Text("Your Requests")
+              Text("Add smart devices")
             ]),
           ),
         ),
@@ -52,11 +52,11 @@ class _ActivitiesState extends State<Activities> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
                 child: Icon(
-                  Icons.article_outlined,
+                  Icons.settings_outlined,
                   size: 30,
                 ),
               ),
-              Text("Deals")
+              Text("Smart devices configuration")
             ]),
           ),
         )
