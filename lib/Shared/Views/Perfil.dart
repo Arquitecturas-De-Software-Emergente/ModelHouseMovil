@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
-import 'package:model_house/Shared/Views/FormProfileUser.dart';
+import 'package:model_house/Security/Screens/formUserProfile.dart';
 
 import '../../ServicesManagement/Screens/Profile.dart';
 
@@ -80,7 +80,7 @@ class _PerfilState extends State<Perfil> {
         : Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return FormProfileUser(widget.account);
+                return FormUserProfile(widget.account);
               },
             ),
           );

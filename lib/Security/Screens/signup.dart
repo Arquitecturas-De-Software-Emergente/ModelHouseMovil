@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Screens/signin.dart';
+import 'package:model_house/Security/Screens/userType.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 
 import '../../Shared/Widgets/buttons/ActiveButton.dart';
@@ -14,7 +15,6 @@ class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _SignupState createState() => _SignupState();
 }
 
@@ -32,21 +32,23 @@ class _SignupState extends State<Signup> {
   }
 
   Future signUp() async {
-    if (password.text == confirm.text) {
+    if(password.text == confirm.text){
       account = await httpAccount?.signUp(email.text, password.text);
+      print(account);
       setState(() {
         account = account;
-        if (account != null) {
+        print(account);
+        if(account != null){
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return const Signin();
+                return UserType(account!);
               },
             ),
           );
         }
       });
-    } else {
+    }else {
       const snackBar = SnackBar(
           content: Text('Passwords are not the same'),
           duration: Duration(seconds: 2),

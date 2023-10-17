@@ -13,7 +13,7 @@ class UserProfile {
   String gender;
   String phoneNumber;
   String? image;
-  String? registrationDate;
+  String? address;
   UserProfile(
       {this.id,
       required this.firstName,
@@ -21,7 +21,7 @@ class UserProfile {
       required this.gender,
       required this.phoneNumber,
       this.image,
-      this.registrationDate});
+      this.address});
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         id: json["id"],
         firstName: json["firstName"],
@@ -29,7 +29,7 @@ class UserProfile {
         gender: json["gender"],
         phoneNumber: json["phoneNumber"],
         image: json["image"],
-        registrationDate: json["registrationDate"],
+        address: json["address"],
       );
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -38,6 +38,6 @@ class UserProfile {
         "gender": gender,
         "phoneNumber": phoneNumber,
         "image": image,
-        "registrationDate": registrationDate,
+        "address": address,
       };
 }

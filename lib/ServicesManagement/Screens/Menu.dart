@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
+import 'package:model_house/Security/Screens/formUserProfile.dart';
 import 'package:model_house/Security/Screens/welcomeApplication.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
 import 'package:model_house/Shared/Views/FormBusinessProfile.dart';
-import 'package:model_house/Shared/Views/FormProfileUser.dart';
 import 'package:model_house/Shared/Views/PerfilBusiness.dart';
 import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,7 +66,7 @@ class _MenuState extends State<Menu> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return FormProfileUser(widget.account);
+                        return FormUserProfile(widget.account);
                       },
                     ),
                   );

@@ -13,25 +13,22 @@ class Account {
   int id;
   String emailAddress;
   String? password;
-  String role;
   bool isActive;
   String? token;
   BusinessProfile? businessProfile;
-  UserProfile? userProfile;
+  UserProfile?userProfile;
   Account(
       {required this.id,
         required this.emailAddress,
         this.password,
         this.businessProfile,
         this.userProfile,
-        required this.role,
         required this.isActive,
         required this.token});
   factory Account.fromJson(Map<String, dynamic> json) => Account(
     id: json["id"],
     emailAddress: json["emailAddress"],
     password: json["password"],
-    role: json["role"],
     isActive: json["isActive"],
     token: json["token"],
     businessProfile: json["businessProfile"],
@@ -41,7 +38,6 @@ class Account {
     "id": id,
     "emailAddress": emailAddress,
     "password": password,
-    "role": role,
     "isActive": isActive,
     "token": token,
     "businessProfile": businessProfile,
