@@ -34,10 +34,8 @@ class _SignupState extends State<Signup> {
   Future signUp() async {
     if(password.text == confirm.text){
       account = await httpAccount?.signUp(email.text, password.text);
-      print(account);
       setState(() {
         account = account;
-        print(account);
         if(account != null){
           Navigator.of(context).push(
             MaterialPageRoute(

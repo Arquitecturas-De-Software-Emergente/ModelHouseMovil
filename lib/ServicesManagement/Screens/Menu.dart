@@ -36,7 +36,7 @@ class _MenuState extends State<Menu> {
   void initState() {
     httpBusinessProfile = HttpBusinessProfile();
     httpAccount = HttpAccount();
-    if (widget.account?.businessProfile != null) {
+    if (widget.account.businessProfileId != null) {
       //activeBusiness();
     }
     super.initState();
@@ -72,7 +72,7 @@ class _MenuState extends State<Menu> {
                   );
                 }, 18),
               ),
-        widget.account.businessProfile != null && businessProfile != null
+        widget.account.businessProfileId != null && businessProfile != null
             ? PerfilBusiness(account!, businessProfile!)
             : Container(
                 margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),

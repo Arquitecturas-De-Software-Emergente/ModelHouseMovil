@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Screens/signup.dart';
+import 'package:model_house/Security/Screens/userType.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,18 +35,30 @@ class _SigninState extends State<Signin> {
 
   Future signIn() async {
     account = await httpAccount?.signIn(email.text, password.text);
-    final persitence = await SharedPreferences.getInstance();
+    //final persitence = await SharedPreferences.getInstance();
     setState(() {
       account = account;
+      print(account);
       if (account != null) {
-        persitence.setString("token", account!.token!);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return PrincipalView(account!);
-            },
-          ),
-        );
+        print(account?.businessProfileId);
+        print(account?.userProfileId);
+        if(account?.businessProfileId == null || account?.userProfileId == null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return UserType(account!);
+              },
+            ),
+          );
+        }else{
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return PrincipalView(account!);
+              },
+            ),
+          );
+        }
       } else {
         showDialog(
             barrierDismissible: false,
@@ -64,13 +77,6 @@ class _SigninState extends State<Signin> {
             });
       }
     });
-    Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return PrincipalView(account!);
-            },
-        ),
-    );
   }
 
   @override

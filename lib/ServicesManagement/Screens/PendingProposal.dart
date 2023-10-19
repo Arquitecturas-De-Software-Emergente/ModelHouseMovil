@@ -97,7 +97,7 @@ class _PendingProposalState extends State<PendingProposal> {
                             child: Image.network(
                               widget.businessProfile == null
                                   ? widget.userProfile!.image!
-                                  : widget.businessProfile!.image,
+                                  : widget.businessProfile!.image!,
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,

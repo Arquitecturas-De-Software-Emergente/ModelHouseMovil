@@ -11,9 +11,9 @@ class BusinessProfile {
   int? id;
   String address;
   String description;
-  String image;
+  String? image;
   String name;
-  String phoneBusiness;
+  String phoneNumber;
   String webSite;
   int? accountId;
   String? foundationDate;
@@ -21,9 +21,9 @@ class BusinessProfile {
     this.id,
     required this.address,
     required this.description,
-    required this.image,
+    this.image,
     required this.name,
-    required this.phoneBusiness,
+    required this.phoneNumber,
     required this.webSite,
     this.accountId,
     this.foundationDate,
@@ -35,7 +35,7 @@ class BusinessProfile {
         description: json["description"],
         image: json["image"],
         name: json["name"],
-        phoneBusiness: json["phoneBusiness"],
+        phoneNumber: json["phoneNumber"],
         webSite: json["webSite"],
         accountId: json["accountId"],
         foundationDate: json["foundationDate"],
@@ -46,7 +46,7 @@ class BusinessProfile {
         "description": description,
         "image": image,
         "name": name,
-        "phoneBusiness": phoneBusiness,
+        "phoneNumber": phoneNumber,
         "webSite": webSite,
         "accountId": accountId,
         "foundationDate": foundationDate,

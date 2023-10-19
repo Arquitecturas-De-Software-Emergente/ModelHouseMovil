@@ -46,17 +46,12 @@ class _FormUserProfileState extends State<FormUserProfile> {
     super.initState();
   }
   Future signUp() async {
-    userProfile?.phoneNumber = phoneNumber.text;
-    userProfile?.firstName = firstName.text;
-    userProfile?.lastName = lastName.text;
-    userProfile?.gender = gender.text;
-    userProfile?.address = address.text;
     userProfile = await httpUserProfile?.createProfile(widget.account.id, phoneNumber.text, firstName.text,
       lastName.text, gender.text, address.text);
     setState(() async {
       userProfile = userProfile;
       if(userProfile != null){
-        widget.account.userProfile = userProfile!;
+        widget.account.userProfileId = userProfile?.id;
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {

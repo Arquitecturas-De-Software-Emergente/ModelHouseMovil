@@ -53,7 +53,7 @@ class _ListBusinessState extends State<ListBusiness> {
               children: <Widget>[
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: NetworkImage(business.image),
+                  backgroundImage: NetworkImage(business.image!),
                 ),
                 Column(
                   children: [Titles(18, business.name), Text(business.address)],

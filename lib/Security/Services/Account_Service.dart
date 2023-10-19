@@ -19,7 +19,6 @@ class HttpAccount {
           'emailAddress': emailAddress,
           'password': password,
         }));
-    print(response.body);
     if (response.statusCode == 200) {
       return Account.fromJson(jsonDecode(response.body));
     }

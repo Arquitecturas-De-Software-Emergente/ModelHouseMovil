@@ -15,14 +15,14 @@ class Account {
   String? password;
   bool isActive;
   String? token;
-  BusinessProfile? businessProfile;
-  UserProfile?userProfile;
+  int? userProfileId;
+  int? businessProfileId;
   Account(
       {required this.id,
         required this.emailAddress,
         this.password,
-        this.businessProfile,
-        this.userProfile,
+        this.businessProfileId,
+        this.userProfileId,
         required this.isActive,
         required this.token});
   factory Account.fromJson(Map<String, dynamic> json) => Account(
@@ -31,8 +31,8 @@ class Account {
     password: json["password"],
     isActive: json["isActive"],
     token: json["token"],
-    businessProfile: json["businessProfile"],
-    userProfile: json["userProfile"],
+    businessProfileId: json["businessProfileId"],
+    userProfileId: json["userProfileId"],
   );
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -40,7 +40,7 @@ class Account {
     "password": password,
     "isActive": isActive,
     "token": token,
-    "businessProfile": businessProfile,
-    "userProfile": userProfile
+    "businessProfileId": businessProfileId,
+    "userProfileId": userProfileId
   };
 }

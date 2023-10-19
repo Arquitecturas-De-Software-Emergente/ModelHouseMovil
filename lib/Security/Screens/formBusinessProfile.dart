@@ -47,20 +47,15 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
     super.initState();
   }
   Future signUp() async {
-    businessProfile?.name = name.text;
-    businessProfile?.phoneBusiness = phoneNumber.text;
-    businessProfile?.webSite = webSite.text;
-    businessProfile?.address = address.text;
-    businessProfile?.description = description.text;
-    businessProfile = await httpBusinessProfile?.createProfile(businessProfile!, widget.account!.id);
+    businessProfile = await httpBusinessProfile?.createProfile(name.text, description.text, address.text, phoneNumber.text, webSite.text, widget.account.id);
     setState(() async {
       businessProfile = businessProfile;
       if(businessProfile != null){
-        widget.account!.businessProfile = businessProfile!;
+        widget.account.businessProfileId = businessProfile?.id;
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return PrincipalView(widget.account!);
+              return PrincipalView(widget.account);
             },
           ),
         );
