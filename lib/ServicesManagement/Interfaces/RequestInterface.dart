@@ -15,6 +15,7 @@ class RequestInterface {
   String? accepted;
   int? acceptedAt;
   String? updateAt;
+  String? name;
   RequestInterface(
       {this.id,
       this.requestAt,
@@ -22,7 +23,9 @@ class RequestInterface {
       this.description,
       this.accepted,
       this.acceptedAt,
-      this.updateAt});
+      this.updateAt,
+        this.name,
+      });
   factory RequestInterface.fromJson(Map<String, dynamic> json) =>
       RequestInterface(
           id: json["id"],
@@ -30,7 +33,8 @@ class RequestInterface {
           status: json["status:"],
           description: json["description"],
           acceptedAt: json["acceptedAt"],
-          updateAt: json["updateAt"]);
+          updateAt: json["updateAt"],
+          name: json["businessProfile"]["name"],);
   Map<String, dynamic> toJson() => {
         "id": id,
         "requestAt": requestAt,
@@ -39,5 +43,6 @@ class RequestInterface {
         "accepted": accepted,
         "acceptedAt": acceptedAt,
         "updateAt": updateAt,
+        "name": name,
       };
 }
