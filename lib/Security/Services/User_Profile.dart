@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpUserProfile {
   var businessProfile = http.Client();
-  Future<UserProfile?> getUserProfileById(int? id) async {
+  Future<UserProfile?> getUserProfileById(int? accountId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse('$httpBaseSecurity/user/$id/user_profile');
+    var uri = Uri.parse('$httpBaseSecurity/account/$accountId/user_profile');
     var response = await businessProfile.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',

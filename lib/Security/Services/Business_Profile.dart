@@ -18,9 +18,10 @@ class HttpBusinessProfile {
     return null;
   }
 
-  Future<BusinessProfile?> getbusinessProfileAccountById(int id) async {
+  Future<BusinessProfile?> getbusinessProfileAccountById(int accountId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseSecurity/account/$id/business_profile");
+    var uri = Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
+
     var response = await business.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",

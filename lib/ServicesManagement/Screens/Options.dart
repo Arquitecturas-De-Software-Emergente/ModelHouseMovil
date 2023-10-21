@@ -50,6 +50,8 @@ class _OptionsState extends State<Options> {
     httpRequest = HttpRequest();
     httpAccount = HttpAccount();
     httpBusinessProfile = HttpBusinessProfile();
+    print('Account: ${widget.account}');
+    print('UserProfile: ${widget.userProfile}');
     if (widget.userProfile != null) {
       getRequestUserProfile();
     } else {
