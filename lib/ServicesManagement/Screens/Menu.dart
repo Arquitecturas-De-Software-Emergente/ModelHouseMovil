@@ -44,7 +44,7 @@ class _MenuState extends State<Menu> {
 
   Future getBusiness() async {
     businessProfile =
-        await httpBusinessProfile?.getbusinessProfileAccountById(account!.id);
+        await httpBusinessProfile?.getbusinessProfileAccountById(account!.id!);
     if (businessProfile != null) {
       setState(() {
         businessProfile = businessProfile;
@@ -56,38 +56,38 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widget.userProfile != null
-            ? Perfil(widget.account, widget.userProfile!)
-            : Container(
-                margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                child: ActiveButton(12, "Create Business Profile", () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return FormUserProfile(widget.account);
-                      },
-                    ),
-                  );
-                }, 18),
-              ),
-        widget.account.businessProfileId != null && businessProfile != null
-            ? PerfilBusiness(account!, businessProfile!)
-            : Container(
-                margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                child: ActiveButton(12, "Create Business Profile", () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return FormProfileBusines(account!);
-                      },
-                    ),
-                  );
-                }, 18),
-              ),
+        // widget.userProfile != null
+        //     ? Perfil(widget.account, widget.userProfile!)
+        //     : Container(
+        //         margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+        //         width: MediaQuery.of(context).size.width,
+        //         height: 45,
+        //         child: ActiveButton(12, "Create Business Profile", () {
+        //           Navigator.of(context).push(
+        //             MaterialPageRoute(
+        //               builder: (BuildContext context) {
+        //                 return FormUserProfile(widget.account);
+        //               },
+        //             ),
+        //           );
+        //         }, 18),
+        //       ),
+        // widget.account.businessProfileId != null && businessProfile != null
+        //     ? PerfilBusiness(account!, businessProfile!)
+        //     : Container(
+        //         margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+        //         width: MediaQuery.of(context).size.width,
+        //         height: 45,
+        //         child: ActiveButton(12, "Create Business Profile", () {
+        //           Navigator.of(context).push(
+        //             MaterialPageRoute(
+        //               builder: (BuildContext context) {
+        //                 return FormProfileBusines(account!);
+        //               },
+        //             ),
+        //           );
+        //         }, 18),
+        //       ),
         Container(
           margin: EdgeInsets.all(25), // Margen general alrededor del contenedor
           child: Row(
