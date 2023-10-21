@@ -16,7 +16,7 @@ class _AdicionalState extends State<Adicional> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Titles(27, "Adicional"),
+        Titles(20, "Additional"),
         Card(
           child: MaterialButton(
             onPressed: () {},
@@ -24,11 +24,11 @@ class _AdicionalState extends State<Adicional> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
                 child: Icon(
-                  Icons.credit_card_outlined,
+                  Icons.person_add_alt_outlined,
                   size: 30,
                 ),
               ),
-              Text("Cards")
+              Text("Subscribe to ModelHouse")
             ]),
           ),
         ),
@@ -39,29 +39,14 @@ class _AdicionalState extends State<Adicional> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
                 child: Icon(
-                  Icons.payments_outlined,
+                  Icons.notification_add_outlined,
                   size: 30,
                 ),
               ),
-              Text("Payments")
+              Text("Notifications")
             ]),
           ),
         ),
-        Card(
-          child: MaterialButton(
-            onPressed: () {},
-            child: Row(children: const [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
-                child: Icon(
-                  Icons.house_outlined,
-                  size: 30,
-                ),
-              ),
-              Text("Premiun")
-            ]),
-          ),
-        )
       ],
     );
   }

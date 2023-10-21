@@ -7,45 +7,41 @@ import 'package:model_house/Shared/HttpComon.dart';
 class HttpAccount {
   var account = http.Client();
 
-  Future<Account?> getAccountByUserId(int? userId) async {
-    final String accountUrl = "$httpBaseSecurity/user/$userId/account";
-    var uri = Uri.parse(accountUrl);
-    var response = await account.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      "Accept": "application/json"
-    });
-    print(response.body);
-    if (response.statusCode == 200) {
-      return Account.fromJson(jsonDecode(response.body));
-    }
-    return null;
-  }
-
-  Future<Account?> postAccountByUserId(int userId, Account data) async {
-    final String accountUrl = "$httpBaseSecurity/user/$userId/account";
+  Future<Account?> signIn(String emailAddress, String password) async {
+    final String accountUrl = "$httpBaseSecurity/login";
     var uri = Uri.parse(accountUrl);
     var response = await account.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           "Accept": "application/json"
         },
-        body: jsonEncode(data));
+        body: jsonEncode({
+          'emailAddress': emailAddress,
+          'password': password,
+        }));
     if (response.statusCode == 200) {
       return Account.fromJson(jsonDecode(response.body));
     }
     return null;
+    //return null;
   }
 
-  Future<Account?> getAccountById(int id) async {
-    final String accountUrl = "$httpBaseSecurity/account/$id";
-    var uri = Uri.parse(accountUrl);
-    var response = await account.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      "Accept": "application/json"
-    });
+  Future<Account?> signUp(String emailAddress, String password) async {
+    final String postUrl = "$httpBaseSecurity/register";
+    var uri = Uri.parse(postUrl);
+    var response = await account.post(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json"
+        },
+        body: jsonEncode({
+          'emailAddress': emailAddress,
+          'password': password,
+        }));
     if (response.statusCode == 200) {
       return Account.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
     }
-    return null;
   }
 }

@@ -21,7 +21,7 @@ class _FormProfileBusinesState extends State<FormProfileBusines> {
   final name = TextEditingController();
   final address = TextEditingController();
   final description = TextEditingController(text: "Gender");
-  final phoneBusiness = TextEditingController();
+  final phoneNumber = TextEditingController();
   final image = TextEditingController();
   final webSite = TextEditingController();
   List<String> genderOptions = ['Gender', 'Male', 'Female'];
@@ -31,7 +31,7 @@ class _FormProfileBusinesState extends State<FormProfileBusines> {
       description: "",
       image: "",
       name: "",
-      phoneBusiness: "",
+      phoneNumber: "",
       webSite: "");
   BusinessProfile? response;
 
@@ -46,10 +46,10 @@ class _FormProfileBusinesState extends State<FormProfileBusines> {
     businessProfile.address = address.text;
     businessProfile.description = description.text;
     businessProfile.image = image.text;
-    businessProfile.phoneBusiness = phoneBusiness.text;
+    businessProfile.phoneNumber = phoneNumber.text;
     businessProfile.webSite = webSite.text;
     response = await httpBusinessProfile?.createProfile(
-        businessProfile, widget.account.id);
+        name.text, description.text, address.text, phoneNumber.text, webSite.text, widget.account.id!);
     setState(() {
       response = response;
       if (response != null) {
@@ -83,7 +83,7 @@ class _FormProfileBusinesState extends State<FormProfileBusines> {
                         name.text = "";
                         address.text = "";
                         description.text = "";
-                        phoneBusiness.text = "";
+                        phoneNumber.text = "";
                         webSite.text = "";
                         image.text = "";
                       },
@@ -136,7 +136,7 @@ class _FormProfileBusinesState extends State<FormProfileBusines> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Input(Icons.abc, "Insert your Phone Business", false,
-                        phoneBusiness, false, TextInputType.text),
+                        phoneNumber, false, TextInputType.text),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
+import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
-import 'package:model_house/Shared/Views/FormProfileUser.dart';
+import 'package:model_house/Security/Screens/formUserProfile.dart';
 
 import '../../ServicesManagement/Screens/Profile.dart';
 
 // ignore: must_be_immutable
 class Perfil extends StatefulWidget {
-  int? idAccount;
+  Account account;
   UserProfile userProfile;
-  Perfil(this.idAccount, this.userProfile, {Key? key}) : super(key: key);
+  Perfil(this.account, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -69,7 +69,7 @@ class _PerfilState extends State<Perfil> {
 
   void redirectPerfil() {
     // ignore: unnecessary_null_comparison
-    widget.idAccount != null
+    widget.account != null
         ? Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
@@ -80,7 +80,7 @@ class _PerfilState extends State<Perfil> {
         : Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return FormProfileUser(widget.idAccount);
+                return FormUserProfile(widget.account);
               },
             ),
           );

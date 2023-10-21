@@ -43,7 +43,7 @@ class _PerfilBusinessState extends State<PerfilBusiness> {
                   : CircleAvatar(
                       radius: 50,
                       backgroundImage:
-                          NetworkImage(widget.businessProfile.image),
+                          NetworkImage(widget.businessProfile.image!),
                     ),
               Column(
                 children: <Widget>[
@@ -57,7 +57,7 @@ class _PerfilBusinessState extends State<PerfilBusiness> {
                           fontWeight: FontWeight.w600),
                     ),
                   ),
-                  Text(widget.businessProfile.phoneBusiness,
+                  Text(widget.businessProfile.phoneNumber,
                       style: const TextStyle(color: Color(0XFF02AA8B)))
                 ],
               )

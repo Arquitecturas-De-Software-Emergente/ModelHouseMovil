@@ -33,7 +33,7 @@ class HttpBusinessProfile {
   }
 
   Future<BusinessProfile?> createProfile(
-      BusinessProfile businessProfile, int accountId) async {
+      String name, String description, String address, String phoneNumber, String webSite, int accountId) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
     var response = await business.post(uri,
@@ -42,7 +42,13 @@ class HttpBusinessProfile {
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
-        body: jsonEncode(businessProfile));
+        body: jsonEncode({
+          'name': name,
+          'description': description,
+          'address': address,
+          'phoneNumber': phoneNumber,
+          'webSite': webSite,
+        }));
     if (response.statusCode == 200) {
       return BusinessProfile.fromJson(jsonDecode(response.body));
     }

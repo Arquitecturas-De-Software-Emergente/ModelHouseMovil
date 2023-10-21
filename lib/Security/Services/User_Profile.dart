@@ -21,17 +21,21 @@ class HttpUserProfile {
     return null;
   }
 
-  Future<UserProfile?> createProfile(int? id, UserProfile userProfile) async {
-    final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse('$httpBaseSecurity/user/$id/user_profile');
-    print(userProfile);
+  Future<UserProfile?> createProfile(int id, String phoneNumber, String firstName,
+      String lastName, String gender, String address) async {
+    var uri = Uri.parse('$httpBaseSecurity/account/$id/user_profile');
     var response = await businessProfile.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           "Accept": "application/json",
-          'Authorization': 'Bearer ${persitence.getString("token")}'
         },
-        body: jsonEncode(userProfile));
+        body: jsonEncode({
+          'phoneNumber': phoneNumber,
+          'firstName': firstName,
+          'lastName': lastName,
+          'gender': gender,
+          'address': address,
+        }));
     print(response.body);
     if (response.statusCode == 200) {
       return UserProfile.fromJson(jsonDecode(response.body));

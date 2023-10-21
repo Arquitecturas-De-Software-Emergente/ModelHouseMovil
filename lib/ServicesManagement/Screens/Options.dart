@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
@@ -17,9 +16,9 @@ import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
 class Options extends StatefulWidget {
-  int? idAccount;
+  Account? account;
   UserProfile? userProfile;
-  Options(this.idAccount, this.userProfile, {Key? key}) : super(key: key);
+  Options(this.account, this.userProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -28,11 +27,11 @@ class Options extends StatefulWidget {
 
 class _OptionsState extends State<Options> {
   List<String> typesOptions = [
-    "Pending Proposal",
-    "Pending Request",
-    "Request In Process",
-    "Request Canceled",
-    "Request Finished"
+    "Request",
+    "Proposal",
+    "Project",
+    "Completed Projects",
+    "Canceled"
   ];
   HttpRequest? httpRequest;
   HttpAccount? httpAccount;
@@ -54,24 +53,14 @@ class _OptionsState extends State<Options> {
     if (widget.userProfile != null) {
       getRequestUserProfile();
     } else {
-      getAccount();
+      //getAccount();
     }
     super.initState();
   }
 
-  Future getAccount() async {
-    account = await httpAccount?.getAccountByUserId(widget.idAccount);
-    account != null
-        ? setState(() {
-            account = account;
-            getBusinessProfile();
-          })
-        : null;
-  }
-
   Future getBusinessProfile() async {
     businessProfile =
-        await httpBusinessProfile?.getbusinessProfileAccountById(account!.id);
+        await httpBusinessProfile?.getbusinessProfileAccountById(account!.id!);
     if (businessProfile != null) {
       setState(() {
         businessProfile = businessProfile;
@@ -142,9 +131,21 @@ class _OptionsState extends State<Options> {
                 mainAxisSpacing: 10.0,
               ),
               itemBuilder: (BuildContext context, int index) {
+                String imageAssetPath = '';
+                if (typesOptions[index] == "Request") {
+                  imageAssetPath = 'images/first-step-icon.png'; // Replace with the actual asset path
+                } else if (typesOptions[index] == "Proposal") {
+                  imageAssetPath = 'images/second-step-icon.png'; // Replace with the actual asset path
+                } else if (typesOptions[index] == "Project") {
+                  imageAssetPath = 'images/third-step-icon.png'; // Replace with the actual asset path
+                } else if (typesOptions[index] == "Completed Projects") {
+                  imageAssetPath = 'images/fourth-step-icon.png'; // Replace with the actual asset path
+                } else if (typesOptions[index] == "Canceled") {
+                  imageAssetPath = 'images/fifth-step-icon.png'; // Replace with the actual asset path
+                }
                 return MaterialButton(
                     onPressed: () {
-                      if (typesOptions[index] == "Pending Proposal") {
+                      if (typesOptions[index] == "Request") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -154,7 +155,7 @@ class _OptionsState extends State<Options> {
                                   businessProfile)),
                         );
                       }
-                      if (typesOptions[index] == "Pending Request") {
+                      if (typesOptions[index] == "Proposal") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -164,7 +165,7 @@ class _OptionsState extends State<Options> {
                                   businessProfile)),
                         );
                       }
-                      if (typesOptions[index] == "Request In Process") {
+                      if (typesOptions[index] == "Project") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -172,7 +173,7 @@ class _OptionsState extends State<Options> {
                                   widget.userProfile, businessProfile)),
                         );
                       }
-                      if (typesOptions[index] == "Request Canceled") {
+                      if (typesOptions[index] == "Completed Projects") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -180,7 +181,7 @@ class _OptionsState extends State<Options> {
                                   widget.userProfile, businessProfile)),
                         );
                       }
-                      if (typesOptions[index] == "Request Finished") {
+                      if (typesOptions[index] == "Canceled") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -216,10 +217,10 @@ class _OptionsState extends State<Options> {
                                   child: Titles(16, typesOptions[index]),
                                 ),
                               ),
-                              Icon(
-                                Icons.pending_actions_outlined,
-                                color: Color(0XFF02AA8B),
-                                size: 50,
+                              Image.asset(
+                                imageAssetPath, // Load the PNG image
+                                width: 50, // Adjust the width as needed
+                                height: 50, // Adjust the height as needed
                               ),
                             ],
                           ),

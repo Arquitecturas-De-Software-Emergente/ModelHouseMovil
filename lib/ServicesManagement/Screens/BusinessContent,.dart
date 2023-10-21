@@ -147,7 +147,7 @@ class _BusinessContentState extends State<BusinessContent> {
               ),
               height: 200,
               child: Image.network(
-                widget.businessProfile.image,
+                widget.businessProfile.image!,
                 fit: BoxFit.cover,
               ),
             ),
@@ -168,7 +168,7 @@ class _BusinessContentState extends State<BusinessContent> {
             Container(
                 padding: const EdgeInsets.only(
                     top: 7, bottom: 7, left: 15, right: 15),
-                child: Text(widget.businessProfile.phoneBusiness)),
+                child: Text(widget.businessProfile.phoneNumber)),
             Container(
                 padding: const EdgeInsets.only(
                     top: 7, bottom: 7, left: 15, right: 15),

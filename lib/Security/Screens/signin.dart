@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:model_house/Security/Interfaces/User.dart';
+import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Screens/signup.dart';
-import 'package:model_house/Security/Services/User_Service.dart';
+import 'package:model_house/Security/Screens/userType.dart';
+import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Shared/Components/PrincipalView.dart';
@@ -23,54 +24,59 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   final email = TextEditingController();
   final password = TextEditingController();
-  User? user;
+  Account? account;
 
-  HttpUser? httpUser;
+  HttpAccount? httpAccount;
   @override
   void initState() {
-    httpUser = HttpUser();
+    httpAccount = HttpAccount();
     super.initState();
   }
 
   Future signIn() async {
-    //user = await httpUser?.signIn(email.text, password.text);
+    account = await httpAccount?.signIn(email.text, password.text);
     //final persitence = await SharedPreferences.getInstance();
-    //setState(() {
-    //  user = user;
-    //  if (user != null) {
-    //    persitence.setString("token", user!.token!);
-    //    Navigator.of(context).push(
-    //      MaterialPageRoute(
-    //        builder: (BuildContext context) {
-    //          return PrincipalView(user?.id);
-    //        },
-    //      ),
-    //    );
-    //  } else {
-    //    showDialog(
-    //        barrierDismissible: false,
-    //        context: context,
-    //        builder: (BuildContext context) {
-    //          return AlertDialog(
-    //            title: const Text("The email or password is incorrect"),
-    //            actions: [
-    //              TextButton(
-    //                  onPressed: () {
-    //                    Navigator.pop(context);
-    //                  },
-    //                  child: const Text("Ok"))
-    //            ],
-    //          );
-    //        });
-    //  }
-    //});
-    Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return PrincipalView(1, "client");
-            },
-        ),
-    );
+    setState(() {
+      account = account;
+      print(account);
+      if (account != null) {
+        print(account?.businessProfileId);
+        print(account?.userProfileId);
+        if(account?.businessProfileId.toString() == null || account?.userProfileId.toString() == null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return UserType(account!);
+              },
+            ),
+          );
+        }else{
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return PrincipalView(account!);
+              },
+            ),
+          );
+        }
+      } else {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("The email or password is incorrect"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Ok"))
+                ],
+              );
+            });
+      }
+    });
   }
 
   @override
