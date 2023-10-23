@@ -78,7 +78,7 @@ class _PlanState extends State<Plan> {
               ),
             ),
             const SizedBox(height: 20),
-            const Column(
+            Column(
               children: <Widget>[
                 ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 30),

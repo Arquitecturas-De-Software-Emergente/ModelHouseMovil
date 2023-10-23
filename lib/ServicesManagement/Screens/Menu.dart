@@ -166,7 +166,7 @@ class _MenuState extends State<Menu> {
             },
             child: Container(
               padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: const Row(
+              child: Row(
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(10, 0, 20, 0),

@@ -102,7 +102,7 @@ class _SubscribeState extends State<Subscribe> {
                             margin: const EdgeInsets.all(30),
                             child: Container(
                               padding: const EdgeInsets.all(25),
-                              child: const Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
@@ -180,7 +180,7 @@ class _SubscribeState extends State<Subscribe> {
                                   margin: const EdgeInsets.all(5),
                                   child: Container(
                                     padding: const EdgeInsets.all(30),
-                                    child: const Column(
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
