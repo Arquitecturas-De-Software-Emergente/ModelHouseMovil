@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
+import 'package:model_house/Shared/Views/ProfileBusiness.dart';
 import 'package:model_house/Shared/Views/ProfileUser.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 
+import '../../Security/Interfaces/BusinessProfile.dart';
+
 class Profile extends StatefulWidget {
-  UserProfile userProfile;
-  Profile(this.userProfile, {Key? key}) : super(key: key);
+  UserProfile? userProfile;
+  BusinessProfile? businessProfile;
+  Profile(this.userProfile, this.businessProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -31,9 +35,7 @@ class _ProfileState extends State<Profile> {
       ),
       body: ListView(
         children: [
-          ProfileUser(widget.userProfile),
-
-          //widget.account.role == "Business" ? ProfileBusiness() : Container()
+          widget.userProfile != null ? ProfileUser(widget.userProfile!) : ProfileBusiness(widget.businessProfile!),
         ],
       ),
     );

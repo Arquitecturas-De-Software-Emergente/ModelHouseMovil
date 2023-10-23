@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 
 class ProfileBusiness extends StatefulWidget {
-  const ProfileBusiness({Key? key}) : super(key: key);
+  BusinessProfile businessProfile;
+  ProfileBusiness(this.businessProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api

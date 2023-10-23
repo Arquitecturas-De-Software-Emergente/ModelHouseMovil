@@ -6,6 +6,8 @@ import 'package:model_house/Security/Screens/formUserProfile.dart';
 import 'package:model_house/Security/Screens/welcomeApplication.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
+import 'package:model_house/ServicesManagement/Screens/Profile.dart';
+import 'package:model_house/Shared/Components/navigate.dart';
 import 'package:model_house/Shared/Views/FormBusinessProfile.dart';
 import 'package:model_house/Shared/Views/PerfilBusiness.dart';
 import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
@@ -61,7 +63,15 @@ class _MenuState extends State<Menu> {
     return Column(
       children: [
         widget.account.userProfileId != null
-            ? Container(
+            ? ElevatedButton(onPressed: (){
+              navigate(context, Profile(widget.userProfile!, widget.businessProfile ?? null));
+          },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              onPrimary: Colors.white,
+            ),
+            child:
+              Container(
                 margin: const EdgeInsets.all(25),
                 child: Row(
                   children: [
@@ -70,7 +80,7 @@ class _MenuState extends State<Menu> {
                       backgroundImage: widget.userProfile?.image != null
                           ? NetworkImage(widget.userProfile!.image!)
                           : const AssetImage('../images/profile.png')
-                              as ImageProvider,
+                      as ImageProvider,
                     ),
                     SizedBox(width: 30),
                     Align(
@@ -88,7 +98,7 @@ class _MenuState extends State<Menu> {
                             Text(
                               widget.account.emailAddress,
                               style:
-                                  TextStyle(fontSize: 16, color: Colors.grey),
+                              TextStyle(fontSize: 16, color: Colors.grey),
                             ),
                           ],
                         ),
@@ -96,43 +106,49 @@ class _MenuState extends State<Menu> {
                     ),
                   ],
                 ),
-              )
-            : Container(
-                margin: const EdgeInsets.all(25),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: widget.businessProfile?.image != null
-                          ? NetworkImage(widget.businessProfile!.image!)
-                          : const AssetImage('../images/profile.png')
-                              as ImageProvider,
-                    ),
-                    SizedBox(width: 30),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${widget.businessProfile?.name}',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              widget.account.emailAddress,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.grey),
-                            ),
-                          ],
-                        ),
+              ))
+            : ElevatedButton(onPressed: (){
+              navigate(context, Profile(widget.userProfile!, widget.businessProfile ?? null));
+        }, style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          onPrimary: Colors.white,
+        ),
+            child: Container(
+          margin: const EdgeInsets.all(25),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: widget.businessProfile?.image != null
+                    ? NetworkImage(widget.businessProfile!.image!)
+                    : const AssetImage('../images/profile.png')
+                as ImageProvider,
+              ),
+              SizedBox(width: 30),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${widget.businessProfile?.name}',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
+                      Text(
+                        widget.account.emailAddress,
+                        style:
+                        TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+            ],
+          ),
+        )),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.all(15),

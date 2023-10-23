@@ -3,13 +3,15 @@ import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Screens/formUserProfile.dart';
 
+import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../ServicesManagement/Screens/Profile.dart';
 
 // ignore: must_be_immutable
 class Perfil extends StatefulWidget {
   Account account;
   UserProfile userProfile;
-  Perfil(this.account, this.userProfile, {Key? key}) : super(key: key);
+  BusinessProfile? businessProfile;
+  Perfil(this.account, this.userProfile, this.businessProfile, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -73,7 +75,7 @@ class _PerfilState extends State<Perfil> {
         ? Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return Profile(widget.userProfile);
+                return Profile(widget.userProfile, widget.businessProfile ?? null);
               },
             ),
           )
