@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
+import 'package:model_house/ServicesManagement/Screens/ProjectDetails.dart';
 import 'package:model_house/Shared/Views/Category.dart';
+import 'package:social_media_flutter/social_media_flutter.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/Proyect.dart';
 import '../../Security/Services/Proyect_Service.dart';
@@ -71,7 +73,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
               width: MediaQuery.of(context).size.width,
               height: 200,
               child: Image.network(
-                'URL_IMAGEN_DE_PORTADA',
+                widget.businessProfile.image!,
                 fit: BoxFit.cover,
               ),
             ),
@@ -87,10 +89,22 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
             ),
             const SizedBox(height: 10),
             Center(
-              child: Text(
-                widget.businessProfile.name,
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.businessProfile.name,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.favorite_border,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 10),
@@ -176,8 +190,8 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                       ),
                       const SizedBox(height: 5),
                       Wrap(
-                        spacing: 8, // Espacio horizontal entre los chips
-                        runSpacing: 4, // Espacio vertical entre los chips
+                        spacing: 8,
+                        runSpacing: 4,
                         children: categories.map((category) {
                           return Chip(
                             label: Text(
@@ -188,7 +202,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                               ),
                             ),
                             backgroundColor: const Color(
-                                0xFF02AA8B), // Personaliza el color del chip
+                                0xFF02AA8B), 
                           );
                         }).toList(),
                       ),
@@ -196,15 +210,40 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  const Row(
+                  Row(
                     children: [
-                      Text(
+                      const Text(
                         "Social Media: ",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        "fre",
-                      ),
+                      SocialWidget(
+                        placeholderText:
+                            '', 
+                        iconData: SocialIconsFlutter.instagram, 
+                        iconColor: const Color(
+                                0xFF02AA8B), 
+                        link:
+                            'https://www.instagram.com/', 
+                        
+                      ), 
+                      SocialWidget(
+                        placeholderText:
+                            '', 
+                        iconData: SocialIconsFlutter.linkedin,
+                        iconColor: const Color(
+                                0xFF02AA8B), 
+                        link:
+                            'https://www.linkedin.com/',  
+                      ), 
+                      SocialWidget(
+                        placeholderText:
+                            '', 
+                        iconData: SocialIconsFlutter.facebook,
+                        iconColor: const Color(
+                                0xFF02AA8B),
+                        link:
+                            'https://www.facebook.com/',
+                      ), 
                     ],
                   ),
                   const SizedBox(height: 15),
@@ -238,7 +277,11 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                       return Builder(
                         builder: (BuildContext context) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ProjectDetail(project),
+                              ));
+                            },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               margin: EdgeInsets.symmetric(horizontal: 5.0),

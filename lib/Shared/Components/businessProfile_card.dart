@@ -44,13 +44,18 @@ class BusinessProfileCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ClipOval(
-                child: Container(
-                  width: 80.0,
-                  height: 80.0,
-                  child: Image.network(image),
-                ),
+              Column(
+                children: [
+                  ClipOval(
+                    child: Container(
+                      width: 80.0,
+                      height: 80.0,
+                      child: Image.network(image),
+                    ),
+                  ),
+                ],
               ),
+
               SizedBox(width: 16.0), // Espacio entre la imagen y el contenido
               Expanded(
                 child: Column(
@@ -101,7 +106,8 @@ class BusinessProfileCard extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => BusinessProfileContent(businessprofile),
+                            builder: (context) =>
+                                BusinessProfileContent(businessprofile),
                           ),
                         );
                       },
@@ -117,7 +123,8 @@ class BusinessProfileCard extends StatelessWidget {
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Icons.favorite, color: Color.fromARGB(255, 196, 6, 6)),
+                      icon: const Icon(Icons.favorite,
+                          color: Color.fromARGB(255, 196, 6, 6)),
                       onPressed: () {
                         // Agregar la lógica para manejar favoritos aquí
                       },
