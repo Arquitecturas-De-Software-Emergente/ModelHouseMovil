@@ -35,7 +35,9 @@ class _ProfileState extends State<Profile> {
       ),
       body: ListView(
         children: [
-          widget.userProfile != null ? ProfileUser(widget.userProfile!) : ProfileBusiness(widget.businessProfile!),
+          if (widget.userProfile != null) ProfileUser(widget.userProfile!),
+          if (widget.businessProfile != null)
+            ProfileBusiness(widget.businessProfile!),
         ],
       ),
     );

@@ -63,97 +63,108 @@ class _MenuState extends State<Menu> {
     return Column(
       children: [
         widget.account.userProfileId != null
-            ? ElevatedButton(onPressed: (){
-              navigate(context, Profile(widget.userProfile!, widget.businessProfile ?? null));
-          },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.white,
-              onPrimary: Colors.white,
-            ),
-            child:
-              Container(
-                margin: const EdgeInsets.all(25),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: widget.userProfile?.image != null
-                          ? NetworkImage(widget.userProfile!.image!)
-                          : const AssetImage('../images/profile.png')
-                      as ImageProvider,
-                    ),
-                    SizedBox(width: 30),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${widget.userProfile?.firstName} ${widget.userProfile?.lastName}',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              widget.account.emailAddress,
-                              style:
-                              TextStyle(fontSize: 16, color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+            ? ElevatedButton(
+                onPressed: () {
+                  navigate(
+                      context,
+                      Profile(
+                        widget.userProfile != null ? widget.userProfile! : null,
+                        widget.businessProfile != null
+                            ? widget.businessProfile!
+                            : null,
+                      ));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
                 ),
-              ))
-            : ElevatedButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Profile(widget.userProfile!, widget.businessProfile ?? null),
-                ),
-              );
-        }, style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          onPrimary: Colors.white,
-        ),
-            child: Container(
-          margin: const EdgeInsets.all(25),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: widget.businessProfile?.image != null
-                    ? NetworkImage(widget.businessProfile!.image!)
-                    : const AssetImage('../images/profile.png')
-                as ImageProvider,
-              ),
-              SizedBox(width: 30),
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: Container(
+                  margin: const EdgeInsets.all(25),
+                  child: Row(
                     children: [
-                      Text(
-                        '${widget.businessProfile?.name}',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: widget.userProfile?.image != null
+                            ? NetworkImage(widget.userProfile!.image!)
+                            : const AssetImage('../images/profile.png')
+                                as ImageProvider,
                       ),
-                      Text(
-                        widget.account.emailAddress,
-                        style:
-                        TextStyle(fontSize: 16, color: Colors.grey),
+                      const SizedBox(width: 30),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${widget.userProfile?.firstName} ${widget.userProfile?.lastName}',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.account.emailAddress,
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
+                ))
+            : ElevatedButton(
+                onPressed: () {
+                  navigate(
+                      context,
+                      Profile(
+                        widget.userProfile != null ? widget.userProfile! : null,
+                        widget.businessProfile != null
+                            ? widget.businessProfile!
+                            : null,
+                      ));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
                 ),
-              ),
-            ],
-          ),
-        )),
+                child: Container(
+                  margin: const EdgeInsets.all(25),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: widget.businessProfile?.image != null
+                            ? NetworkImage(widget.businessProfile!.image!)
+                            : const AssetImage('../images/profile.png')
+                                as ImageProvider,
+                      ),
+                      SizedBox(width: 30),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${widget.businessProfile?.name}',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.account.emailAddress,
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.all(15),
@@ -187,7 +198,7 @@ class _MenuState extends State<Menu> {
             },
             child: Container(
               padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: Row(
+              child: const Row(
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(10, 0, 20, 0),

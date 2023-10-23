@@ -138,7 +138,11 @@ class _ProfileUserState extends State<ProfileUser> {
   }
 
   Widget _buildFieldWithEditButton(String label, String? value) {
+    final maxDisplayLength = 20;
     final displayValue = value ?? "...";
+    final truncatedValue = displayValue.length <= maxDisplayLength
+        ? displayValue
+        : displayValue.substring(0, maxDisplayLength) + "...";
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -147,7 +151,7 @@ class _ProfileUserState extends State<ProfileUser> {
           child: Row(
             children: [
               Titles(15, label),
-              Subtitles(displayValue),
+              Subtitles(truncatedValue),
             ],
           ),
         ),

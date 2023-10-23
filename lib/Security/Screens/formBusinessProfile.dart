@@ -34,7 +34,8 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
   HttpBusinessProfile? httpBusinessProfile;
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
-    final PickedFile? pickedImage = await _picker.getImage(source: ImageSource.gallery);
+    final PickedFile? pickedImage =
+        await _picker.getImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       setState(() {
@@ -42,22 +43,35 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
       });
     }
   }
+
   void initState() {
     httpBusinessProfile = HttpBusinessProfile();
     super.initState();
   }
+
   Future signUp() async {
-    if(_image != null && name.text != "" && description.text != ""
-        && phoneNumber.text != "" && address.text != "" && webSite.text != ""){
-      businessProfile = await httpBusinessProfile?.createProfile(name.text, description.text, address.text, phoneNumber.text, webSite.text, widget.account.id!);
+    if (_image != null &&
+        name.text != "" &&
+        description.text != "" &&
+        phoneNumber.text != "" &&
+        address.text != "" &&
+        webSite.text != "") {
+      businessProfile = await httpBusinessProfile?.createProfile(
+          name.text,
+          description.text,
+          address.text,
+          phoneNumber.text,
+          webSite.text,
+          widget.account.id!);
       setState(() async {
         businessProfile = businessProfile;
 
-        if(businessProfile != null){
-          bool? upload = await httpBusinessProfile?.uploadFile(_image!, businessProfile!.id!);
+        if (businessProfile != null) {
+          bool? upload = await httpBusinessProfile?.uploadFile(
+              _image!, businessProfile!.id!);
           setState(() async {
             upload = upload;
-            if(upload == true){
+            if (upload == true) {
               widget.account.businessProfileId = businessProfile?.id.toString();
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -70,7 +84,7 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
           });
         }
       });
-    }else{
+    } else {
       const snackBar = SnackBar(
           content: Text('Complete all fields'),
           duration: Duration(seconds: 2),
@@ -104,20 +118,23 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
               child: Center(
-                child: _image == null ? ElevatedButton(
-                  onPressed: _pickImage,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                  child: const Icon(Icons.person_4_outlined, color: Colors.black, size: 75),
-                ) : Image.file(
-                  _image!,
-                  width: 300,
-                  height: 300,
-                ),
+                child: _image == null
+                    ? ElevatedButton(
+                        onPressed: _pickImage,
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                        child: const Icon(Icons.person_4_outlined,
+                            color: Colors.black, size: 75),
+                      )
+                    : Image.file(
+                        _image!,
+                        width: 300,
+                        height: 300,
+                      ),
               ),
             ),
             Container(
@@ -125,28 +142,28 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                    child: Input(Icons.abc, "Name", false,
-                        name, false, TextInputType.text),
+                    child: Input(Icons.abc, "Name", false, name, false,
+                        TextInputType.text),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                    child: Input(Icons.abc, "Phone Number", false,
-                        phoneNumber, false, TextInputType.text),
+                    child: Input(Icons.abc, "Phone Number", false, phoneNumber,
+                        false, TextInputType.text),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                    child: Input(Icons.abc, "Web Site", false,
-                        webSite, false, TextInputType.text),
+                    child: Input(Icons.abc, "Web Site", false, webSite, false,
+                        TextInputType.text),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                    child: Input(Icons.abc, "Address", false,
-                        address, false, TextInputType.text),
+                    child: Input(Icons.abc, "Address", false, address, false,
+                        TextInputType.text),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
-                    child: Input(Icons.abc, "Description", false,
-                        description, false, TextInputType.number),
+                    child: Input(Icons.abc, "Description", false, description,
+                        false, TextInputType.number),
                   ),
                 ],
               ),
@@ -155,11 +172,11 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
                 margin: const EdgeInsets.fromLTRB(0, 30, 0, 30),
                 width: MediaQuery.of(context).size.width,
                 height: 45,
-                child: ActiveButton(25, "Sign Up", signUp, 19)
-            )
+                child: ActiveButton(25, "Sign Up", signUp, 19))
           ],
         ),
       ),
-    );;
+    );
+    ;
   }
 }
