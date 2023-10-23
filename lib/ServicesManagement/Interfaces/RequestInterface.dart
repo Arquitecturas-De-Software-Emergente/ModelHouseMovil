@@ -9,40 +9,52 @@ String requestToJson(List<RequestInterface> data) =>
 
 class RequestInterface {
   int? id;
-  String? requestAt;
   String? status;
   String? description;
-  String? accepted;
-  int? acceptedAt;
-  String? updateAt;
   String? name;
-  RequestInterface(
-      {this.id,
-      this.requestAt,
-      this.status,
-      this.description,
-      this.accepted,
-      this.acceptedAt,
-      this.updateAt,
-        this.name,
-      });
-  factory RequestInterface.fromJson(Map<String, dynamic> json) =>
-      RequestInterface(
-          id: json["id"],
-          requestAt: json["requestAt"],
-          status: json["status:"],
-          description: json["description"],
-          acceptedAt: json["acceptedAt"],
-          updateAt: json["updateAt"],
-          name: json["businessProfile"]["name"],);
+  String? category;
+  String? estimatedBudget;
+  int? area;
+  String? location;
+  String? file;
+  String? businessDescription;
+
+  RequestInterface({
+    this.id,
+    this.status,
+    this.description,
+    this.name,
+    this.category,
+    this.estimatedBudget,
+    this.area,
+    this.location,
+    this.file,
+    this.businessDescription,
+  });
+
+  factory RequestInterface.fromJson(Map<String, dynamic> json) => RequestInterface(
+    id: json["id"],
+    status: json["status"],
+    description: json["description"],
+    name: json["businessProfile"]["name"],
+    category: json["category"],
+    estimatedBudget: json["estimatedBudget"],
+    area: json["area"],
+    location: json["location"],
+    file: json["file"],
+    businessDescription: json["businessProfile"]["description"],
+  );
+
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "requestAt": requestAt,
-        "status": status,
-        "description": description,
-        "accepted": accepted,
-        "acceptedAt": acceptedAt,
-        "updateAt": updateAt,
-        "name": name,
-      };
+    "id": id,
+    "status": status,
+    "description": description,
+    "name": name,
+    "category": category,
+    "estimatedBudget": estimatedBudget,
+    "area": area,
+    "location": location,
+    "file": file,
+    "businessDescription": businessDescription,
+  };
 }

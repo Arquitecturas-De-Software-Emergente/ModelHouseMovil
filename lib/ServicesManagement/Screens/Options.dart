@@ -4,16 +4,18 @@ import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
+import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingProposal.dart';
 import 'package:model_house/ServicesManagement/Interfaces/RequestInterface.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingRequest.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestCanceled.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestFinished.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestInProcess.dart';
+import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 
 import '../../Shared/Widgets/texts/titles.dart';
-import '../Interfaces/Proposal.dart';
-import '../Services/Proposal_Service.dart';
+import '../Interfaces/ProjectInterface.dart';
+import '../Services/Project_Service.dart';
 import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
@@ -37,23 +39,23 @@ class _OptionsState extends State<Options> {
   ];
   HttpRequest? httpRequest;
   HttpAccount? httpAccount;
+  HttpProposal? httpProposal;
+  HttpProject? httpProject;
   HttpBusinessProfile? httpBusinessProfile;
   BusinessProfile? businessProfile;
   Account? account;
 
   List<RequestInterface>? requestsPending;
   List<Proposal>? requestsPendingProposal;
-  List<RequestInterface>? inProcess;
+  List<ProjectInterface>? inProcess;
   List<RequestInterface>? canceled;
   List<RequestInterface>? finished;
-
-  HttpProposal? httpProposal;
-
 
   @override
   void initState() {
     httpRequest = HttpRequest();
     httpAccount = HttpAccount();
+    httpProject = HttpProject();
     httpBusinessProfile = HttpBusinessProfile();
     httpProposal = HttpProposal();
 
@@ -84,8 +86,8 @@ class _OptionsState extends State<Options> {
 
     requestsPendingProposal = await httpProposal?.getProposals();
 
-    inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "IN_PROCESS");
+    inProcess = await httpProject?.getAllProjects();
+
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "CANCELED");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -105,8 +107,7 @@ class _OptionsState extends State<Options> {
 
     requestsPendingProposal = await httpProposal?.getProposals();
 
-    inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
-        businessProfile!.id!, "IN_PROCESS");
+    inProcess = await httpProject?.getAllProjects();
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "CANCELED");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
