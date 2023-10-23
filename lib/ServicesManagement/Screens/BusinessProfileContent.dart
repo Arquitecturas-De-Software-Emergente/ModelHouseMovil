@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:model_house/Security/Services/Business_Profile.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/Proyect.dart';
 import '../../Security/Services/Proyect_Service.dart';
 import '../../Shared/Widgets/texts/titles.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class BusinessProfileContent extends StatefulWidget {
   BusinessProfile businessProfile;
@@ -22,18 +25,19 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
   @override
   void initState() {
     httpProyect = HttpProyect();
-    //getBusiness();
+    getProjects();
     super.initState();
   }
-/*
-  Future getBusiness() async {
-    proyects =
-        await httpProyect?.getAllByBusinessId(widget.businessProfile.id!);
+
+Future getProjects() async {
+  if (widget.businessProfile.id != null) {
+    proyects = await httpProyect?.getAllByBusinessId(widget.businessProfile.id!);
     setState(() {
       proyects = proyects;
     });
   }
-*/
+}
+
   @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -57,11 +61,11 @@ Widget build(BuildContext context) {
           const SizedBox(
             height: 20,
           ),
-           Container(
+            Container(
             width: MediaQuery.of(context).size.width,
             height: 200,
             child: Image.network(
-              'URL_DE_TU_IMAGEN_DE_PORTADA',
+              'URL_IMAGEN_DE_PORTADA',
               fit: BoxFit.cover,
             ),
           ),
@@ -86,6 +90,24 @@ Widget build(BuildContext context) {
               ),),
 
               const SizedBox(height: 10),
+              RatingBar.builder(
+                      initialRating: 3, // review
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: 50,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        // actualización de la puntuación de la revisión
+                      },
+                    ),
+const SizedBox(height: 10),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -120,7 +142,7 @@ Widget build(BuildContext context) {
     ),
   ),
 ),
-          /*
+          
           proyects != null
               ? CarouselSlider(
                   options: CarouselOptions(
@@ -150,7 +172,7 @@ Widget build(BuildContext context) {
                   }).toList(),
                 )
               : Container(),
-              */
+              
           SizedBox(height: 70),
           
           ElevatedButton(

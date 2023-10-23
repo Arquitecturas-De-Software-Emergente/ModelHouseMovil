@@ -9,7 +9,7 @@ import '../Interfaces/Proyect.dart';
 class HttpProyect {
   var proyect = http.Client();
 
-  Future<List<Proyect>?> getAllByBusinessId(int businessId) async {
+  Future<List<Proyect>?> getAllByBusinessId(int? businessId) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseSecurity/business_profile/$businessId/project");
     var response = await proyect.get(uri, headers: {

@@ -57,6 +57,7 @@ class _HomeState extends State<Home> {
                     itemBuilder: (context, index) {
                       final business = businesses![index];
                       return BusinessProfileCard(
+                        id: business.id!,
                         address: business.address,
                         description: business.description,
                         image: business.image!,
