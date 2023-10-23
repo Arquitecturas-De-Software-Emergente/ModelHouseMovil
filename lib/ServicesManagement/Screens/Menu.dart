@@ -108,7 +108,12 @@ class _MenuState extends State<Menu> {
                 ),
               ))
             : ElevatedButton(onPressed: (){
-              navigate(context, Profile(widget.userProfile!, widget.businessProfile ?? null));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Profile(widget.userProfile!, widget.businessProfile ?? null),
+                ),
+              );
         }, style: ElevatedButton.styleFrom(
           primary: Colors.white,
           onPrimary: Colors.white,
