@@ -18,7 +18,7 @@ class HttpBusinessProfile {
     return null;
   }
 
-  Future<BusinessProfile?> getbusinessProfileAccountById(int id) async {
+  Future<BusinessProfile?> getbusinessProfileAccountById(int? id) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseSecurity/account/$id/business_profile");
     var response = await business.get(uri, headers: {
@@ -32,10 +32,11 @@ class HttpBusinessProfile {
     return null;
   }
 
-  Future<BusinessProfile?> createProfile(
-      String name, String description, String address, String phoneNumber, String webSite, int accountId) async {
+  Future<BusinessProfile?> createProfile(String name, String description,
+      String address, String phoneNumber, String webSite, int accountId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
+    var uri =
+        Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
     var response = await business.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',

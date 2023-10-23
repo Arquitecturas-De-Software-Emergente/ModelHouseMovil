@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
-
+import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import '../../ServicesManagement/Screens/Options.dart';
 import '../../ServicesManagement/Screens/Home.dart';
 import '../../ServicesManagement/Screens/Payment.dart';
@@ -12,7 +12,10 @@ class Routes extends StatefulWidget {
   final int index;
   Account account;
   UserProfile? userProfile;
-  Routes(this.index, this.account, this.userProfile, {Key? key}) : super(key: key);
+  BusinessProfile? businessProfile;
+  Routes(this.index, this.account, this.userProfile, this.businessProfile,
+      {Key? key})
+      : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -31,7 +34,7 @@ class _RoutesState extends State<Routes> {
       Home(widget.userProfile),
       Options(widget.account, widget.userProfile),
       Payment(widget.userProfile),
-      Menu(widget.account, widget.userProfile),
+      Menu(widget.account, widget.userProfile, widget.businessProfile),
     ];
     return myList[widget.index];
   }
