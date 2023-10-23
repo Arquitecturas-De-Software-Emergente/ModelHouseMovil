@@ -4,9 +4,6 @@ import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/ServicesManagement/Screens/BusinessProfileContent.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
 
-import 'package:flutter/material.dart';
-import 'package:model_house/Shared/Components/navigate.dart';
-
 class BusinessProfileCard extends StatelessWidget {
   final int? id;
   final String address;
@@ -15,7 +12,7 @@ class BusinessProfileCard extends StatelessWidget {
   final String name;
   final String phoneNumber;
   final String webSite;
-  
+
   const BusinessProfileCard({
     this.id,
     required this.address,
@@ -24,7 +21,6 @@ class BusinessProfileCard extends StatelessWidget {
     required this.name,
     required this.phoneNumber,
     required this.webSite,
-
     Key? key,
   }) : super(key: key);
 
@@ -32,11 +28,13 @@ class BusinessProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final businessprofile = BusinessProfile(
       id: id,
-      address: address, 
-      description: description, 
-      image: image, name: name, 
-      phoneNumber: phoneNumber, 
-      webSite: webSite);
+      address: address,
+      description: description,
+      image: image,
+      name: name,
+      phoneNumber: phoneNumber,
+      webSite: webSite,
+    );
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0),
@@ -46,10 +44,14 @@ class BusinessProfileCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 80.0,
-                child: Image.network(image),
+              ClipOval(
+                child: Container(
+                  width: 80.0,
+                  height: 80.0,
+                  child: Image.network(image),
+                ),
               ),
+              SizedBox(width: 16.0), // Espacio entre la imagen y el contenido
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,41 +81,43 @@ class BusinessProfileCard extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 8.0),
-
                     Text(
                       description,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
-                  
                     SizedBox(height: 16.0),
                   ],
                 ),
               ),
+              SizedBox(width: 16.0), // Espacio entre el contenido y el botón
               Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget> [
+                  children: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.arrow_circle_right_outlined),
                       color: const Color(0xFF02AA8B),
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>  BusinessProfileContent(businessprofile),
+                            builder: (context) => BusinessProfileContent(businessprofile),
                           ),
                         );
                       },
                     ),
                     const SizedBox(height: 8.0),
-                    const Row(
+                    Row(
                       children: <Widget>[
-                        Icon(Icons.location_on, color: Color.fromARGB(255, 0, 0, 0),), // Ícono de ubicación
+                        Icon(
+                          Icons.location_on,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
                         Text("Perú, Lima"),
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Icons.favorite, color: Color.fromARGB(255, 196, 6, 6),),
+                      icon: const Icon(Icons.favorite, color: Color.fromARGB(255, 196, 6, 6)),
                       onPressed: () {
                         // Agregar la lógica para manejar favoritos aquí
                       },
