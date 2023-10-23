@@ -67,12 +67,12 @@ class _PendingRequestState extends State<PendingRequest> {
           Container(),
           Expanded(
             child: ListView.builder(
-              itemCount: widget.requests?.length, // Número de elementos en la lista
+              itemCount: widget.requests?.length ?? 0, // Número de elementos en la lista
               itemBuilder: (context, index) {
                 return RequestCard(
                     '${widget.requests![index].name}',
-                    '${widget.requests![index].description}',
-                    Container(),
+                    '${widget.requests![index].businessDescription}',
+                    SeeDetails(widget.requests![index]),
                     Container());
               },
             ),
@@ -82,3 +82,42 @@ class _PendingRequestState extends State<PendingRequest> {
     );
   }
 }
+class SeeDetails extends StatelessWidget {
+  final RequestInterface request;
+
+  SeeDetails(this.request);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Detalles de la solicitud'),
+        backgroundColor: Colors.white, // Ajusta el color de fondo del AppBar según tus preferencias
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0XFF02AA8B), // Color del botón de retroceso
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Nombre de la empresa: ${request.name}"),
+            Text("Categoría: ${request.category}"),
+            Text("Presupuesto estimado: ${request.estimatedBudget}"),
+            Text("Área en m^2: ${request.area}"),
+            Text("Ubicación: ${request.location}"),
+            Text("Archivos: ${request.file}"),
+            Text("Descripción: ${request.description}"),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

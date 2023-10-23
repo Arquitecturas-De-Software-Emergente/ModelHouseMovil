@@ -6,10 +6,12 @@ import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingProposal.dart';
 import 'package:model_house/ServicesManagement/Interfaces/RequestInterface.dart';
+import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingRequest.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestCanceled.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestFinished.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestInProcess.dart';
+import 'package:model_house/ServicesManagement/Services/Project_Service.dart';
 
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Services/Request_Service.dart';
@@ -34,6 +36,7 @@ class _OptionsState extends State<Options> {
     "Canceled"
   ];
   HttpRequest? httpRequest;
+  HttpProject? httpProject;
   HttpAccount? httpAccount;
   HttpBusinessProfile? httpBusinessProfile;
   BusinessProfile? businessProfile;
@@ -41,19 +44,21 @@ class _OptionsState extends State<Options> {
 
   List<RequestInterface>? requestsPending;
   List<RequestInterface>? requestsPendingProposal;
-  List<RequestInterface>? inProcess;
+  List<ProjectInterface>? inProcess;
   List<RequestInterface>? canceled;
   List<RequestInterface>? finished;
 
   @override
   void initState() {
     httpRequest = HttpRequest();
+    httpProject = HttpProject();
     httpAccount = HttpAccount();
     httpBusinessProfile = HttpBusinessProfile();
     print('Account: ${widget.account}');
     print('UserProfile: ${widget.userProfile}');
     if (widget.userProfile != null) {
       getRequestUserProfile();
+      print("requestsPending ${requestsPending}");
     } else {
       //getAccount();
     }
@@ -76,8 +81,7 @@ class _OptionsState extends State<Options> {
         widget.userProfile!.id!, "Pendiente");
     requestsPendingProposal = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "PENDING_PROPOSAL");
-    inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "IN_PROCESS");
+    inProcess = await httpProject?.getAllProjects();
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "CANCELED");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -96,8 +100,7 @@ class _OptionsState extends State<Options> {
         businessProfile!.id!, "Pendiente");
     requestsPendingProposal = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "PENDING_PROPOSAL");
-    inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
-        businessProfile!.id!, "IN_PROCESS");
+    inProcess = await httpProject?.getAllProjects();
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "CANCELED");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -157,7 +160,7 @@ class _OptionsState extends State<Options> {
                                   businessProfile)),
                         );
                       }
-                      if (typesOptions[index] == "Pending") {
+                      if (typesOptions[index] == "Proposal") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
