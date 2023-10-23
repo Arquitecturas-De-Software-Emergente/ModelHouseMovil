@@ -57,6 +57,7 @@ class _PrincipalVireState extends State<PrincipalView> {
     setState(() {
       userProfile = userProfile;
     });
+    print("userProfile: ${userProfile}");
   }
 
   Future getBusinessProfile() async {

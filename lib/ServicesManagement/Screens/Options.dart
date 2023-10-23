@@ -50,6 +50,8 @@ class _OptionsState extends State<Options> {
     httpRequest = HttpRequest();
     httpAccount = HttpAccount();
     httpBusinessProfile = HttpBusinessProfile();
+    print('Account: ${widget.account}');
+    print('UserProfile: ${widget.userProfile}');
     if (widget.userProfile != null) {
       getRequestUserProfile();
     } else {
@@ -71,7 +73,7 @@ class _OptionsState extends State<Options> {
 
   Future getRequestUserProfile() async {
     requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "PENDING");
+        widget.userProfile!.id!, "Pendiente");
     requestsPendingProposal = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "PENDING_PROPOSAL");
     inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -91,7 +93,7 @@ class _OptionsState extends State<Options> {
 
   Future getRequestBusinessProfile() async {
     requestsPending = await httpRequest?.getAllBusinessProfileIdAndStatus(
-        businessProfile!.id!, "PENDING");
+        businessProfile!.id!, "Pendiente");
     requestsPendingProposal = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "PENDING_PROPOSAL");
     inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -149,19 +151,19 @@ class _OptionsState extends State<Options> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PendingProposal(
-                                  requestsPendingProposal,
-                                  widget.userProfile,
-                                  businessProfile)),
-                        );
-                      }
-                      if (typesOptions[index] == "Proposal") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
                               builder: (context) => PendingRequest(
                                   requestsPending,
                                   widget.userProfile!,
+                                  businessProfile)),
+                        );
+                      }
+                      if (typesOptions[index] == "Pending") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PendingProposal(
+                                  requestsPendingProposal,
+                                  widget.userProfile,
                                   businessProfile)),
                         );
                       }
