@@ -4,7 +4,6 @@ import '../../Security/Interfaces/Proyect.dart';
 import '../../Security/Services/Proyect_Service.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 
-// ignore: must_be_immutable
 class BusinessProfileContent extends StatefulWidget {
   BusinessProfile businessProfile;
   BusinessProfileContent(this.businessProfile, {Key? key}) : super(key: key);
@@ -23,10 +22,10 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
   @override
   void initState() {
     httpProyect = HttpProyect();
-    getBusiness();
+    //getBusiness();
     super.initState();
   }
-
+/*
   Future getBusiness() async {
     proyects =
         await httpProyect?.getAllByBusinessId(widget.businessProfile.id!);
@@ -34,12 +33,12 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
       proyects = proyects;
     });
   }
-
+*/
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Titles(28, "Business Profile"),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Titles(28, "Business Profile"),
         backgroundColor: const Color(0xffffffff),
         centerTitle: true,
         elevation: 0,
@@ -50,76 +49,124 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
           ),
           onPressed: () => {Navigator.of(context).pop()},
         ),
+    ),
+    body: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(
+            height: 20,
+          ),
+           Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            child: Image.network(
+              'URL_DE_TU_IMAGEN_DE_PORTADA',
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 10),
+          
+          Center(
+
+            child: 
+            Positioned(
+              top: 70,
+              child:
+            CircleAvatar(
+              radius: 75,
+              backgroundImage: NetworkImage(widget.businessProfile.image!),
+            )
+            ),
+          ),
+          const SizedBox(height: 10),
+          Center(child: Text(
+                widget.businessProfile.name,
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold,),
+              ),),
+
+              const SizedBox(height: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+              Text("Phone Number: ${widget.businessProfile.phoneNumber}"),
+                Text("Official Web Page: ${widget.businessProfile.webSite}"),
+                Text("Address: ${widget.businessProfile.address}"),
+                //Text("Email Address: ${widget.businessProfile.email}"),
+                //Text("Category: ${widget.businessProfile.category}"),
+                //Text("Social Media: ${widget.businessProfile.socialMedia}"),
+                const SizedBox(height: 10),
+                const Text("About Us:", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,)),
+                Text(widget.businessProfile.description),
+                const SizedBox(height: 10),
+                const Text("Our Specialization:", style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,)),
+            ],
+          ),
+          const SizedBox(height: 10),
+        
+          
+
+          const Padding(
+  padding: EdgeInsets.all(30),
+  child: Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      "Projects:",
+      style: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(0),
-        child: ListView(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 20),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              height: 200,
-              child: Image.network(
-                widget.businessProfile.image!,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Center(
-              child: Container(
-                  padding: const EdgeInsets.only(
-                      top: 15, bottom: 7, left: 15, right: 15),
-                  child: Titles(20, widget.businessProfile.name)),
-            ),
-            Container(
-                padding: const EdgeInsets.only(
-                    top: 7, bottom: 7, left: 15, right: 15),
-                child: Text(widget.businessProfile.description)),
-            Container(
-                padding: const EdgeInsets.only(
-                    top: 7, bottom: 7, left: 15, right: 15),
-                child: Text(widget.businessProfile.address)),
-            Container(
-                padding: const EdgeInsets.only(
-                    top: 7, bottom: 7, left: 15, right: 15),
-                child: Text(widget.businessProfile.phoneNumber)),
-            Container(
-                padding: const EdgeInsets.only(
-                    top: 7, bottom: 7, left: 15, right: 15),
-                child: Text(widget.businessProfile.webSite)),
-            proyects != null
-                ? Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: proyects?.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 10.0,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+    ),
+  ),
+),
+          /*
+          proyects != null
+              ? CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200,
+                  ),
+                  items: proyects!.map((project) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return GestureDetector(
+                          onTap: () {
+                            
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.network(
-                                proyects![index].image,
+                                project.image,
                                 fit: BoxFit.cover,
                               ),
-                            ));
+                            ),
+                          ),
+                        );
                       },
-                    ),
-                  )
-                : Container(),
-          ],
-        ),
+                    );
+                  }).toList(),
+                )
+              : Container(),
+              */
+          SizedBox(height: 70),
+          
+          ElevatedButton(
+            onPressed: () {
+              
+            },
+            child: const Text("Send Request"),
+            style: ElevatedButton.styleFrom(
+            primary: const Color(0xFF02AA8B),
+            minimumSize: const Size(200, 50), 
+  ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }

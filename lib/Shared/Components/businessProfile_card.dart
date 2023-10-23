@@ -73,15 +73,9 @@ class BusinessProfileCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget> [
-                    ElevatedButton(
-                      child: Text('Ver Más'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF02AA8B),
-                        onPrimary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.arrow_circle_right_outlined),
+                      color: const Color(0xFF02AA8B),
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
