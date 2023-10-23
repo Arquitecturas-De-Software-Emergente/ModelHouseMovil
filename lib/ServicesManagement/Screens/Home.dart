@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
+import 'package:model_house/Shared/Components/businessProfile_card.dart';
 import 'package:model_house/Shared/Views/ListBusiness.dart';
 import 'package:model_house/Shared/Widgets/buttons/Input.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
@@ -14,7 +15,6 @@ class Home extends StatefulWidget {
   Home(this.userProfile, {Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomeState createState() => _HomeState();
 }
 
@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
   final algo = TextEditingController();
   HttpBusinessProfile? httpBusinessProfile;
   List<BusinessProfile>? businesses;
+
   @override
   void initState() {
     httpBusinessProfile = HttpBusinessProfile();
@@ -47,11 +48,25 @@ class _HomeState extends State<Home> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-            child: Input(Icons.search, "Search on Model House", true, algo,
-                false, TextInputType.text),
+            child: Input(Icons.search, "Search on Model House", true, algo, false, TextInputType.text),
           ),
           businesses != null
-              ? ListBusiness(businesses!, widget.userProfile)
+              ? Expanded(
+                  child: ListView.builder(
+                    itemCount: businesses!.length,
+                    itemBuilder: (context, index) {
+                      final business = businesses![index];
+                      return BusinessProfileCard(
+                        address: business.address,
+                        description: business.description,
+                        image: business.image!,
+                        name: business.name,
+                        phoneNumber: business.phoneNumber,
+                        webSite: business.webSite,
+                      );
+                    },
+                  ),
+                )
               : Container()
         ],
       ),
