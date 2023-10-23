@@ -10,34 +10,28 @@ class Proposal {
   int? id;
   String? proposalDate;
   String? description;
-  int? price;
   String? status;
-  bool? isResponse;
-  String? responseDate;
+  String? projectActivities;
+
   Proposal(
       {this.id,
       this.proposalDate,
       this.description,
-      this.price,
       this.status,
-      this.isResponse,
-      this.responseDate});
+        this.projectActivities
+      });
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
         id: json["id"],
         proposalDate: json["proposalDate"],
         description: json["description"],
-        price: json["price"],
         status: json["status"],
-        isResponse: json["isResponse"],
-        responseDate: json["responseDate"],
-      );
+        projectActivities: json["projectActivities"],
+  );
   Map<String, dynamic> toJson() => {
         "id": id,
         "proposalDate": proposalDate,
         "description": description,
-        "price": price,
         "status": status,
-        "isResponse": isResponse,
-        "responseDate": responseDate
+        "projectActivities": projectActivities,
       };
 }

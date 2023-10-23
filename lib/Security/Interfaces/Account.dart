@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'BusinessProfile.dart';
-import 'UserProfile.dart';
-
 List<Account> accountFromJson(String str) =>
     List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
 

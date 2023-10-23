@@ -15,7 +15,7 @@ class RequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.0),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -27,20 +27,20 @@ class RequestCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0,
                     ),
                   ),
-                  SizedBox(height: 8.0),
-                  Container(
+                  const SizedBox(height: 8.0),
+                  SizedBox(
                       width: 300.0,
                       child: Text(
                         description,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       )),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   actions,
                 ],
               ),

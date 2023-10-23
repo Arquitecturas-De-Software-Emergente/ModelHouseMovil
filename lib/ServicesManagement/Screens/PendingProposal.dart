@@ -1,17 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/UserProfile.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
+import '../Services/Proposal_Service.dart';
 import '../Services/Request_Service.dart';
 
 class PendingProposal extends StatefulWidget {
-  List<RequestInterface>? requests;
-  UserProfile? userProfile;
-  BusinessProfile? businessProfile;
-  PendingProposal(this.requests, this.userProfile, this.businessProfile,
+  late final List<Proposal>? proposals;
+  final UserProfile? userProfile;
+  final BusinessProfile? businessProfile;
+  PendingProposal(this.proposals, this.userProfile, this.businessProfile,
       {Key? key})
       : super(key: key);
 
@@ -20,24 +21,24 @@ class PendingProposal extends StatefulWidget {
 }
 
 class _PendingProposalState extends State<PendingProposal> {
-  RequestInterface? request;
-  HttpRequest? httpRequest;
-  List<RequestInterface>? requestsPending;
+  Proposal? proposal;
+  List<Proposal>? proposalsPending;
+  HttpProposal? httpProposal;
+
   @override
   void initState() {
-    httpRequest = HttpRequest();
-    print(widget.requests?.length);
+    print(widget.proposals?.length);
+    httpProposal = HttpProposal();
     super.initState();
   }
 
-  Future changeStatus(RequestInterface requestInterface, String status) async {
-    request = await httpRequest?.changeStatus(requestInterface.id!, status);
-    if (request != null) {
-      requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
-          widget.userProfile!.id!, "PENDING");
+  Future changeStatus(Proposal proposalInterface, String status) async {
+    proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
+    if (proposal != null) {
+      proposalsPending = await httpProposal?.getProposalsByStatus();
       setState(() {
-        request = request;
-        widget.requests = requestsPending;
+        proposal = proposal;
+        widget.proposals = proposalsPending;
       });
     }
   }
@@ -65,7 +66,7 @@ class _PendingProposalState extends State<PendingProposal> {
             width: MediaQuery.of(context).size.width,
             child: GridView.builder(
               shrinkWrap: true,
-              itemCount: widget.requests?.length,
+              itemCount: widget.proposals?.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 crossAxisSpacing: 10.0,
@@ -84,7 +85,7 @@ class _PendingProposalState extends State<PendingProposal> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 2,
                           blurRadius: 5,
-                          offset: Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
@@ -94,8 +95,7 @@ class _PendingProposalState extends State<PendingProposal> {
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            child: Image.network(
-                              widget.businessProfile == null
+                            child: Image.network(widget.businessProfile == null
                                   ? widget.userProfile!.image!
                                   : widget.businessProfile!.image!,
                               width: 80,
@@ -108,7 +108,7 @@ class _PendingProposalState extends State<PendingProposal> {
                             child: Align(
                               alignment: Alignment.center,
                               child: Titles(
-                                  16, widget.requests![index].description),
+                                  16, widget.proposals![index].description),
                             ),
                           ),
                           widget.businessProfile != null
@@ -128,7 +128,7 @@ class _PendingProposalState extends State<PendingProposal> {
                                                   2, // Radio de expansión de la sombra
                                               blurRadius:
                                                   5, // Radio de desenfoque de la sombra
-                                              offset: Offset(0,
+                                              offset: const Offset(0,
                                                   3), // Desplazamiento en la posición x y y de la sombra
                                             ),
                                           ],
@@ -143,7 +143,7 @@ class _PendingProposalState extends State<PendingProposal> {
                                             height: 50,
                                             onPressed: () {
                                               changeStatus(
-                                                  widget.requests![index],
+                                                  widget.proposals![index],
                                                   "PENDING_PROPOSAL");
                                             },
                                             child: const Text(
@@ -163,7 +163,7 @@ class _PendingProposalState extends State<PendingProposal> {
                                                   2, // Radio de expansión de la sombra
                                               blurRadius:
                                                   5, // Radio de desenfoque de la sombra
-                                              offset: Offset(0,
+                                              offset: const Offset(0,
                                                   3), // Desplazamiento en la posición x y y de la sombra
                                             ),
                                           ],
@@ -178,7 +178,7 @@ class _PendingProposalState extends State<PendingProposal> {
                                             height: 50,
                                             onPressed: () {
                                               changeStatus(
-                                                  widget.requests![index],
+                                                  widget.proposals![index],
                                                   "CANCELED");
                                             },
                                             child: const Text("Reject",
