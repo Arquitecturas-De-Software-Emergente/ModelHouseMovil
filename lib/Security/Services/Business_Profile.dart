@@ -19,7 +19,7 @@ class HttpBusinessProfile {
     return null;
   }
 
-  Future<BusinessProfile?> getbusinessProfileAccountById(int accountId) async {
+  Future<BusinessProfile?> getbusinessProfileAccountById(int? accountId) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
 
