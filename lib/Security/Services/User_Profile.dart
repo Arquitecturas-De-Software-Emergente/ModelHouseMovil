@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
@@ -20,7 +21,18 @@ class HttpUserProfile {
     }
     return null;
   }
+  Future<bool?> uploadFile(File file, int userProfile) async {
+    var request = http.MultipartRequest('POST', Uri.parse('$httpBaseSecurity/user_profile/upload/$userProfile'));
+    request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   Future<UserProfile?> createProfile(int id, String phoneNumber, String firstName,
       String lastName, String gender, String address) async {
     var uri = Uri.parse('$httpBaseSecurity/account/$id/user_profile');

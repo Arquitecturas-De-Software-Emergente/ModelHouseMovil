@@ -42,7 +42,7 @@ class _SigninState extends State<Signin> {
       if (account != null) {
         print(account?.businessProfileId);
         print(account?.userProfileId);
-        if(account?.businessProfileId.toString() == null || account?.userProfileId.toString() == null) {
+        if(account?.businessProfileId.toString() == "null" || account?.userProfileId.toString() == "null") {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
