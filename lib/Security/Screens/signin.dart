@@ -50,7 +50,7 @@ class _SigninState extends State<Signin> {
               },
             ),
           );
-        }else{
+        } else {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
