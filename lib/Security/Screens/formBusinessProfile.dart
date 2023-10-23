@@ -47,20 +47,37 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
     super.initState();
   }
   Future signUp() async {
-    businessProfile = await httpBusinessProfile?.createProfile(name.text, description.text, address.text, phoneNumber.text, webSite.text, widget.account.id!);
-    setState(() async {
-      businessProfile = businessProfile;
-      if(businessProfile != null){
-        widget.account.businessProfileId = businessProfile?.id.toString();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return PrincipalView(widget.account);
-            },
-          ),
-        );
-      }
-    });
+    if(_image != null && name.text != "" && description.text != ""
+        && phoneNumber.text != "" && address.text != "" && webSite.text != ""){
+      businessProfile = await httpBusinessProfile?.createProfile(name.text, description.text, address.text, phoneNumber.text, webSite.text, widget.account.id!);
+      setState(() async {
+        businessProfile = businessProfile;
+
+        if(businessProfile != null){
+          bool? upload = await httpBusinessProfile?.uploadFile(_image!, businessProfile!.id!);
+          setState(() async {
+            upload = upload;
+            if(upload == true){
+              widget.account.businessProfileId = businessProfile?.id.toString();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return PrincipalView(widget.account);
+                  },
+                ),
+              );
+            }
+          });
+        }
+      });
+    }else{
+      const snackBar = SnackBar(
+          content: Text('Complete all fields'),
+          duration: Duration(seconds: 2),
+          // ignore: use_full_hex_values_for_flutter_colors
+          backgroundColor: Color(0xff7da4a3e));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
+import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
+import 'package:model_house/Security/Services/Business_Profile.dart';
 
 import '../../Security/Interfaces/UserProfile.dart';
 import '../../Security/Services/Account_Service.dart';
@@ -23,7 +25,9 @@ class _PrincipalVireState extends State<PrincipalView> {
   Navigation? myNavigation;
   Account? cuenta;
   HttpUserProfile? httpUserProfile;
+  HttpBusinessProfile? httpBusinessProfile;
   UserProfile? userProfile;
+  BusinessProfile? businessProfile;
   HttpAccount? httpAccount;
 
   Future signIn() async {
@@ -37,12 +41,14 @@ class _PrincipalVireState extends State<PrincipalView> {
   void initState() {
     httpAccount = HttpAccount();
     httpUserProfile = HttpUserProfile();
+    httpBusinessProfile = HttpBusinessProfile();
     myNavigation = Navigation(currentIndex: (i) {
       setState(() {
         index = i;
       });
     });
     getUserProfile();
+    getBusinessProfile();
     super.initState();
   }
 
@@ -54,12 +60,20 @@ class _PrincipalVireState extends State<PrincipalView> {
     print("userProfile: ${userProfile}");
   }
 
+  Future getBusinessProfile() async {
+    businessProfile = await httpBusinessProfile
+        ?.getbusinessProfileAccountById(widget.account.id);
+    setState(() {
+      businessProfile = businessProfile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: myNavigation,
-      body: Routes(index, widget.account, userProfile),
+      body: Routes(index, widget.account, userProfile, businessProfile),
     );
   }
 }

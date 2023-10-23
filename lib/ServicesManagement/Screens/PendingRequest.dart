@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 
+import '../../Shared/Components/request_card.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
 import '../Services/Request_Service.dart';
@@ -27,6 +28,9 @@ class _PendingRequestState extends State<PendingRequest> {
   void initState() {
     httpRequest = HttpRequest();
     print(widget.requests?.length);
+    print('requests: ${widget.requests}');
+    print('userProfile: ${widget.userProfile}');
+    print('businessProfile: ${widget.businessProfile}');
     super.initState();
   }
 
@@ -34,7 +38,7 @@ class _PendingRequestState extends State<PendingRequest> {
     request = await httpRequest?.changeStatus(requestInterface.id!, status);
     if (request != null) {
       requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
-          widget.userProfile!.id!, "PENDING");
+          widget.userProfile!.id!, "Aprobado");
       setState(() {
         request = request;
         widget.requests = requestsPending;
@@ -46,7 +50,7 @@ class _PendingRequestState extends State<PendingRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Titles(28, "Model House Options"),
+        title: Titles(28, "Your Requests"),
         backgroundColor: const Color(0xffffffff),
         centerTitle: true,
         elevation: 0,
@@ -58,146 +62,21 @@ class _PendingRequestState extends State<PendingRequest> {
           onPressed: () => {Navigator.of(context).pop()},
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(15),
-            width: MediaQuery.of(context).size.width,
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: widget.requests?.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 200,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 50,
-                            child: Image.network(
-                              widget.businessProfile == null
-                                  ? widget.userProfile!.image!
-                                  : widget.businessProfile!.image!,
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Titles(
-                                  16, widget.requests![index].description),
-                            ),
-                          ),
-                          widget.businessProfile != null
-                              ? Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.5), // Color de la sombra
-                                              spreadRadius:
-                                                  2, // Radio de expansión de la sombra
-                                              blurRadius:
-                                                  5, // Radio de desenfoque de la sombra
-                                              offset: Offset(0,
-                                                  3), // Desplazamiento en la posición x y y de la sombra
-                                            ),
-                                          ],
-                                        ),
-                                        child: MaterialButton(
-                                            color: const Color(0xFF1FB440),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            minWidth: 120,
-                                            height: 50,
-                                            onPressed: () {
-                                              changeStatus(
-                                                  widget.requests![index],
-                                                  "PENDING_PROPOSAL");
-                                            },
-                                            child: const Text(
-                                              "Accept",
-                                              style: TextStyle(
-                                                  fontSize: 17,
-                                                  color: Colors.white),
-                                            )),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.5), // Color de la sombra
-                                              spreadRadius:
-                                                  2, // Radio de expansión de la sombra
-                                              blurRadius:
-                                                  5, // Radio de desenfoque de la sombra
-                                              offset: Offset(0,
-                                                  3), // Desplazamiento en la posición x y y de la sombra
-                                            ),
-                                          ],
-                                        ),
-                                        child: MaterialButton(
-                                            color: const Color(0xFFDF3737),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            minWidth: 120,
-                                            height: 50,
-                                            onPressed: () {
-                                              changeStatus(
-                                                  widget.requests![index],
-                                                  "CANCELED");
-                                            },
-                                            child: const Text("Reject",
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    color: Colors.white))),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Container()
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+          Container(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.requests?.length, // Número de elementos en la lista
+              itemBuilder: (context, index) {
+                return RequestCard(
+                    '${widget.requests![index].name}',
+                    '${widget.requests![index].description}',
+                    Container(),
+                    Container());
               },
             ),
-          )
+          ),
         ],
       ),
     );

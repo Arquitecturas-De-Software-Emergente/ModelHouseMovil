@@ -18,14 +18,13 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Titles(33, "Profile"),
-        backgroundColor: const Color(0xffffffff),
+        backgroundColor: Color(0XFF02AA8B),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color(0XFF02AA8B),
+            color: Colors.white,
           ),
           onPressed: () => {Navigator.of(context).pop()},
         ),
@@ -33,6 +32,7 @@ class _ProfileState extends State<Profile> {
       body: ListView(
         children: [
           ProfileUser(widget.userProfile),
+
           //widget.account.role == "Business" ? ProfileBusiness() : Container()
         ],
       ),

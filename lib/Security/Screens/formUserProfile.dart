@@ -46,21 +46,37 @@ class _FormUserProfileState extends State<FormUserProfile> {
     super.initState();
   }
   Future signUp() async {
-    userProfile = await httpUserProfile?.createProfile(widget.account.id!, phoneNumber.text, firstName.text,
-      lastName.text, gender.text, address.text);
-    setState(() async {
-      userProfile = userProfile;
-      if(userProfile != null){
-        widget.account.userProfileId = userProfile?.id.toString();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return PrincipalView(widget.account!);
-            },
-          ),
-        );
-      }
-    });
+    if(_image != null && firstName.text != "" && lastName.text != ""
+        && phoneNumber.text != "" && address.text != ""){
+      userProfile = await httpUserProfile?.createProfile(widget.account.id!, phoneNumber.text, firstName.text,
+          lastName.text, gender.text, address.text);
+      setState(() async {
+        userProfile = userProfile;
+        if(userProfile != null){
+          bool? upload = await httpUserProfile?.uploadFile(_image!, userProfile!.id!);
+          setState(() async {
+            upload = upload;
+            if(upload == true){
+              widget.account.userProfileId = userProfile?.id.toString();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return PrincipalView(widget.account);
+                  },
+                ),
+              );
+            }
+          });
+        }
+      });
+    }else{
+      const snackBar = SnackBar(
+          content: Text('Complete all fields'),
+          duration: Duration(seconds: 2),
+          // ignore: use_full_hex_values_for_flutter_colors
+          backgroundColor: Color(0xff7da4a3e));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
