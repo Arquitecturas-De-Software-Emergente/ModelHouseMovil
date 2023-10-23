@@ -29,7 +29,8 @@ class HttpRequest {
   Future<List<RequestInterface>?> getAllUserProfileIdAndStatus(
       int id, String status) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/user/$id/status/$status/request");
+    // var uri = Uri.parse("$httpBaseServiceManagement/user/$id/status/$status/request");
+    var uri = Uri.parse("http://localhost:8081/service-management/user/$id/status/$status/request");
     var response = await request.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",

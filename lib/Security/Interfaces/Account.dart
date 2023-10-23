@@ -10,15 +10,15 @@ String accountToJson(List<Account> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Account {
-  int id;
+  int? id;
   String emailAddress;
   String? password;
   bool isActive;
   String? token;
-  int? userProfileId;
-  int? businessProfileId;
+  String? userProfileId;
+  String? businessProfileId;
   Account(
-      {required this.id,
+      {this.id,
         required this.emailAddress,
         this.password,
         this.businessProfileId,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
+import 'package:model_house/ServicesManagement/Screens/Plans.dart';
 
 import '../../Shared/Widgets/texts/subtitles.dart';
 
@@ -12,6 +13,13 @@ class Adicional extends StatefulWidget {
 }
 
 class _AdicionalState extends State<Adicional> {
+  void _navigateToPlans() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Plan()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,7 +27,7 @@ class _AdicionalState extends State<Adicional> {
         Titles(20, "Additional"),
         Card(
           child: MaterialButton(
-            onPressed: () {},
+            onPressed: _navigateToPlans,
             child: Row(children: const [
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),
