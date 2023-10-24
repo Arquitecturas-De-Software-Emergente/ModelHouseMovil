@@ -4,6 +4,7 @@ import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
 import 'package:model_house/Shared/Widgets/texts/subtitles.dart';
 
+import '../../Security/Services/User_Profile.dart';
 import '../Widgets/texts/titles.dart';
 
 // ignore: must_be_immutable
@@ -17,49 +18,101 @@ class ProfileUser extends StatefulWidget {
 }
 
 class _ProfileUserState extends State<ProfileUser> {
+  HttpUserProfile? httpUserProfile;
+
+  @override
+  void initState() {
+    httpUserProfile = HttpUserProfile();
+    super.initState();
+  }
+
+  void _performProfileUpdate(String firstName, String lastName, String gender,
+      String phoneNumber, String address) async {
+    if (widget.userProfile.id != null) {
+      final updatedProfile = await httpUserProfile?.updateUserProfile(
+        firstName,
+        lastName,
+        gender,
+        phoneNumber,
+        address,
+        widget.userProfile.id!,
+      );
+      if (updatedProfile != null) {
+        setState(() {
+          widget.userProfile = updatedProfile;
+        });
+      } else {
+        print("Update fails");
+      }
+    }
+  }
+
   void _editProfile() {
+    String firstName = widget.userProfile.firstName;
+    String lastName = widget.userProfile.lastName;
+    String gender = widget.userProfile.gender;
+    String phoneNumber = widget.userProfile.phoneNumber;
+    String? address = widget.userProfile.address;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Edit Profile"),
+          title: const Text("Update Profile"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                initialValue: widget.userProfile.firstName,
-                decoration: InputDecoration(labelText: "First Name"),
+                initialValue: firstName,
+                onChanged: (value) {
+                  firstName = value;
+                },
+                decoration: const InputDecoration(labelText: "First Name"),
               ),
               TextFormField(
-                initialValue: widget.userProfile.lastName,
-                decoration: InputDecoration(labelText: "Last Name"),
+                initialValue: lastName,
+                onChanged: (value) {
+                  lastName = value;
+                },
+                decoration: const InputDecoration(labelText: "Last Name"),
               ),
               TextFormField(
-                initialValue: widget.userProfile.gender,
-                decoration: InputDecoration(labelText: "Gender"),
+                initialValue: gender,
+                onChanged: (value) {
+                  gender = value;
+                },
+                decoration: const InputDecoration(labelText: "Gender"),
               ),
               TextFormField(
-                initialValue: widget.userProfile.phoneNumber,
-                decoration: InputDecoration(labelText: "Phone Number"),
+                initialValue: phoneNumber,
+                onChanged: (value) {
+                  phoneNumber = value;
+                },
+                decoration: const InputDecoration(labelText: "Phone Number"),
               ),
               TextFormField(
-                initialValue: widget.userProfile.address,
-                decoration: InputDecoration(labelText: "Address"),
+                initialValue: address,
+                onChanged: (value) {
+                  address = value;
+                },
+                decoration: const InputDecoration(labelText: "Adress"),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
+                _performProfileUpdate(
+                    firstName, lastName, gender, phoneNumber, address!);
                 Navigator.of(context).pop();
               },
-              child: Text("Save"),
+              child: const Text("Save"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
           ],
         );
@@ -164,16 +217,16 @@ class _ProfileUserState extends State<ProfileUser> {
 
   Widget _buildCurrentPlanSection() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 20, top: 25),
+            padding: const EdgeInsets.only(left: 20, top: 25),
             child: Row(
               children: [
                 Subtitles("Current Plan"),
-                SizedBox(width: 50),
+                const SizedBox(width: 50),
                 Subtitles("Basic Plan"),
               ],
             ),
@@ -182,7 +235,7 @@ class _ProfileUserState extends State<ProfileUser> {
             padding: const EdgeInsets.only(top: 25),
             child: Titles(18, "This is included in your plan"),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -195,7 +248,7 @@ class _ProfileUserState extends State<ProfileUser> {
               ],
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -208,7 +261,7 @@ class _ProfileUserState extends State<ProfileUser> {
               ],
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -221,7 +274,7 @@ class _ProfileUserState extends State<ProfileUser> {
               ],
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 5, bottom: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

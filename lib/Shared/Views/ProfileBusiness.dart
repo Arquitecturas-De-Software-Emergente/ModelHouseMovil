@@ -27,6 +27,7 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
   @override
   void initState() {
     httpProyect = HttpProyect();
+    httpBusinessProfile = HttpBusinessProfile();
     getProjects();
     super.initState();
   }
@@ -41,16 +42,17 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
     }
   }
 
-  void _performProfileUpdate(
-      String name, String webSite, String phoneNumber, String address) async {
+  void _performProfileUpdate(String name, String webSite, String phoneNumber,
+      String address, String description) async {
     print(
-        "Before Update - Name: $name, WebSite: $webSite, Phone Number: $phoneNumber, Address: $address");
+        "Before Update - Name: $name, WebSite: $webSite, Phone Number: $phoneNumber, Address: $address, Description: $description");
     if (widget.businessProfile.id != null) {
       final updatedProfile = await httpBusinessProfile?.updateBusinessProfile(
         name,
         webSite,
         phoneNumber,
         address,
+        description,
         widget.businessProfile.id!,
       );
       if (updatedProfile != null) {
@@ -68,6 +70,7 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
     String webSite = widget.businessProfile.webSite;
     String phoneNumber = widget.businessProfile.phoneNumber;
     String address = widget.businessProfile.address;
+    String description = widget.businessProfile.description;
 
     showDialog(
       context: context,
@@ -105,12 +108,20 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
                 },
                 decoration: const InputDecoration(labelText: "Address"),
               ),
+              TextFormField(
+                initialValue: description,
+                onChanged: (value) {
+                  description = value;
+                },
+                decoration: const InputDecoration(labelText: "Description"),
+              ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
-                _performProfileUpdate(name, webSite, phoneNumber, address);
+                _performProfileUpdate(
+                    name, webSite, phoneNumber, address, description);
                 Navigator.of(context).pop();
               },
               child: const Text("Save"),
@@ -167,6 +178,8 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
                   "Phone Number: ", widget.businessProfile.phoneNumber),
               _buildFieldWithEditButton(
                   "Address: ", widget.businessProfile.address),
+              _buildFieldWithEditButton(
+                  "Description: ", widget.businessProfile.description),
             ],
           ),
         ),

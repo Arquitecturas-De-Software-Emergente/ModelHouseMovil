@@ -73,12 +73,16 @@ class HttpBusinessProfile {
     }
   }
 
-  Future<BusinessProfile?> updateBusinessProfile(String name, String address,
-      String phoneNumber, String webSite, int accountId) async {
+  Future<BusinessProfile?> updateBusinessProfile(
+      String name,
+      String address,
+      String phoneNumber,
+      String webSite,
+      String description,
+      int accountId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri =
-        Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
-    var response = await business.post(uri,
+    var uri = Uri.parse("$httpBaseSecurity/business_profile/$accountId");
+    var response = await business.put(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           "Accept": "application/json",
@@ -89,6 +93,7 @@ class HttpBusinessProfile {
           'webSite': webSite,
           'phoneNumber': phoneNumber,
           'address': address,
+          'description': description,
         }));
     if (response.statusCode == 200) {
       return BusinessProfile.fromJson(jsonDecode(response.body));

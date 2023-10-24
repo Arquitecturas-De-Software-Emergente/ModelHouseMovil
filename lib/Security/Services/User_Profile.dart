@@ -21,8 +21,10 @@ class HttpUserProfile {
     }
     return null;
   }
+
   Future<bool?> uploadFile(File file, int userProfile) async {
-    var request = http.MultipartRequest('POST', Uri.parse('$httpBaseSecurity/user_profile/upload/$userProfile'));
+    var request = http.MultipartRequest('POST',
+        Uri.parse('$httpBaseSecurity/user_profile/upload/$userProfile'));
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
     var response = await request.send();
@@ -33,8 +35,9 @@ class HttpUserProfile {
       return false;
     }
   }
-  Future<UserProfile?> createProfile(int id, String phoneNumber, String firstName,
-      String lastName, String gender, String address) async {
+
+  Future<UserProfile?> createProfile(int id, String phoneNumber,
+      String firstName, String lastName, String gender, String address) async {
     var uri = Uri.parse('$httpBaseSecurity/account/$id/user_profile');
     var response = await businessProfile.post(uri,
         headers: {
@@ -55,19 +58,22 @@ class HttpUserProfile {
     return null;
   }
 
-  Future<UserProfile?> updateUserProfile(
-      int id, UserProfile userProfile) async {
-    final persitence = await SharedPreferences.getInstance();
-    final String postUrl = "$httpBaseSecurity/user_profile/$id";
-    var uri = Uri.parse(postUrl);
-
-    var response = await businessProfile.post(uri,
+  Future<UserProfile?> updateUserProfile(String phoneNumber, String firstName,
+      String lastName, String gender, String? address, int id) async {
+    var uri = Uri.parse('$httpBaseSecurity/user_profile/$id');
+    var response = await businessProfile.put(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           "Accept": "application/json",
-          'Authorization': 'Bearer ${persitence.getString("token")}'
         },
-        body: jsonEncode(userProfile));
+        body: jsonEncode({
+          'phoneNumber': phoneNumber,
+          'firstName': firstName,
+          'lastName': lastName,
+          'gender': gender,
+          'address': address,
+        }));
+    print(response.body);
     if (response.statusCode == 200) {
       return UserProfile.fromJson(jsonDecode(response.body));
     }
