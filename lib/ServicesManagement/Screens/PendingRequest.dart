@@ -34,11 +34,17 @@ class _PendingRequestState extends State<PendingRequest> {
     super.initState();
   }
 
-  Future changeStatus(RequestInterface requestInterface, String status) async {
-    request = await httpRequest?.changeStatus(requestInterface.id!, status);
+  Future changeStatus(int requestId, String status) async {
+    request = await httpRequest?.changeStatus(requestId, status);
     if (request != null) {
+      if (widget.userProfile != null){
       requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
-          widget.userProfile!.id!, "Aprobado");
+          widget.userProfile!.id!, "Pendiente");
+      }
+      else{
+        requestsPending = await httpRequest?.getAllBusinessProfileIdAndStatus(
+        widget.businessProfile!.id!, "Pendiente");
+      }
       setState(() {
         request = request;
         widget.requests = requestsPending;
@@ -65,18 +71,43 @@ class _PendingRequestState extends State<PendingRequest> {
       body: Column(
         children: [
           Container(),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.requests?.length ?? 0, // Número de elementos en la lista
-              itemBuilder: (context, index) {
-                return RequestCard(
-                    '${widget.requests![index].name}',
-                    '${widget.requests![index].businessDescription}',
-                    SeeDetails(widget.requests![index]),
-                    Container());
-              },
+          if (widget.userProfile != null)
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.requests?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return RequestCard(
+                      '${widget.requests![index].name}',
+                      '${widget.requests![index].description}',
+                      SeeDetails(widget.requests![index]),
+                      Container());
+                },
+              ),
             ),
-          ),
+          if (widget.userProfile == null)
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.requests?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return RequestCard(
+                      '${widget.requests![index].firstName} ${widget.requests![index].lastName}',
+                      '${widget.requests![index].description}',
+                      SeeDetails(widget.requests![index]),
+                      AcceptRejectButtons(
+                        onAcceptPressed: () {
+                          // Lógica para cuando se presiona el botón "Accept"
+                          print('Accept button pressed');
+                          changeStatus(widget.requests![index].id!, "Aprobado");
+                        },
+                        onRejectPressed: () {
+                          // Lógica para cuando se presiona el botón "Reject"
+                          print('Reject button pressed');
+                          changeStatus(widget.requests![index].id!, "Cancelado");
+                        },
+                      ),);
+                },
+              ),
+            ),
         ],
       ),
     );
@@ -117,6 +148,45 @@ class SeeDetails extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+class AcceptRejectButtons extends StatelessWidget {
+  final VoidCallback onAcceptPressed;
+  final VoidCallback onRejectPressed;
+
+  AcceptRejectButtons({required this.onAcceptPressed, required this.onRejectPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+        decoration: BoxDecoration(
+        color: Colors.white,  // Fondo blanco
+          borderRadius: BorderRadius.circular(10.0),  // Bordes redondeados de 10px
+          border: Border.all(color: Colors.green, width: 2.0),  // Borde verde
+        ),
+        child: TextButton(
+        onPressed: onAcceptPressed,
+        style: TextButton.styleFrom(primary: Colors.green),  // Color del texto verde
+        child: Text('Accept'),  // Texto del botón
+        ),
+        ),
+        SizedBox(width: 16), // Espacio entre los botones
+        Container(
+        decoration: BoxDecoration(
+        color: Colors.white,  // Fondo blanco
+        borderRadius: BorderRadius.circular(10.0),  // Bordes redondeados de 10px
+        border: Border.all(color: Colors.red, width: 2.0),  // Borde verde
+        ),
+        child: TextButton(
+        onPressed: onRejectPressed,
+        style: TextButton.styleFrom(primary: Colors.red),  // Color del texto verde
+        child: Text('Reject'),  // Texto del botón
+        ),
+        ),
+      ],
     );
   }
 }

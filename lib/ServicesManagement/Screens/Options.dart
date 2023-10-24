@@ -51,6 +51,8 @@ class _OptionsState extends State<Options> {
   List<RequestInterface>? canceled;
   List<RequestInterface>? finished;
 
+
+
   @override
   void initState() {
     httpRequest = HttpRequest();
@@ -61,40 +63,43 @@ class _OptionsState extends State<Options> {
 
     print('Account: ${widget.account}');
     print('UserProfile: ${widget.userProfile}');
+
     if (widget.userProfile != null) {
       getRequestUserProfile();
     } else {
-      //getAccount();
+      getBusinessProfile();
     }
     super.initState();
   }
 
   Future getBusinessProfile() async {
-    businessProfile =
-        await httpBusinessProfile?.getbusinessProfileAccountById(account!.id!);
-    if (businessProfile != null) {
-      setState(() {
-        businessProfile = businessProfile;
+    if (widget.account != null) {
+      businessProfile = await httpBusinessProfile?.getbusinessProfileAccountById(widget.account!.id!);
+      if (businessProfile != null) {
+        setState(() {
+          businessProfile = businessProfile;
+        });
         getRequestBusinessProfile();
-      });
+      }
     }
   }
+
 
   Future getRequestUserProfile() async {
     requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "Pendiente");
 
-    requestsPendingProposal = await httpProposal?.getProposals();
+    // requestsPendingProposal = await httpProposal?.getProposals();
 
     inProcess = await httpProject?.getAllProjects();
 
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "CANCELED");
+        widget.userProfile!.id!, "Cancelado");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "FINISHED");
     setState(() {
       requestsPending = requestsPending;
-      requestsPendingProposal = requestsPendingProposal;
+      // requestsPendingProposal = requestsPendingProposal;
       inProcess = inProcess;
       canceled = canceled;
       finished = finished;
@@ -105,11 +110,11 @@ class _OptionsState extends State<Options> {
     requestsPending = await httpRequest?.getAllBusinessProfileIdAndStatus(
         businessProfile!.id!, "Pendiente");
 
-    requestsPendingProposal = await httpProposal?.getProposals();
+    // requestsPendingProposal = await httpProposal?.getProposals();
 
     inProcess = await httpProject?.getAllProjects();
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
-        businessProfile!.id!, "CANCELED");
+        businessProfile!.id!, "Cancelado");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "FINISHED");
     setState(() {
@@ -163,20 +168,20 @@ class _OptionsState extends State<Options> {
                           MaterialPageRoute(
                               builder: (context) => PendingRequest(
                                   requestsPending,
-                                  widget.userProfile!,
-                                  businessProfile)),
-                        );
-                      }
-                      if (typesOptions[index] == "Proposal") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PendingProposal(
-                                  requestsPendingProposal,
                                   widget.userProfile,
                                   businessProfile)),
                         );
                       }
+                      // if (typesOptions[index] == "Proposal") {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => PendingProposal(
+                      //             requestsPendingProposal,
+                      //             widget.userProfile,
+                      //             businessProfile)),
+                      //   );
+                      // }
                       if (typesOptions[index] == "Project") {
                         Navigator.push(
                           context,
@@ -189,7 +194,7 @@ class _OptionsState extends State<Options> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RequestCanceled(canceled,
+                              builder: (context) => RequestCanceled(finished,
                                   widget.userProfile, businessProfile)),
                         );
                       }
@@ -197,7 +202,7 @@ class _OptionsState extends State<Options> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RequestFinished(finished,
+                              builder: (context) => RequestFinished(canceled,
                                   widget.userProfile, businessProfile)),
                         );
                       }

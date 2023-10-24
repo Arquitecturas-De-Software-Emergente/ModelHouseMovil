@@ -18,7 +18,8 @@ class RequestInterface {
   String? location;
   String? file;
   String? businessDescription;
-
+  String? firstName;
+  String? lastName;
   RequestInterface({
     this.id,
     this.status,
@@ -30,6 +31,8 @@ class RequestInterface {
     this.location,
     this.file,
     this.businessDescription,
+    this.firstName,
+    this.lastName
   });
 
   factory RequestInterface.fromJson(Map<String, dynamic> json) => RequestInterface(
@@ -43,6 +46,8 @@ class RequestInterface {
     location: json["location"],
     file: json["file"],
     businessDescription: json["businessProfile"]["description"],
+    firstName: json["userProfile"]["firstName"],
+    lastName: json["userProfile"]["lastName"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -56,5 +61,7 @@ class RequestInterface {
     "location": location,
     "file": file,
     "businessDescription": businessDescription,
+    "firstName": firstName,
+    "lastName": lastName,
   };
 }

@@ -22,6 +22,7 @@ class RequestCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Expanded(child:
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -43,12 +44,12 @@ class RequestCard extends StatelessWidget {
                   const SizedBox(height: 16.0),
                   actions,
                 ],
-              ),
+              ),),
               Container(
                 child: ElevatedButton(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('See Details'),
+                    child: Text('See Detail'),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF02AA8B),

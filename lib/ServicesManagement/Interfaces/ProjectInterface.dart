@@ -12,13 +12,11 @@ class ProjectInterface {
   String? title;
   String? description;
   String? image;
-  int? businessProfileId;
   ProjectInterface(
       {this.id,
         this.title,
         this.description,
         this.image,
-        this.businessProfileId,
       }
       );
   factory ProjectInterface.fromJson(Map<String, dynamic> json) =>
@@ -27,13 +25,11 @@ class ProjectInterface {
         title: json["title"],
         description: json["description"],
         image: json["image"],
-        businessProfileId: json["businessProfileId"],
       );
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title,
     "description": description,
     "image": image,
-    "businessProfileId": businessProfileId,
   };
 }
