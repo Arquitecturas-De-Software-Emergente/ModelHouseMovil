@@ -21,7 +21,8 @@ class HttpBusinessProfile {
 
   Future<BusinessProfile?> getbusinessProfileAccountById(int? accountId) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
+    var uri =
+        Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
 
     var response = await business.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -57,8 +58,10 @@ class HttpBusinessProfile {
     }
     return null;
   }
+
   Future<bool?> uploadFile(File file, int userProfile) async {
-    var request = http.MultipartRequest('POST', Uri.parse('$httpBaseSecurity/business_profile/upload/$userProfile'));
+    var request = http.MultipartRequest('POST',
+        Uri.parse('$httpBaseSecurity/business_profile/upload/$userProfile'));
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
     var response = await request.send();
@@ -69,33 +72,26 @@ class HttpBusinessProfile {
       return false;
     }
   }
-  Future<BusinessProfile?> updateBusinessProfile(
-      String firstname,
-      String lastname,
-      String phonenumber,
-      String gender,
-      String image,
-      int accountId) async {
-    var uri = Uri.parse("$httpBaseSecurity/business_profile/$accountId");
 
-    var request = http.MultipartRequest('PUT', uri);
-    request.files.add(await http.MultipartFile.fromPath('fotimageo', image));
-    request.fields['firstName'] = firstname;
-    request.fields['gender'] = lastname;
-    request.fields['phoneNumber'] = phonenumber;
-    request.fields['gender'] = gender;
-
-    request.headers.addAll({
-      "Content-type": "multipart/form-data",
-    });
-    try {
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
-      if (response.statusCode == 200) {
-        return BusinessProfile.fromJson(jsonDecode(response.body));
-      }
-    } catch (e) {
-      print("Algo salio mal");
+  Future<BusinessProfile?> updateBusinessProfile(String name, String address,
+      String phoneNumber, String webSite, int accountId) async {
+    final persitence = await SharedPreferences.getInstance();
+    var uri =
+        Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
+    var response = await business.post(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+          'Authorization': 'Bearer ${persitence.getString("token")}'
+        },
+        body: jsonEncode({
+          'name': name,
+          'webSite': webSite,
+          'phoneNumber': phoneNumber,
+          'address': address,
+        }));
+    if (response.statusCode == 200) {
+      return BusinessProfile.fromJson(jsonDecode(response.body));
     }
     return null;
   }

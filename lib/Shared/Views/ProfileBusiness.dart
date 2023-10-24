@@ -3,6 +3,12 @@ import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 import 'package:model_house/Shared/Widgets/texts/subtitles.dart';
+import 'package:model_house/ServicesManagement/Screens/ProjectDetails.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import '../../Security/Services/Business_Profile.dart';
+import '../../Security/Services/Proyect_Service.dart';
+import '../../Security/Interfaces/Proyect.dart';
+import 'package:model_house/Shared/HttpComon.dart';
 
 class ProfileBusiness extends StatefulWidget {
   BusinessProfile businessProfile;
@@ -14,45 +20,106 @@ class ProfileBusiness extends StatefulWidget {
 }
 
 class _ProfileBusinessState extends State<ProfileBusiness> {
+  HttpProyect? httpProyect;
+  List<Proyect>? proyects;
+  HttpBusinessProfile? httpBusinessProfile;
+
+  @override
+  void initState() {
+    httpProyect = HttpProyect();
+    getProjects();
+    super.initState();
+  }
+
+  Future getProjects() async {
+    if (widget.businessProfile.id != null) {
+      proyects =
+          await httpProyect?.getAllByBusinessId(widget.businessProfile.id!);
+      setState(() {
+        proyects = proyects;
+      });
+    }
+  }
+
+  void _performProfileUpdate(
+      String name, String webSite, String phoneNumber, String address) async {
+    print(
+        "Before Update - Name: $name, WebSite: $webSite, Phone Number: $phoneNumber, Address: $address");
+    if (widget.businessProfile.id != null) {
+      final updatedProfile = await httpBusinessProfile?.updateBusinessProfile(
+        name,
+        webSite,
+        phoneNumber,
+        address,
+        widget.businessProfile.id!,
+      );
+      if (updatedProfile != null) {
+        setState(() {
+          widget.businessProfile = updatedProfile;
+        });
+      } else {
+        print("Update fails");
+      }
+    }
+  }
+
   void _editProfile() {
+    String name = widget.businessProfile.name;
+    String webSite = widget.businessProfile.webSite;
+    String phoneNumber = widget.businessProfile.phoneNumber;
+    String address = widget.businessProfile.address;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Edit Profile"),
+          title: const Text("Update Profile"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                initialValue: widget.businessProfile.name,
-                decoration: InputDecoration(labelText: "Name"),
+                initialValue: name,
+                onChanged: (value) {
+                  name = value;
+                },
+                decoration: const InputDecoration(labelText: "Name"),
               ),
               TextFormField(
-                initialValue: widget.businessProfile.webSite,
-                decoration: InputDecoration(labelText: "Web Site"),
+                initialValue: webSite,
+                onChanged: (value) {
+                  webSite = value;
+                },
+                decoration: const InputDecoration(labelText: "Web Site"),
               ),
               TextFormField(
-                initialValue: widget.businessProfile.phoneNumber,
-                decoration: InputDecoration(labelText: "Phone Number"),
+                initialValue: phoneNumber,
+                onChanged: (value) {
+                  phoneNumber = value;
+                },
+                decoration: const InputDecoration(labelText: "Phone Number"),
               ),
               TextFormField(
-                initialValue: widget.businessProfile.address,
-                decoration: InputDecoration(labelText: "Address"),
+                initialValue: address,
+                onChanged: (value) {
+                  address = value;
+                },
+                decoration: const InputDecoration(labelText: "Address"),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
+                _performProfileUpdate(name, webSite, phoneNumber, address);
                 Navigator.of(context).pop();
               },
-              child: Text("Save"),
+              child: const Text("Save"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
           ],
         );
@@ -112,28 +179,57 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Titles(20, "Projects"),
-                  ActiveButton(8, "Add Project", () {}, 15)
                 ],
               ),
               const SizedBox(height: 20),
-              Card(
-                child: Container(
-                  height: 200,
-                  width: 250,
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Titles(20, "you do not have projects"),
-                      const Icon(
-                        Icons.sentiment_dissatisfied_outlined,
-                        size: 60,
-                        color: Color(0XFF02AA8B),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              proyects?.isEmpty == false
+                  ? CarouselSlider(
+                      options: CarouselOptions(
+                        height: 200,
+                      ),
+                      items: proyects!.map((project) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ProjectDetail(project),
+                                ));
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    project.image,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    )
+                  : Card(
+                      child: Container(
+                        height: 200,
+                        width: 250,
+                        padding: const EdgeInsets.all(30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Titles(20, "you do not have projects"),
+                            const Icon(
+                              Icons.sentiment_dissatisfied_outlined,
+                              size: 60,
+                              color: Color(0XFF02AA8B),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),
