@@ -4,14 +4,18 @@ import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
+import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingProposal.dart';
 import 'package:model_house/ServicesManagement/Interfaces/RequestInterface.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingRequest.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestCanceled.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestFinished.dart';
 import 'package:model_house/ServicesManagement/Screens/RequestInProcess.dart';
+import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 
 import '../../Shared/Widgets/texts/titles.dart';
+import '../Interfaces/ProjectInterface.dart';
+import '../Services/Project_Service.dart';
 import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
@@ -35,13 +39,15 @@ class _OptionsState extends State<Options> {
   ];
   HttpRequest? httpRequest;
   HttpAccount? httpAccount;
+  HttpProposal? httpProposal;
+  HttpProject? httpProject;
   HttpBusinessProfile? httpBusinessProfile;
   BusinessProfile? businessProfile;
   Account? account;
 
   List<RequestInterface>? requestsPending;
-  List<RequestInterface>? requestsPendingProposal;
-  List<RequestInterface>? inProcess;
+  List<Proposal>? requestsPendingProposal;
+  List<ProjectInterface>? inProcess;
   List<RequestInterface>? canceled;
   List<RequestInterface>? finished;
 
@@ -49,7 +55,10 @@ class _OptionsState extends State<Options> {
   void initState() {
     httpRequest = HttpRequest();
     httpAccount = HttpAccount();
+    httpProject = HttpProject();
     httpBusinessProfile = HttpBusinessProfile();
+    httpProposal = HttpProposal();
+
     print('Account: ${widget.account}');
     print('UserProfile: ${widget.userProfile}');
     if (widget.userProfile != null) {
@@ -74,10 +83,11 @@ class _OptionsState extends State<Options> {
   Future getRequestUserProfile() async {
     requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "Pendiente");
-    requestsPendingProposal = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "PENDING_PROPOSAL");
-    inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "IN_PROCESS");
+
+    requestsPendingProposal = await httpProposal?.getProposals();
+
+    inProcess = await httpProject?.getAllProjects();
+
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "CANCELED");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -94,10 +104,10 @@ class _OptionsState extends State<Options> {
   Future getRequestBusinessProfile() async {
     requestsPending = await httpRequest?.getAllBusinessProfileIdAndStatus(
         businessProfile!.id!, "Pendiente");
-    requestsPendingProposal = await httpRequest?.getAllUserProfileIdAndStatus(
-        businessProfile!.id!, "PENDING_PROPOSAL");
-    inProcess = await httpRequest?.getAllUserProfileIdAndStatus(
-        businessProfile!.id!, "IN_PROCESS");
+
+    requestsPendingProposal = await httpProposal?.getProposals();
+
+    inProcess = await httpProject?.getAllProjects();
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "CANCELED");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -157,7 +167,7 @@ class _OptionsState extends State<Options> {
                                   businessProfile)),
                         );
                       }
-                      if (typesOptions[index] == "Pending") {
+                      if (typesOptions[index] == "Proposal") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(

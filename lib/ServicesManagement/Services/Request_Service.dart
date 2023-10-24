@@ -27,16 +27,15 @@ class HttpRequest {
     return null;
   }
 
-  Future<List<RequestInterface>?> getAllUserProfileIdAndStatus(
-      int userProfileId, String status) async {
+  Future<List<RequestInterface>?> getAllUserProfileIdAndStatus(int userProfileId, String status) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseServiceManagement/userProfile/$userProfileId/status/$status/request");
-    // var uri = Uri.parse("http://localhost:8081/service-management/userProfileId/$id/status/$status/request");
     var response = await request.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
+    print("INGRESO: ${response.body}");
     if (response.statusCode == 200) {
       var json = response.body;
       return requestFromJson(json);
