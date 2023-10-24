@@ -64,6 +64,7 @@ class _HomeState extends State<Home> {
                         name: business.name,
                         phoneNumber: business.phoneNumber,
                         webSite: business.webSite,
+                        
                       );
                     },
                   ),

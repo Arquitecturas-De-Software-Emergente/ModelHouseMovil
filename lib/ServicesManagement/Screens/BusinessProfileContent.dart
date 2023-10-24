@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:model_house/Security/Interfaces/Account.dart';
+import 'package:model_house/Security/Interfaces/UserProfile.dart';
+import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
+import 'package:model_house/ServicesManagement/Screens/CreateRequest.dart';
 import 'package:model_house/ServicesManagement/Screens/ProjectDetails.dart';
 import 'package:model_house/Shared/Views/Category.dart';
 import 'package:social_media_flutter/social_media_flutter.dart';
@@ -12,6 +16,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class BusinessProfileContent extends StatefulWidget {
   BusinessProfile businessProfile;
+  UserProfile? userProfile;
   BusinessProfileContent(this.businessProfile, {Key? key}) : super(key: key);
 
   @override
@@ -20,6 +25,8 @@ class BusinessProfileContent extends StatefulWidget {
 
 class _BusinessProfileContentState extends State<BusinessProfileContent> {
   HttpProyect? httpProyect;
+  HttpAccount? httpAccount;
+  Account? account;
   List<Proyect>? proyects;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController description = TextEditingController();
@@ -32,6 +39,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
   @override
   void initState() {
     httpProyect = HttpProyect();
+    httpAccount = HttpAccount();
     getProjects();
     super.initState();
   }
@@ -201,8 +209,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                                 fontSize: 12,
                               ),
                             ),
-                            backgroundColor: const Color(
-                                0xFF02AA8B), 
+                            backgroundColor: const Color(0xFF02AA8B),
                           );
                         }).toList(),
                       ),
@@ -217,33 +224,23 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SocialWidget(
-                        placeholderText:
-                            '', 
-                        iconData: SocialIconsFlutter.instagram, 
-                        iconColor: const Color(
-                                0xFF02AA8B), 
-                        link:
-                            'https://www.instagram.com/', 
-                        
-                      ), 
+                        placeholderText: '',
+                        iconData: SocialIconsFlutter.instagram,
+                        iconColor: const Color(0xFF02AA8B),
+                        link: 'https://www.instagram.com/',
+                      ),
                       SocialWidget(
-                        placeholderText:
-                            '', 
+                        placeholderText: '',
                         iconData: SocialIconsFlutter.linkedin,
-                        iconColor: const Color(
-                                0xFF02AA8B), 
-                        link:
-                            'https://www.linkedin.com/',  
-                      ), 
+                        iconColor: const Color(0xFF02AA8B),
+                        link: 'https://www.linkedin.com/',
+                      ),
                       SocialWidget(
-                        placeholderText:
-                            '', 
+                        placeholderText: '',
                         iconData: SocialIconsFlutter.facebook,
-                        iconColor: const Color(
-                                0xFF02AA8B),
-                        link:
-                            'https://www.facebook.com/',
-                      ), 
+                        iconColor: const Color(0xFF02AA8B),
+                        link: 'https://www.facebook.com/',
+                      ),
                     ],
                   ),
                   const SizedBox(height: 15),
@@ -301,7 +298,12 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                 : Container(),
             SizedBox(height: 70),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateRequest(widget.businessProfile,widget.userProfile!),),
+                );
+              },
               child: const Text("Send Request"),
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xFF02AA8B),
