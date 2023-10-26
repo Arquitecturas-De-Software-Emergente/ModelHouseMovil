@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
+import 'package:model_house/ServicesManagement/Screens/PendingRequest.dart';
+import 'package:model_house/ServicesManagement/Screens/request/FormProposal.dart';
+import 'package:model_house/Shared/Components/navigate.dart';
 
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/UserProfile.dart';
@@ -33,14 +36,14 @@ class _PendingProposalState extends State<PendingProposal> {
   }
 
   Future changeStatus(Proposal proposalInterface, String status) async {
-    // proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
-    // if (proposal != null) {
-    //   proposalsPending = await httpProposal?.getProposalsByStatus();
-    //   setState(() {
-    //     proposal = proposal;
-    //     widget.proposals = proposalsPending;
-    //   });
-    // }
+    proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
+    if (proposal != null) {
+      proposalsPending = await httpProposal?.getProposalsByStatus();
+      setState(() {
+        proposal = proposal;
+        widget.proposals = proposalsPending;
+      });
+    }
   }
 
   @override
@@ -73,14 +76,29 @@ class _PendingProposalState extends State<PendingProposal> {
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Usuario: Pendiente/En espera de recibir un proposal"),
+                      Container(
+                        width: 100,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(color: Colors.green, width: 2.0),
+                        ),
+                        child: Card(
+                          child: Text("En espera"),
+                        ),
+                      ),
                     );
                   } else if (widget.userProfile != null && status == 'Aprobado') {
                     return RequestCard(
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Usuario: Aprobado/Tomando la decisión de aceptar o no la propuesta"),
+                      AcceptRejectButtons(onAcceptPressed: () {
+                        changeStatus(widget.proposals![index], "Aprobado");
+                      }, onRejectPressed: () {
+                        changeStatus(widget.proposals![index], "Cancelado");
+                      }),
                     );
                   }
                   return SizedBox.shrink(); // No matching condition, so hide the card.
@@ -98,14 +116,41 @@ class _PendingProposalState extends State<PendingProposal> {
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Empresa: Pendiente/Para mandar una propuesta al usuario"),
+                      ElevatedButton(
+                        onPressed: (){
+                          navigate(context, FormProposal(widget.userProfile, widget.businessProfile));
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(color: Colors.green, width: 2.0),
+                          ),
+                          child: Card(
+                            child: Text("En espera"),
+                          ),
+                        ),
+                      ),
                     );
                   } else if (widget.businessProfile != null && status == 'Aprobado') {
                     return RequestCard(
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Empresa: Aprobado/En espera de la respuesta del usuario"),
+                      Container(
+                        width: 100,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(color: Colors.green, width: 2.0),
+                        ),
+                        child: Card(
+                          child: Text("En espera"),
+                        ),
+                      ),
                     );
                   }
                   return SizedBox.shrink(); // No matching condition, so hide the card.

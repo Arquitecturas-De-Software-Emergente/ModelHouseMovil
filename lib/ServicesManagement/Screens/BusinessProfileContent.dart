@@ -174,7 +174,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  const Row(
+                  Row(
                     children: [
                       Text(
                         "Email Address: ",

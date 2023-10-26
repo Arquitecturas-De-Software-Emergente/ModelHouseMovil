@@ -235,7 +235,7 @@ class _ProfileUserState extends State<ProfileUser> {
             padding: const EdgeInsets.only(top: 25),
             child: Titles(18, "This is included in your plan"),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -248,7 +248,7 @@ class _ProfileUserState extends State<ProfileUser> {
               ],
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -261,7 +261,7 @@ class _ProfileUserState extends State<ProfileUser> {
               ],
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -274,7 +274,7 @@ class _ProfileUserState extends State<ProfileUser> {
               ],
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 5, bottom: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

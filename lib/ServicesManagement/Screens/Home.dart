@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
     businesses = await httpBusinessProfile?.getAllBusinessProfile();
     setState(() {
       businesses = businesses;
+      print(businesses);
     });
   }
 
