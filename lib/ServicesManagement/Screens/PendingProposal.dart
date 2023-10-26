@@ -3,6 +3,7 @@ import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/UserProfile.dart';
+import '../../Shared/Components/request_card.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
 import '../Services/Proposal_Service.dart';
@@ -12,8 +13,7 @@ class PendingProposal extends StatefulWidget {
   late final List<Proposal>? proposals;
   final UserProfile? userProfile;
   final BusinessProfile? businessProfile;
-  PendingProposal(this.proposals, this.userProfile, this.businessProfile,
-      {Key? key})
+  PendingProposal(this.proposals, this.userProfile, this.businessProfile, {Key? key})
       : super(key: key);
 
   @override
@@ -21,33 +21,33 @@ class PendingProposal extends StatefulWidget {
 }
 
 class _PendingProposalState extends State<PendingProposal> {
-  Proposal? proposal;
   List<Proposal>? proposalsPending;
   HttpProposal? httpProposal;
+  Proposal? proposal;
 
   @override
   void initState() {
-    print(widget.proposals?.length);
     httpProposal = HttpProposal();
+    print(widget.proposals?.length);
     super.initState();
   }
 
   Future changeStatus(Proposal proposalInterface, String status) async {
-    proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
-    if (proposal != null) {
-      proposalsPending = await httpProposal?.getProposalsByStatus();
-      setState(() {
-        proposal = proposal;
-        widget.proposals = proposalsPending;
-      });
-    }
+    // proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
+    // if (proposal != null) {
+    //   proposalsPending = await httpProposal?.getProposalsByStatus();
+    //   setState(() {
+    //     proposal = proposal;
+    //     widget.proposals = proposalsPending;
+    //   });
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Titles(28, "Model House Options"),
+        title: Titles(28, "Your Proposals"),
         backgroundColor: const Color(0xffffffff),
         centerTitle: true,
         elevation: 0,
@@ -59,145 +59,59 @@ class _PendingProposalState extends State<PendingProposal> {
           onPressed: () => {Navigator.of(context).pop()},
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(15),
-            width: MediaQuery.of(context).size.width,
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: widget.proposals?.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
+          Container(),
+          if (widget.userProfile != null && widget.proposals != null)
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.proposals!.length,
+                itemBuilder: (context, index) {
+                  final status = widget.proposals![index].status;
+                  if (widget.userProfile != null && status == 'Pendiente') {
+                    return RequestCard(
+                      '${widget.proposals![index].name}',
+                      '${widget.proposals![index].description}',
+                      Container(),
+                      Text("Usuario: Pendiente/En espera de recibir un proposal"),
+                    );
+                  } else if (widget.userProfile != null && status == 'Aprobado') {
+                    return RequestCard(
+                      '${widget.proposals![index].name}',
+                      '${widget.proposals![index].description}',
+                      Container(),
+                      Text("Usuario: Aprobado/Tomando la decisión de aceptar o no la propuesta"),
+                    );
+                  }
+                  return SizedBox.shrink(); // No matching condition, so hide the card.
+                },
               ),
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 200,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 50,
-                            child: Image.network(widget.businessProfile == null
-                                  ? widget.userProfile!.image!
-                                  : widget.businessProfile!.image!,
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Titles(
-                                  16, widget.proposals![index].description),
-                            ),
-                          ),
-                          widget.businessProfile != null
-                              ? Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.5), // Color de la sombra
-                                              spreadRadius:
-                                                  2, // Radio de expansión de la sombra
-                                              blurRadius:
-                                                  5, // Radio de desenfoque de la sombra
-                                              offset: const Offset(0,
-                                                  3), // Desplazamiento en la posición x y y de la sombra
-                                            ),
-                                          ],
-                                        ),
-                                        child: MaterialButton(
-                                            color: const Color(0xFF1FB440),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            minWidth: 120,
-                                            height: 50,
-                                            onPressed: () {
-                                              changeStatus(
-                                                  widget.proposals![index],
-                                                  "PENDING_PROPOSAL");
-                                            },
-                                            child: const Text(
-                                              "Accept",
-                                              style: TextStyle(
-                                                  fontSize: 17,
-                                                  color: Colors.white),
-                                            )),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.5), // Color de la sombra
-                                              spreadRadius:
-                                                  2, // Radio de expansión de la sombra
-                                              blurRadius:
-                                                  5, // Radio de desenfoque de la sombra
-                                              offset: const Offset(0,
-                                                  3), // Desplazamiento en la posición x y y de la sombra
-                                            ),
-                                          ],
-                                        ),
-                                        child: MaterialButton(
-                                            color: const Color(0xFFDF3737),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            minWidth: 120,
-                                            height: 50,
-                                            onPressed: () {
-                                              changeStatus(
-                                                  widget.proposals![index],
-                                                  "CANCELED");
-                                            },
-                                            child: const Text("Reject",
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    color: Colors.white))),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Container()
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
             ),
-          )
+          if (widget.businessProfile != null && widget.proposals != null)
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.proposals!.length,
+                itemBuilder: (context, index) {
+                  final status = widget.proposals![index].status;
+                  if (widget.businessProfile != null && status == 'Pendiente') {
+                    return RequestCard(
+                      '${widget.proposals![index].name}',
+                      '${widget.proposals![index].description}',
+                      Container(),
+                      Text("Empresa: Pendiente/Para mandar una propuesta al usuario"),
+                    );
+                  } else if (widget.businessProfile != null && status == 'Aprobado') {
+                    return RequestCard(
+                      '${widget.proposals![index].name}',
+                      '${widget.proposals![index].description}',
+                      Container(),
+                      Text("Empresa: Aprobado/En espera de la respuesta del usuario"),
+                    );
+                  }
+                  return SizedBox.shrink(); // No matching condition, so hide the card.
+                },
+              ),
+            ),
         ],
       ),
     );

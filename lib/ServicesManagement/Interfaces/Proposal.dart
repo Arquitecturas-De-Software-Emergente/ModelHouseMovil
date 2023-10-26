@@ -8,30 +8,37 @@ String proposalToJson(List<Proposal> data) =>
 
 class Proposal {
   int? id;
-  String? proposalDate;
   String? description;
   String? status;
-  String? projectActivities;
-
+  String? firstName;
+  String? lastName;
+  String? name;
+  String? businessDescription;
   Proposal(
       {this.id,
-      this.proposalDate,
       this.description,
       this.status,
-        this.projectActivities
+        this.firstName,
+        this.lastName,
+        this.name,
+        this.businessDescription,
       });
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
         id: json["id"],
-        proposalDate: json["proposalDate"],
         description: json["description"],
         status: json["status"],
-        projectActivities: json["projectActivities"],
+        firstName: json["request"]["userProfile"]["firstName"],
+        lastName: json["request"]["userProfile"]["lastName"],
+        name: json["request"]["businessProfile"]["name"],
+        businessDescription: json["request"]["businessProfile"]["description"],
   );
   Map<String, dynamic> toJson() => {
         "id": id,
-        "proposalDate": proposalDate,
         "description": description,
         "status": status,
-        "projectActivities": projectActivities,
+        "firstName": firstName,
+        "lastName": lastName,
+        "name": name,
+        "businessDescription": businessDescription,
       };
 }

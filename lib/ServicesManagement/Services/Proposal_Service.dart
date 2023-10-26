@@ -13,7 +13,6 @@ class HttpProposal {
 
   //Get proposal
   Future<List<Proposal>?> getProposals() async {
-    try{
       final persistence = await SharedPreferences.getInstance();
       var uri = Uri.parse("$httpBaseServiceManagement/proposal");
       var response = await proposal.get(uri, headers: {
@@ -21,11 +20,11 @@ class HttpProposal {
         "Accept": "application/json",
         'Authorization': 'Bearer ${persistence.getString("token")}'
       });
-      var json = response.body;
-      return proposalFromJson(json);
-    } on CustomException catch(e){
-      throw ServiceException(e.message);
-    }
+      print("PROPOSALS: ${response.body}");
+      if (response.statusCode == 200) {
+        return proposalFromJson(response.body);
+      }
+      return null;
   }
 
   //
