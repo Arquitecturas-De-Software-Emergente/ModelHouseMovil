@@ -118,7 +118,7 @@ class _PendingProposalState extends State<PendingProposal> {
                       Container(),
                       ElevatedButton(
                         onPressed: (){
-                          navigate(context, FormProposal(widget.userProfile, widget.businessProfile));
+                          navigate(context, FormProposal(widget.proposals![index].id!, widget.userProfile, widget.businessProfile));
                         },
                         child: Container(
                           width: 100,

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 import '../../../Security/Interfaces/BusinessProfile.dart';
 import '../../../Security/Interfaces/UserProfile.dart';
 import '../../../Shared/Widgets/texts/titles.dart';
 import 'package:file_picker/file_picker.dart';
 
 class FormProposal extends StatefulWidget {
+  final int proposalId;
   final UserProfile? userProfile;
   final BusinessProfile? businessProfile;
 
-  FormProposal(this.userProfile, this.businessProfile, {Key? key}) : super(key: key);
+  FormProposal(this.proposalId, this.userProfile, this.businessProfile, {Key? key}) : super(key: key);
 
   @override
   State<FormProposal> createState() => _FormProposalState();
@@ -23,6 +26,21 @@ class _FormProposalState extends State<FormProposal> {
   final TextEditingController resourceQuantityController = TextEditingController();
   final List<Map<String, String>> resources = [];
   List<PlatformFile> selectedFiles = [];
+
+
+  String titleError = "";
+  String descriptionError = "";
+  String activitiesError = "";
+  String resourcesError = "";
+
+
+  HttpProposal? httpProposal;
+
+  @override
+  void initState() {
+    httpProposal = HttpProposal();
+    super.initState();
+  }
 
   void addActivity() {
     String activity = activityTitleController.text;
@@ -73,7 +91,52 @@ class _FormProposalState extends State<FormProposal> {
       selectedFiles.removeAt(index);
     });
   }
+  void validateAndSubmit() {
+    if (titleController.text.isEmpty) {
+      setState(() {
+        titleError = "Este campo es obligatorio";
+      });
+    } else {
+      setState(() {
+        titleError = "";
+      });
+    }
 
+    if (descriptionController.text.isEmpty) {
+        setState(() {
+          descriptionError = "Este campo es obligatorio";
+        });
+    } else {
+      setState(() {
+      descriptionError = "";
+      });
+    }
+
+    if (activities.isEmpty) {
+      setState(() {
+        activitiesError = "Este campo es obligatorio";
+      });
+    } else {
+      setState(() {
+        activitiesError = "";
+      });
+    }
+
+    if (resources.isEmpty) {
+      setState(() {
+        resourcesError = "Este campo es obligatorio";
+      });
+    } else {
+      setState(() {
+        resourcesError = "";
+      });
+    }
+
+    if (titleController.text.isNotEmpty && descriptionController.text.isNotEmpty
+    && activities.isNotEmpty && resources.isNotEmpty) {
+    // Aquí puedes realizar la lógica para enviar el formulario.
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,10 +161,22 @@ class _FormProposalState extends State<FormProposal> {
               controller: titleController,
               decoration: InputDecoration(labelText: 'Título'),
             ),
+            Text(
+              titleError,
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
             SizedBox(height: 20),
             TextField(
               controller: descriptionController,
               decoration: InputDecoration(labelText: 'Descripción'),
+            ),
+            Text(
+              descriptionError,
+              style: TextStyle(
+                color: Colors.red,
+              ),
             ),
             SizedBox(height: 20),
             TextButton(
@@ -154,6 +229,12 @@ class _FormProposalState extends State<FormProposal> {
                 ),
               ],
             ),
+            Text(
+              activitiesError,
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
             Column(
               children: activities.asMap().entries.map((entry) {
                 final index = entry.key;
@@ -189,6 +270,10 @@ class _FormProposalState extends State<FormProposal> {
                   child: TextField(
                     controller: resourceQuantityController,
                     decoration: InputDecoration(labelText: 'Cantidad'),
+                    keyboardType: TextInputType.number, // Configura el teclado para aceptar solo números.
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly, // Acepta solo dígitos.
+                    ],
                   ),
                 ),
                 IconButton(
@@ -196,6 +281,12 @@ class _FormProposalState extends State<FormProposal> {
                   onPressed: () => addResource(),
                 ),
               ],
+            ),
+            Text(
+              resourcesError,
+              style: TextStyle(
+                color: Colors.red,
+              ),
             ),
             Column(
               children: resources.asMap().entries.map((entry) {
@@ -216,10 +307,7 @@ class _FormProposalState extends State<FormProposal> {
             ),
             SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
-                // Coloca aquí la lógica que deseas ejecutar al presionar el botón "Enviar".
-                // Puede ser el envío de datos o cualquier otra acción.
-              },
+              onPressed: validateAndSubmit,
               style: ElevatedButton.styleFrom(
                 primary: Colors.green,
                 onPrimary: Colors.white,

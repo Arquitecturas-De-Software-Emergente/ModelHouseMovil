@@ -50,6 +50,28 @@ class HttpProposal {
     return null;
   }
 
+
+  Future<Proposal?> updateProposal(int proposalId, String title,
+      String description) async {
+    final persitence = await SharedPreferences.getInstance();
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal");
+    var response = await proposal.put(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+          'Authorization': 'Bearer ${persitence.getString("token")}'
+        },
+        body: jsonEncode({
+          "title": title,
+          "description": description,
+          "file": "string"
+        }));
+    if (response.statusCode == 200) {
+      return Proposal.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
   Future<Proposal?> updateRequest(
       int id,
       String proposalDate,
@@ -81,6 +103,8 @@ class HttpProposal {
     }
     return null;
   }
+
+
 
   //To be Checked
   Future<Proposal?> changeStatus(int id, String status) async {
