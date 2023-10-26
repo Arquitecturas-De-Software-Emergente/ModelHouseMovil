@@ -16,8 +16,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class BusinessProfileContent extends StatefulWidget {
   BusinessProfile businessProfile;
-  UserProfile? userProfile;
-  BusinessProfileContent(this.businessProfile, {Key? key}) : super(key: key);
+  Account? account;
+  BusinessProfileContent(this.businessProfile, this.account, {Key? key})
+      : super(key: key);
 
   @override
   _BusinessProfileContentState createState() => _BusinessProfileContentState();
@@ -122,7 +123,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
-              itemSize: 50,
+              itemSize: 25,
               itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
               itemBuilder: (context, _) => Icon(
                 Icons.star,
@@ -142,7 +143,8 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     children: [
                       const Text(
                         "Phone Number: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       Text(
                         "${widget.businessProfile.phoneNumber}",
@@ -154,7 +156,8 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     children: [
                       const Text(
                         "Official Web Page: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       Text(
                         "${widget.businessProfile.webSite}",
@@ -166,7 +169,8 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     children: [
                       const Text(
                         "Address: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       Text(
                         "${widget.businessProfile.address}",
@@ -178,7 +182,8 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     children: [
                       Text(
                         "Email Address: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       Text(
                         "fre",
@@ -192,9 +197,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                       Text(
                         "Categories:",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                            fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       const SizedBox(height: 5),
                       Wrap(
@@ -221,7 +224,8 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     children: [
                       const Text(
                         "Social Media: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       SocialWidget(
                         placeholderText: '',
@@ -246,21 +250,18 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                   const SizedBox(height: 15),
                   const Text(
                     "About Us:",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(widget.businessProfile.description),
                   const SizedBox(height: 30),
                   const Text(
                     "Our Specialization:",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 30),
                   const Text(
                     "Projects:",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -295,21 +296,45 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                       );
                     }).toList(),
                   )
-                : Container(),
+                : Card(
+                    child: Container(
+                      height: 200,
+                      width: 250,
+                      padding: const EdgeInsets.all(30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Titles(20, "you do not have projects"),
+                          const Icon(
+                            Icons.sentiment_dissatisfied_outlined,
+                            size: 60,
+                            color: Color(0XFF02AA8B),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
             SizedBox(height: 70),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateRequest(widget.businessProfile,widget.userProfile!),),
-                );
-              },
-              child: const Text("Send Request"),
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF02AA8B),
-                minimumSize: const Size(350, 60),
-              ),
-            ),
+            widget.account?.userProfileId != null &&
+                    widget.account?.businessProfileId == null
+                ? ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateRequest(
+                              widget.businessProfile,
+                              widget.account!.userProfileId!),
+                        ),
+                      );
+                    },
+                    child: const Text("Send Request"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF02AA8B),
+                      minimumSize: const Size(350, 60),
+                    ),
+                  )
+                : Container(),
             SizedBox(height: 70),
           ],
         ),

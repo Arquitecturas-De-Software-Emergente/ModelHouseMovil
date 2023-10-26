@@ -42,9 +42,9 @@ class _NotificationState extends State<Payment> {
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 15),
             child: Titles(28, "Notification"),
           ),
-          businesses != null
-              ? ListBusiness(businesses!, widget.userProfile)
-              : Container()
+          //businesses != null
+          //    ? ListBusiness(businesses!, widget.userProfile)
+          //    : Container()
         ],
       ),
     );

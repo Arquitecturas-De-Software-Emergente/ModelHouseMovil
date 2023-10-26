@@ -31,7 +31,7 @@ class _RoutesState extends State<Routes> {
   @override
   Widget build(BuildContext context) {
     List<Widget> myList = [
-      Home(widget.userProfile),
+      Home(widget.userProfile, widget.account),
       Options(widget.account, widget.userProfile),
       Payment(widget.userProfile),
       Menu(widget.account, widget.userProfile, widget.businessProfile),
