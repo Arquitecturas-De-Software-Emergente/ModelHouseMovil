@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
+import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/ServicesManagement/Screens/BusinessProfileContent.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
 
-class BusinessProfileCard extends StatelessWidget {
+import '../../Security/Interfaces/Account.dart';
+
+class BusinessProfileCard extends StatefulWidget {
   final int? id;
   final String address;
   final String description;
@@ -12,8 +15,10 @@ class BusinessProfileCard extends StatelessWidget {
   final String name;
   final String phoneNumber;
   final String webSite;
+  final Account account;
 
-  const BusinessProfileCard({
+  BusinessProfileCard(
+    this.account, {
     this.id,
     required this.address,
     required this.description,
@@ -25,15 +30,20 @@ class BusinessProfileCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BusinessProfileCard> createState() => _BusinessProfileCardState();
+}
+
+class _BusinessProfileCardState extends State<BusinessProfileCard> {
+  @override
   Widget build(BuildContext context) {
     final businessprofile = BusinessProfile(
-      id: id,
-      address: address,
-      description: description,
-      image: image,
-      name: name,
-      phoneNumber: phoneNumber,
-      webSite: webSite,
+      id: widget.id,
+      address: widget.address,
+      description: widget.description,
+      image: widget.image,
+      name: widget.name,
+      phoneNumber: widget.phoneNumber,
+      webSite: widget.webSite,
     );
 
     return Container(
@@ -50,7 +60,7 @@ class BusinessProfileCard extends StatelessWidget {
                     child: Container(
                       width: 80.0,
                       height: 80.0,
-                      child: Image.network(image),
+                      child: Image.network(widget.image),
                     ),
                   ),
                 ],
@@ -62,7 +72,7 @@ class BusinessProfileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      widget.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
@@ -87,7 +97,7 @@ class BusinessProfileCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0),
                     Text(
-                      description,
+                      widget.description,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
@@ -106,8 +116,8 @@ class BusinessProfileCard extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>
-                                BusinessProfileContent(businessprofile),
+                            builder: (context) => BusinessProfileContent(
+                                businessprofile, widget.account),
                           ),
                         );
                       },

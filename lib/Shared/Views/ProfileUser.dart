@@ -191,7 +191,7 @@ class _ProfileUserState extends State<ProfileUser> {
   }
 
   Widget _buildFieldWithEditButton(String label, String? value) {
-    final maxDisplayLength = 20;
+    final maxDisplayLength = 15;
     final displayValue = value ?? "...";
     final truncatedValue = displayValue.length <= maxDisplayLength
         ? displayValue

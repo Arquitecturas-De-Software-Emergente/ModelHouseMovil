@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,8 @@ class HttpRequest {
   Future<List<RequestInterface>?> getAllBusinessProfileIdAndStatus(
       int businessProfileId, String status) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/businessProfile/$businessProfileId/status/$status/request");
+    var uri = Uri.parse(
+        "$httpBaseServiceManagement/businessProfile/$businessProfileId/status/$status/request");
     var response = await request.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -26,9 +28,11 @@ class HttpRequest {
     return null;
   }
 
-  Future<List<RequestInterface>?> getAllUserProfileIdAndStatus(int userProfileId, String status) async {
+  Future<List<RequestInterface>?> getAllUserProfileIdAndStatus(
+      int userProfileId, String status) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/userProfile/$userProfileId/status/$status/request");
+    var uri = Uri.parse(
+        "$httpBaseServiceManagement/userProfile/$userProfileId/status/$status/request");
     var response = await request.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json",
@@ -42,10 +46,18 @@ class HttpRequest {
     return null;
   }
 
-  Future<RequestInterface?> createRequest(int userId, int businessId,
-      String status, String description, bool accepted) async {
+  Future<RequestInterface?> createRequest(
+      String userId,
+      int businessId,
+      String category,
+      String estimatedBudget,
+      int area,
+      String location,
+      String description) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/user/$userId/business/$businessId/request");
+    var uri = Uri.parse(
+        "$httpBaseServiceManagement/userProfile/$userId/businessProfile/$businessId/request");
+
     var response = await request.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -53,9 +65,11 @@ class HttpRequest {
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
         body: jsonEncode({
-          'status': status,
+          'category': category,
+          'estimatedBudget': estimatedBudget,
+          'area': area,
+          'location': location,
           'description': description,
-          'accepted': accepted
         }));
     if (response.statusCode == 200) {
       return RequestInterface.fromJson(jsonDecode(response.body));

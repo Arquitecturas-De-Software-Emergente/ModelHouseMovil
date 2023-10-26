@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Shared/Components/businessProfile_card.dart';
@@ -12,7 +13,8 @@ import '../../Security/Services/Business_Profile.dart';
 // ignore: must_be_immutable
 class Home extends StatefulWidget {
   UserProfile? userProfile;
-  Home(this.userProfile, {Key? key}) : super(key: key);
+  Account? account;
+  Home(this.userProfile, this.account, {Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -34,6 +36,7 @@ class _HomeState extends State<Home> {
     businesses = await httpBusinessProfile?.getAllBusinessProfile();
     setState(() {
       businesses = businesses;
+      print(businesses);
     });
   }
 
@@ -48,7 +51,8 @@ class _HomeState extends State<Home> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-            child: Input(Icons.search, "Search on Model House", true, algo, false, TextInputType.text),
+            child: Input(Icons.search, "Search on Model House", true, algo,
+                false, TextInputType.text),
           ),
           businesses != null
               ? Expanded(
@@ -57,6 +61,7 @@ class _HomeState extends State<Home> {
                     itemBuilder: (context, index) {
                       final business = businesses![index];
                       return BusinessProfileCard(
+                        widget.account!,
                         id: business.id!,
                         address: business.address,
                         description: business.description,
@@ -64,7 +69,6 @@ class _HomeState extends State<Home> {
                         name: business.name,
                         phoneNumber: business.phoneNumber,
                         webSite: business.webSite,
-                        
                       );
                     },
                   ),

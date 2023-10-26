@@ -13,7 +13,8 @@ class PendingProposal extends StatefulWidget {
   late final List<Proposal>? proposals;
   final UserProfile? userProfile;
   final BusinessProfile? businessProfile;
-  PendingProposal(this.proposals, this.userProfile, this.businessProfile, {Key? key})
+  PendingProposal(this.proposals, this.userProfile, this.businessProfile,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -73,17 +74,21 @@ class _PendingProposalState extends State<PendingProposal> {
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Usuario: Pendiente/En espera de recibir un proposal"),
+                      Text(
+                          "Usuario: Pendiente/En espera de recibir un proposal"),
                     );
-                  } else if (widget.userProfile != null && status == 'Aprobado') {
+                  } else if (widget.userProfile != null &&
+                      status == 'Aprobado') {
                     return RequestCard(
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Usuario: Aprobado/Tomando la decisión de aceptar o no la propuesta"),
+                      Text(
+                          "Usuario: Aprobado/Tomando la decisión de aceptar o no la propuesta"),
                     );
                   }
-                  return SizedBox.shrink(); // No matching condition, so hide the card.
+                  return SizedBox
+                      .shrink(); // No matching condition, so hide the card.
                 },
               ),
             ),
@@ -98,17 +103,21 @@ class _PendingProposalState extends State<PendingProposal> {
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Empresa: Pendiente/Para mandar una propuesta al usuario"),
+                      Text(
+                          "Empresa: Pendiente/Para mandar una propuesta al usuario"),
                     );
-                  } else if (widget.businessProfile != null && status == 'Aprobado') {
+                  } else if (widget.businessProfile != null &&
+                      status == 'Aprobado') {
                     return RequestCard(
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Text("Empresa: Aprobado/En espera de la respuesta del usuario"),
+                      Text(
+                          "Empresa: Aprobado/En espera de la respuesta del usuario"),
                     );
                   }
-                  return SizedBox.shrink(); // No matching condition, so hide the card.
+                  return SizedBox
+                      .shrink(); // No matching condition, so hide the card.
                 },
               ),
             ),

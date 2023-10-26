@@ -6,26 +6,24 @@ import 'package:model_house/ServicesManagement/Services/Request_Service.dart';
 
 class CreateRequest extends StatefulWidget {
   BusinessProfile businessProfile;
-  UserProfile userProfile;
-  CreateRequest(this.businessProfile, this.userProfile, {super.key});
+  String userProfileId;
+  CreateRequest(this.businessProfile, this.userProfileId, {super.key});
   @override
   _CreateRequestState createState() => _CreateRequestState();
 }
 
 class _CreateRequestState extends State<CreateRequest> {
   final httpRequest = HttpRequest();
-  
+
   final TextEditingController categoryController = TextEditingController();
-  final TextEditingController estimatedBudgetController = TextEditingController();
+  final TextEditingController estimatedBudgetController =
+      TextEditingController();
   final TextEditingController areaController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
-  final TextEditingController fileController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController statusController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Request'),
@@ -52,35 +50,53 @@ class _CreateRequestState extends State<CreateRequest> {
               decoration: InputDecoration(labelText: 'Location'),
             ),
             TextField(
-              controller: fileController,
-              decoration: InputDecoration(labelText: 'File'),
-            ),
-            TextField(
               controller: descriptionController,
               decoration: InputDecoration(labelText: 'Description'),
             ),
-            TextField(
-              controller: statusController,
-              decoration: InputDecoration(labelText: 'Status'),
-            ),
             ElevatedButton(
               onPressed: () {
-                final data = RequestInterface(
-                  category: categoryController.text,
-                  estimatedBudget: estimatedBudgetController.text,
-                  area: int.tryParse(areaController.text) ?? 0,
-                  location: locationController.text,
-                  file: fileController.text,
-                  description: descriptionController.text,
-                  status: statusController.text,
-                );
-                bool accepted = statusController.text == "Aceptado";
-                httpRequest.createRequest(widget.userProfile.id!, widget.businessProfile.id!, statusController.text, descriptionController.text, accepted);
-                
+                if (categoryController.text.isNotEmpty &&
+                    estimatedBudgetController.text.isNotEmpty &&
+                    locationController.text.isNotEmpty &&
+                    descriptionController.text.isNotEmpty) {
+                  final category = categoryController.text;
+                  final estimatedBudget = estimatedBudgetController.text;
+                  final location = locationController.text;
+                  final description = descriptionController.text;
+
+                  // Validar que areaController.text sea una cadena válida que pueda convertirse en un entero
+                  if (areaController.text.isNotEmpty) {
+                    final area = int.tryParse(areaController.text);
+                    if (area != null) {
+                      final data = RequestInterface(
+                        category: category,
+                        estimatedBudget: estimatedBudget,
+                        area: area,
+                        location: location,
+                        description: description,
+                      );
+                      httpRequest.createRequest(
+                          widget.userProfileId,
+                          widget.businessProfile.id!,
+                          category,
+                          estimatedBudget,
+                          area,
+                          location,
+                          description);
+                    } else {
+                      print('Error: El valor de área no es un número válido.');
+                    }
+                  } else {
+                    // Tratar el caso en el que areaController está vacío
+                    print('Error: El campo de área no puede estar vacío.');
+                  }
+                } else {
+                  print('Error de validación');
+                }
               },
               child: Text("Send Request"),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFF02AA8B),
+                backgroundColor: Color(0xFF02AA8B),
                 minimumSize: Size(350, 60),
               ),
             ),

@@ -73,7 +73,7 @@ class _PerfilBusinessState extends State<PerfilBusiness> {
         ? Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return BusinessProfileContent(widget.businessProfile);
+                return BusinessProfileContent(widget.businessProfile, null);
               },
             ),
           )
