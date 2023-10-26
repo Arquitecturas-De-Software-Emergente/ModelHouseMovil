@@ -113,7 +113,7 @@ class _PendingProposalState extends State<PendingProposal> {
                   final status = widget.proposals![index].status;
                   if (widget.businessProfile != null && status == 'Pendiente') {
                     return RequestCard(
-                      '${widget.proposals![index].name}',
+                      '${widget.proposals![index].firstName} ${widget.proposals![index].lastName}',
                       '${widget.proposals![index].description}',
                       Container(),
                       ElevatedButton(
@@ -136,7 +136,7 @@ class _PendingProposalState extends State<PendingProposal> {
                     );
                   } else if (widget.businessProfile != null && status == 'Aprobado') {
                     return RequestCard(
-                      '${widget.proposals![index].name}',
+                      '${widget.proposals![index].firstName} ${widget.proposals![index].lastName}',
                       '${widget.proposals![index].description}',
                       Container(),
                       Container(
