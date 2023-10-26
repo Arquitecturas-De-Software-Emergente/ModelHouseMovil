@@ -19,18 +19,17 @@ class _FormProposalState extends State<FormProposal> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Titles(28, "Form Proposal"),
-          backgroundColor: const Color(0xffffffff),
-          centerTitle: true,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0XFF02AA8B),
-            ),
-            onPressed: () => {Navigator.of(context).pop()},
-          ),
-        )
-    );
+      title: Titles(28, "Form Proposal"),
+      backgroundColor: const Color(0xffffffff),
+      centerTitle: true,
+      elevation: 0,
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          color: Color(0XFF02AA8B),
+        ),
+        onPressed: () => {Navigator.of(context).pop()},
+      ),
+    ));
   }
 }
