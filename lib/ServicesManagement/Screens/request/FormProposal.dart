@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
@@ -6,7 +7,6 @@ import 'package:model_house/ServicesManagement/Services/ProyectResource_Service.
 import '../../../Security/Interfaces/BusinessProfile.dart';
 import '../../../Security/Interfaces/UserProfile.dart';
 import '../../../Shared/Widgets/texts/titles.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../../Interfaces/Proposal.dart';
 

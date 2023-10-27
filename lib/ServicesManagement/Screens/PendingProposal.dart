@@ -13,9 +13,9 @@ import '../Services/Proposal_Service.dart';
 import '../Services/Request_Service.dart';
 
 class PendingProposal extends StatefulWidget {
-  late final List<Proposal>? proposals;
-  final UserProfile? userProfile;
-  final BusinessProfile? businessProfile;
+  List<Proposal>? proposals;
+  UserProfile? userProfile;
+  BusinessProfile? businessProfile;
   PendingProposal(this.proposals, this.userProfile, this.businessProfile, {Key? key})
       : super(key: key);
 
@@ -31,12 +31,12 @@ class _PendingProposalState extends State<PendingProposal> {
   @override
   void initState() {
     httpProposal = HttpProposal();
-    print(widget.proposals?.length);
     super.initState();
   }
 
   Future changeStatus(Proposal proposalInterface, String status) async {
     proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
+    print(proposal?.status);
     if (proposal != null) {
       proposalsPending = await httpProposal?.getProposalsByStatus();
       setState(() {
@@ -76,29 +76,29 @@ class _PendingProposalState extends State<PendingProposal> {
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      Container(
-                        width: 100,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(color: Colors.green, width: 2.0),
-                        ),
-                        child: Card(
-                          child: Text("En espera"),
-                        ),
-                      ),
+                      AcceptRejectButtons(onAcceptPressed: () {
+                        changeStatus(widget.proposals![index], "Aprobado");
+                      }, onRejectPressed: () {
+                        changeStatus(widget.proposals![index], "Cancelado");
+                      }),
                     );
                   } else if (widget.userProfile != null && status == 'Aprobado') {
                     return RequestCard(
                       '${widget.proposals![index].name}',
                       '${widget.proposals![index].description}',
                       Container(),
-                      AcceptRejectButtons(onAcceptPressed: () {
-                        changeStatus(widget.proposals![index], "Aprobado");
-                      }, onRejectPressed: () {
-                        changeStatus(widget.proposals![index], "Cancelado");
-                      }),
+                      Container(
+                        width: 100,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(color: Colors.green, width: 2.0),
+                        ),
+                        child: const Card(
+                          child: Text("See Project Progress"),
+                        ),
+                      ),
                     );
                   }
                   return SizedBox.shrink(); // No matching condition, so hide the card.
@@ -111,49 +111,23 @@ class _PendingProposalState extends State<PendingProposal> {
                 itemCount: widget.proposals!.length,
                 itemBuilder: (context, index) {
                   final status = widget.proposals![index].status;
-                  if (widget.businessProfile != null && status == 'Pendiente') {
-                    return RequestCard(
-                      '${widget.proposals![index].firstName} ${widget.proposals![index].lastName}',
-                      '${widget.proposals![index].description}',
-                      Container(),
-                      ElevatedButton(
-                        onPressed: (){
-                          navigate(context, FormProposal(widget.proposals![index].id!, widget.userProfile, widget.businessProfile));
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: Colors.green, width: 2.0),
-                          ),
-                          child: Card(
-                            child: Text("En espera"),
-                          ),
-                        ),
+                  return RequestCard(
+                    '${widget.proposals![index].name}',
+                    '${widget.proposals![index].description}',
+                    Container(),
+                    Container(
+                      width: 100,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: Colors.green, width: 2.0),
                       ),
-                    );
-                  } else if (widget.businessProfile != null && status == 'Aprobado') {
-                    return RequestCard(
-                      '${widget.proposals![index].firstName} ${widget.proposals![index].lastName}',
-                      '${widget.proposals![index].description}',
-                      Container(),
-                      Container(
-                        width: 100,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(color: Colors.green, width: 2.0),
-                        ),
-                        child: Card(
-                          child: Text("En espera"),
-                        ),
+                      child: const Card(
+                        child: Text("Elaborate Proposal"),
                       ),
-                    );
-                  }
-                  return SizedBox.shrink(); // No matching condition, so hide the card.
+                    ),
+                  );
                 },
               ),
             ),

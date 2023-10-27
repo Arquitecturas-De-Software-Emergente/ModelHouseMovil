@@ -110,7 +110,7 @@ class HttpProposal {
   Future<Proposal?> changeStatus(int id, String status) async {
     final persistence = await SharedPreferences.getInstance();
     //
-    final String putUrl = "$httpBaseServiceManagement/request/$id/$status";
+    final String putUrl = "$httpBaseServiceManagement/request/$id/status";
     //
     var uri = Uri.parse(putUrl);
     var response = await proposal.put(uri,
@@ -120,6 +120,7 @@ class HttpProposal {
           'Authorization': 'Bearer ${persistence.getString("token")}'
         },
         body: jsonEncode({'status': status}));
+    print(response.body);
     if (response.statusCode == 200) {
       return Proposal.fromJson(jsonDecode(response.body));
     }
