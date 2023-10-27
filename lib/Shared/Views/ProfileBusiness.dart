@@ -23,6 +23,11 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
   HttpProyect? httpProyect;
   List<Proyect>? proyects;
   HttpBusinessProfile? httpBusinessProfile;
+  String? name;
+  String? webSite;
+  String? phoneNumber;
+  String? address;
+  String? description;
 
   @override
   void initState() {
@@ -42,17 +47,19 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
     }
   }
 
-  void _performProfileUpdate(String name, String webSite, String phoneNumber,
-      String address, String description) async {
-    print(
-        "Before Update - Name: $name, WebSite: $webSite, Phone Number: $phoneNumber, Address: $address, Description: $description");
-    if (widget.businessProfile.id != null) {
+  void _performProfileUpdate() async {
+    if (widget.businessProfile.id != null &&
+        name != null &&
+        webSite != null &&
+        phoneNumber != null &&
+        address != null &&
+        description != null) {
       final updatedProfile = await httpBusinessProfile?.updateBusinessProfile(
-        name,
-        webSite,
-        phoneNumber,
-        address,
-        description,
+        name!,
+        webSite!,
+        phoneNumber!,
+        address!,
+        description!,
         widget.businessProfile.id!,
       );
       if (updatedProfile != null) {
@@ -65,12 +72,24 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
     }
   }
 
+  Widget _buildEditButton() {
+    return ElevatedButton(
+      onPressed: () {
+        _editProfile();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0XFF02AA8B),
+      ),
+      child: Text("EDIT", style: TextStyle(color: Colors.white)),
+    );
+  }
+
   void _editProfile() {
-    String name = widget.businessProfile.name;
-    String webSite = widget.businessProfile.webSite;
-    String phoneNumber = widget.businessProfile.phoneNumber;
-    String address = widget.businessProfile.address;
-    String description = widget.businessProfile.description;
+    name = widget.businessProfile.name;
+    webSite = widget.businessProfile.webSite;
+    phoneNumber = widget.businessProfile.phoneNumber;
+    address = widget.businessProfile.address;
+    description = widget.businessProfile.description;
 
     showDialog(
       context: context,
@@ -83,35 +102,45 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
               TextFormField(
                 initialValue: name,
                 onChanged: (value) {
-                  name = value;
+                  setState(() {
+                    name = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Name"),
               ),
               TextFormField(
                 initialValue: webSite,
                 onChanged: (value) {
-                  webSite = value;
+                  setState(() {
+                    webSite = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Web Site"),
               ),
               TextFormField(
                 initialValue: phoneNumber,
                 onChanged: (value) {
-                  phoneNumber = value;
+                  setState(() {
+                    phoneNumber = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Phone Number"),
               ),
               TextFormField(
                 initialValue: address,
                 onChanged: (value) {
-                  address = value;
+                  setState(() {
+                    address = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Address"),
               ),
               TextFormField(
                 initialValue: description,
                 onChanged: (value) {
-                  description = value;
+                  setState(() {
+                    description = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Description"),
               ),
@@ -120,8 +149,7 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
           actions: [
             TextButton(
               onPressed: () {
-                _performProfileUpdate(
-                    name, webSite, phoneNumber, address, description);
+                _performProfileUpdate();
                 Navigator.of(context).pop();
               },
               child: const Text("Save"),
@@ -167,19 +195,18 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Titles(20, "Personal Information"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Titles(20, "Personal Information"),
+                  _buildEditButton(),
+                ],
               ),
-              _buildFieldWithEditButton("Name: ", widget.businessProfile.name),
-              _buildFieldWithEditButton(
-                  "Web Site: ", widget.businessProfile.webSite),
-              _buildFieldWithEditButton(
-                  "Phone Number: ", widget.businessProfile.phoneNumber),
-              _buildFieldWithEditButton(
-                  "Address: ", widget.businessProfile.address),
-              _buildFieldWithEditButton(
-                  "Description: ", widget.businessProfile.description),
+              _buildField("Name: ", widget.businessProfile.name),
+              _buildField("Web Site: ", widget.businessProfile.webSite),
+              _buildField("Phone Number: ", widget.businessProfile.phoneNumber),
+              _buildField("Address: ", widget.businessProfile.address),
+              _buildField("Description: ", widget.businessProfile.description),
             ],
           ),
         ),
@@ -250,24 +277,7 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
     );
   }
 
-  Widget customEditButton(VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-        decoration: BoxDecoration(
-          //border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: const Text(
-          "EDIT",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFieldWithEditButton(String label, String? value) {
+  Widget _buildField(String label, String? value) {
     final maxDisplayLength = 20;
     final displayValue = value ?? "...";
     final truncatedValue = displayValue.length <= maxDisplayLength
@@ -285,9 +295,6 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
             ],
           ),
         ),
-        customEditButton(() {
-          _editProfile();
-        }),
       ],
     );
   }

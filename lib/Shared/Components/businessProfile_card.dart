@@ -129,7 +129,7 @@ class _BusinessProfileCardState extends State<BusinessProfileCard> {
                           Icons.location_on,
                           color: Color.fromARGB(255, 0, 0, 0),
                         ),
-                        Text("Perú, Lima"),
+                        Text(widget.address),
                       ],
                     ),
                     IconButton(

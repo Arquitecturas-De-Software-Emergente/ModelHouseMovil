@@ -19,6 +19,11 @@ class ProfileUser extends StatefulWidget {
 
 class _ProfileUserState extends State<ProfileUser> {
   HttpUserProfile? httpUserProfile;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? phoneNumber;
+  String? address;
 
   @override
   void initState() {
@@ -26,15 +31,18 @@ class _ProfileUserState extends State<ProfileUser> {
     super.initState();
   }
 
-  void _performProfileUpdate(String firstName, String lastName, String gender,
-      String phoneNumber, String address) async {
-    if (widget.userProfile.id != null) {
+  void _performProfileUpdate() async {
+    if (widget.userProfile.id != null &&
+        firstName != null &&
+        lastName != null &&
+        gender != null &&
+        phoneNumber != null) {
       final updatedProfile = await httpUserProfile?.updateUserProfile(
-        firstName,
-        lastName,
-        gender,
-        phoneNumber,
-        address,
+        firstName!,
+        lastName!,
+        gender!,
+        phoneNumber!,
+        address ?? '',
         widget.userProfile.id!,
       );
       if (updatedProfile != null) {
@@ -47,12 +55,24 @@ class _ProfileUserState extends State<ProfileUser> {
     }
   }
 
+  Widget _buildEditButton() {
+    return ElevatedButton(
+      onPressed: () {
+        _editProfile();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0XFF02AA8B),
+      ),
+      child: Text("EDIT", style: TextStyle(color: Colors.white)),
+    );
+  }
+
   void _editProfile() {
-    String firstName = widget.userProfile.firstName;
-    String lastName = widget.userProfile.lastName;
-    String gender = widget.userProfile.gender;
-    String phoneNumber = widget.userProfile.phoneNumber;
-    String? address = widget.userProfile.address;
+    firstName = widget.userProfile.firstName;
+    lastName = widget.userProfile.lastName;
+    gender = widget.userProfile.gender;
+    phoneNumber = widget.userProfile.phoneNumber;
+    address = widget.userProfile.address;
 
     showDialog(
       context: context,
@@ -65,35 +85,45 @@ class _ProfileUserState extends State<ProfileUser> {
               TextFormField(
                 initialValue: firstName,
                 onChanged: (value) {
-                  firstName = value;
+                  setState(() {
+                    firstName = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "First Name"),
               ),
               TextFormField(
                 initialValue: lastName,
                 onChanged: (value) {
-                  lastName = value;
+                  setState(() {
+                    lastName = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Last Name"),
               ),
               TextFormField(
                 initialValue: gender,
                 onChanged: (value) {
-                  gender = value;
+                  setState(() {
+                    gender = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Gender"),
               ),
               TextFormField(
                 initialValue: phoneNumber,
                 onChanged: (value) {
-                  phoneNumber = value;
+                  setState(() {
+                    phoneNumber = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Phone Number"),
               ),
               TextFormField(
                 initialValue: address,
                 onChanged: (value) {
-                  address = value;
+                  setState(() {
+                    address = value;
+                  });
                 },
                 decoration: const InputDecoration(labelText: "Adress"),
               ),
@@ -102,8 +132,7 @@ class _ProfileUserState extends State<ProfileUser> {
           actions: [
             TextButton(
               onPressed: () {
-                _performProfileUpdate(
-                    firstName, lastName, gender, phoneNumber, address!);
+                _performProfileUpdate();
                 Navigator.of(context).pop();
               },
               child: const Text("Save"),
@@ -152,19 +181,18 @@ class _ProfileUserState extends State<ProfileUser> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Titles(20, "Personal Information"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Titles(20, "Personal Information"),
+                  _buildEditButton(),
+                ],
               ),
-              _buildFieldWithEditButton(
-                  "First Name: ", widget.userProfile.firstName),
-              _buildFieldWithEditButton(
-                  "Last Name: ", widget.userProfile.lastName),
-              _buildFieldWithEditButton("Gender: ", widget.userProfile.gender),
-              _buildFieldWithEditButton(
-                  "Phone Number: ", widget.userProfile.phoneNumber),
-              _buildFieldWithEditButton(
-                  "Address: ", widget.userProfile.address),
+              _buildField("First Name: ", widget.userProfile.firstName),
+              _buildField("Last Name: ", widget.userProfile.lastName),
+              _buildField("Gender: ", widget.userProfile.gender),
+              _buildField("Phone Number: ", widget.userProfile.phoneNumber),
+              _buildField("Address: ", widget.userProfile.address),
             ],
           ),
         ),
@@ -173,24 +201,7 @@ class _ProfileUserState extends State<ProfileUser> {
     );
   }
 
-  Widget customEditButton(VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-        decoration: BoxDecoration(
-          //border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Text(
-          "EDIT",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFieldWithEditButton(String label, String? value) {
+  Widget _buildField(String label, String? value) {
     final maxDisplayLength = 15;
     final displayValue = value ?? "...";
     final truncatedValue = displayValue.length <= maxDisplayLength
@@ -208,9 +219,6 @@ class _ProfileUserState extends State<ProfileUser> {
             ],
           ),
         ),
-        customEditButton(() {
-          _editProfile();
-        }),
       ],
     );
   }
@@ -222,7 +230,7 @@ class _ProfileUserState extends State<ProfileUser> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20, top: 25),
+            padding: const EdgeInsets.only(left: 20, top: 20),
             child: Row(
               children: [
                 Subtitles("Current Plan"),

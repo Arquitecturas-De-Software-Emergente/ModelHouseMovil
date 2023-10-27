@@ -59,7 +59,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Titles(28, "Business Profile"),
+        title: Titles(20, "Business Profile"),
         backgroundColor: const Color(0xffffffff),
         centerTitle: true,
         elevation: 0,
@@ -104,7 +104,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                   Text(
                     widget.businessProfile.name,
                     style: const TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     onPressed: () {},
@@ -232,18 +232,21 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                         iconData: SocialIconsFlutter.instagram,
                         iconColor: const Color(0xFF02AA8B),
                         link: 'https://www.instagram.com/',
+                        iconSize: 20,
                       ),
                       SocialWidget(
                         placeholderText: '',
                         iconData: SocialIconsFlutter.linkedin,
                         iconColor: const Color(0xFF02AA8B),
                         link: 'https://www.linkedin.com/',
+                        iconSize: 20,
                       ),
                       SocialWidget(
                         placeholderText: '',
                         iconData: SocialIconsFlutter.facebook,
                         iconColor: const Color(0xFF02AA8B),
                         link: 'https://www.facebook.com/',
+                        iconSize: 20,
                       ),
                     ],
                   ),
@@ -314,7 +317,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                       ),
                     ),
                   ),
-            SizedBox(height: 70),
+            SizedBox(height: 25),
             widget.account?.userProfileId != null &&
                     widget.account?.businessProfileId == null
                 ? ElevatedButton(
@@ -328,10 +331,17 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                         ),
                       );
                     },
-                    child: const Text("Send Request"),
+                    child: const Text(
+                      "Send Request",
+                      style: TextStyle(fontSize: 15),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF02AA8B),
                       minimumSize: const Size(350, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), // Border redondeado
+                      ),
                     ),
                   )
                 : Container(),
