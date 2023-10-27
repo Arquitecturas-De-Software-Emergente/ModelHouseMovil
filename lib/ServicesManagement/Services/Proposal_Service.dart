@@ -54,7 +54,7 @@ class HttpProposal {
   Future<Proposal?> updateProposal(int proposalId, String title,
       String description) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/proposal");
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal/${proposalId}");
     var response = await proposal.put(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',

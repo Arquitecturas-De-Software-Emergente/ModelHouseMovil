@@ -24,7 +24,7 @@ class HttpProyectActivity {
   }
 
   Future<ProyectActivity?> createProyectActivity(
-      int proposalId, String status, String name, String description) async {
+      int proposalId, String description) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectActivity.post(uri,
@@ -34,7 +34,10 @@ class HttpProyectActivity {
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
         body: jsonEncode(
-            {'status': status, 'name': name, 'description': description}));
+            {
+              "description": description,
+              "isChecked": false
+            }));
     if (response.statusCode == 200) {
       return ProyectActivity.fromJson(jsonDecode(response.body));
     }

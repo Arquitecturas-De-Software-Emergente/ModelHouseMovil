@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +9,7 @@ import '../Interfaces/ProyectResource.dart';
 class HttpProyectResource {
   var proyectResource = http.Client();
 
-  Future<List<ProyectResource>?> getAllByProposalId(Long proposalId) async {
+  Future<List<ProyectResource>?> getAllByProposalId(int proposalId) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectResource.get(uri, headers: {
@@ -24,10 +23,10 @@ class HttpProyectResource {
     return null;
   }
 
-  Future<ProyectResource?> createProyectResource(
-      int proposalId, String description, int quantity, String state) async {
+  Future<ProyectResource?> createProjectResource(
+      int proposalId, String description, int quantity) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
+    var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_resource");
     var response = await proyectResource.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -35,9 +34,10 @@ class HttpProyectResource {
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
         body: jsonEncode({
-          'description': description,
-          'quantity': quantity,
-          'state': state
+          "description": description,
+          "quantity": quantity,
+          "resourceType": "string",
+          "isChecked": false
         }));
     if (response.statusCode == 200) {
       return ProyectResource.fromJson(jsonDecode(response.body));

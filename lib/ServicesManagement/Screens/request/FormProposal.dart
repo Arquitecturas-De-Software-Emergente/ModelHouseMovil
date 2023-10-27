@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
+import 'package:model_house/ServicesManagement/Services/ProyectActivity_Service.dart';
+import 'package:model_house/ServicesManagement/Services/ProyectResource_Service.dart';
 import '../../../Security/Interfaces/BusinessProfile.dart';
 import '../../../Security/Interfaces/UserProfile.dart';
 import '../../../Shared/Widgets/texts/titles.dart';
 import 'package:file_picker/file_picker.dart';
+
+import '../../Interfaces/Proposal.dart';
 
 class FormProposal extends StatefulWidget {
   final int proposalId;
@@ -35,10 +39,15 @@ class _FormProposalState extends State<FormProposal> {
 
 
   HttpProposal? httpProposal;
+  HttpProyectActivity? httpProjectActivity;
+  HttpProyectResource? httpProjectResource;
 
+  Proposal? proposal;
   @override
   void initState() {
     httpProposal = HttpProposal();
+    httpProjectActivity = HttpProyectActivity();
+    httpProjectResource = HttpProyectResource();
     super.initState();
   }
 
@@ -91,6 +100,9 @@ class _FormProposalState extends State<FormProposal> {
       selectedFiles.removeAt(index);
     });
   }
+  Future changeStatus(int proposalId, String status) async {
+    proposal = await httpProposal?.changeStatus(proposalId, status);
+  }
   void validateAndSubmit() {
     if (titleController.text.isEmpty) {
       setState(() {
@@ -134,7 +146,20 @@ class _FormProposalState extends State<FormProposal> {
 
     if (titleController.text.isNotEmpty && descriptionController.text.isNotEmpty
     && activities.isNotEmpty && resources.isNotEmpty) {
-    // Aquí puedes realizar la lógica para enviar el formulario.
+
+      // Aquí puedes realizar la lógica para enviar el formulario y agregar actividades y recursos.
+      httpProposal?.updateProposal(widget.proposalId, titleController.text.toString(), descriptionController.text.toString());
+
+      // Agregar actividades
+      activities.forEach((activity) {
+        httpProjectActivity?.createProyectActivity(widget.proposalId, activity);
+      });
+
+      // Agregar recursos
+      resources.forEach((resource) {
+        httpProjectResource?.createProjectResource(widget.proposalId, resource['name']!, resource['quantity']! as int);
+      });
+      changeStatus(widget.proposalId, "Aprobado");
     }
   }
   @override
