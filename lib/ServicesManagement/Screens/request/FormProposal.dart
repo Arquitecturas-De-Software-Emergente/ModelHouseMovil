@@ -157,9 +157,10 @@ class _FormProposalState extends State<FormProposal> {
 
       // Agregar recursos
       resources.forEach((resource) {
-        httpProjectResource?.createProjectResource(widget.proposalId, resource['name']!, resource['quantity']! as int);
+        print(resource);
+        httpProjectResource?.createProjectResource(widget.proposalId, resource['name']!, int.tryParse(resource['quantity']!));
       });
-      changeStatus(widget.proposalId, "Aprobado");
+      changeStatus(widget.proposalId, "Enviado");
     }
   }
   @override

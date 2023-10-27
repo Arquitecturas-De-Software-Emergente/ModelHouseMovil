@@ -24,7 +24,7 @@ class HttpProyectResource {
   }
 
   Future<ProyectResource?> createProjectResource(
-      int proposalId, String description, int quantity) async {
+      int proposalId, String description, int? quantity) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_resource");
     var response = await proyectResource.post(uri,
