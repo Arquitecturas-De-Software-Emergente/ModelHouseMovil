@@ -13,10 +13,9 @@ import '../Services/Proposal_Service.dart';
 import '../Services/Request_Service.dart';
 
 class PendingProposal extends StatefulWidget {
-  List<Proposal>? proposals;
   UserProfile? userProfile;
   BusinessProfile? businessProfile;
-  PendingProposal(this.proposals, this.userProfile, this.businessProfile, {Key? key})
+  PendingProposal(this.userProfile, this.businessProfile, {Key? key})
       : super(key: key);
 
   @override
@@ -27,14 +26,20 @@ class _PendingProposalState extends State<PendingProposal> {
   List<Proposal>? proposalsPending;
   HttpProposal? httpProposal;
   Proposal? proposal;
-
+  List<Proposal>? proposals;
+  
   @override
   void initState() {
     httpProposal = HttpProposal();
-    print("PROPOSAL: ${widget.proposals![3].status}");
+    getProposal();
     super.initState();
   }
-
+  Future getProposal() async{
+    proposals = await httpProposal?.getProposals();
+    setState(() {
+      proposals = proposals;
+    });
+  }
   Future changeStatus(Proposal proposalInterface, String status) async {
     proposal = await httpProposal?.changeStatus(proposalInterface.id!, status);
     print(proposal?.status);
@@ -42,7 +47,7 @@ class _PendingProposalState extends State<PendingProposal> {
       proposalsPending = await httpProposal?.getProposalsByStatus();
       setState(() {
         proposal = proposal;
-        widget.proposals = proposalsPending;
+        proposals = proposalsPending;
       });
     }
   }
@@ -66,45 +71,45 @@ class _PendingProposalState extends State<PendingProposal> {
       body: Column(
         children: [
           Container(),
-          if (widget.userProfile != null && widget.proposals != null)
+          if (widget.userProfile != null && proposals != null)
             Expanded(
               child: ListView.builder(
-                itemCount: widget.proposals!.length,
+                itemCount: proposals!.length,
                 itemBuilder: (context, index) {
-                  var status = widget.proposals![index].status;
+                  var status = proposals![index].status;
                   if (status == 'Enviado') {
                     return RequestCard(
-                      '${widget.proposals![index].name}',
-                      '${widget.proposals![index].description}',
+                      '${proposals![index].name}',
+                      '${proposals![index].description}',
                       Container(),
                       AcceptRejectButtons(onAcceptPressed: () {
-                        changeStatus(widget.proposals![index], "Aprobado");
+                        changeStatus(proposals![index], "Aprobado");
                       }, onRejectPressed: () {
-                        changeStatus(widget.proposals![index], "Cancelado");
+                        changeStatus(proposals![index], "Cancelado");
                       }),
                     );
                   } else if (status == 'Pendiente') {
                     return RequestCard(
-                      '${widget.proposals![index].name}',
-                      '${widget.proposals![index].description}',
+                      '${proposals![index].name}',
+                      '${proposals![index].description}',
                       Container(),
-                      Text("En espera de una propuesta")
+                      const Text('Waiting for an answer', style: TextStyle(color: Color(0XFFECA11E), fontWeight: FontWeight.bold))
                     );
                   }
                   return SizedBox.shrink(); // No matching condition, so hide the card.
                 },
               ),
             ),
-          if (widget.businessProfile != null && widget.proposals != null)
+          if (widget.businessProfile != null && proposals != null)
             Expanded(
               child: ListView.builder(
-                itemCount: widget.proposals!.length,
+                itemCount: proposals!.length,
                 itemBuilder: (context, index) {
-                  var status = widget.proposals![index].status;
+                  var status = proposals![index].status;
                   if (status == 'Pendiente') {
                     return RequestCard(
-                      '${widget.proposals![index].firstName} ${widget.proposals![index].lastName}',
-                      '${widget.proposals![index].description}',
+                      '${proposals![index].firstName} ${proposals![index].lastName}',
+                      '${proposals![index].description}',
                       Container(),
                         Container(
                           decoration: BoxDecoration(
@@ -112,23 +117,42 @@ class _PendingProposalState extends State<PendingProposal> {
                             borderRadius: BorderRadius.circular(10.0),  // Bordes redondeados de 10px
                             border: Border.all(color: Color(0XFF02AA8B), width: 2.0),  // Borde verde
                           ),
-                          child: TextButton(
-                            onPressed: () {
-                              navigate(context, FormProposal(widget.proposals![index].id!, widget.userProfile, widget.businessProfile));
-                              // Coloca aquí la acción que deseas realizar cuando se presiona el botón
-                            },
-                            style: TextButton.styleFrom(primary: Color(0XFF02AA8B)),  // Color del texto verde
-                            child: Text('Elaborate Proposal'),  // Texto del botón
+                          child: Container(
+                            padding: const EdgeInsets.all(2.0),
+                            child: TextButton(
+                              onPressed: () {
+                                  navigate(context, FormProposal(proposals![index].id!, widget.userProfile, widget.businessProfile));
+                                // Coloca aquí la acción que deseas realizar cuando se presiona el botón
+                              },
+                              style: TextButton.styleFrom(primary: Color(0XFF02AA8B)),  // Color del texto verde
+                              child: Text('Elaborate Proposal'),  // Texto del botón
+                            ),
                           ),
                         )
                     );
                   }
                   else if (status == 'Enviado') {
                     return RequestCard(
-                        '${widget.proposals![index].name}',
-                        '${widget.proposals![index].description}',
+                        '${proposals![index].firstName} ${proposals![index].lastName}',
+                        '${proposals![index].description}',
                         Container(),
-                        Text("En espera de una respuesta")
+                        const Text('Waiting for an answer', style: TextStyle(color: Color(0XFFECA11E), fontWeight: FontWeight.bold))
+                    );
+                  }
+                  else if (status == 'Cancelado') {
+                    return RequestCard(
+                        '${proposals![index].firstName} ${proposals![index].lastName}',
+                        '${proposals![index].description}',
+                        Container(),
+                        const Text('Canceled Proposal', style: TextStyle(color: Color(0XFFE91717), fontWeight: FontWeight.bold))
+                    );
+                  }
+                  else if (status == 'Aprobado') {
+                    return RequestCard(
+                        '${proposals![index].firstName} ${proposals![index].lastName}',
+                        '${proposals![index].description}',
+                        Container(),
+                        const Text('Accepted Proposal', style: TextStyle(color: Color(0XFF02AA8B), fontWeight: FontWeight.bold))
                     );
                   }
                   return SizedBox.shrink();

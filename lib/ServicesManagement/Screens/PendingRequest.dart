@@ -9,10 +9,10 @@ import '../Interfaces/RequestInterface.dart';
 import '../Services/Request_Service.dart';
 
 class PendingRequest extends StatefulWidget {
-  List<RequestInterface>? requests;
+  String status;
   UserProfile? userProfile;
   BusinessProfile? businessProfile;
-  PendingRequest(this.requests, this.userProfile, this.businessProfile,
+  PendingRequest(this.status, this.userProfile, this.businessProfile,
       {Key? key})
       : super(key: key);
 
@@ -23,31 +23,40 @@ class PendingRequest extends StatefulWidget {
 class _PendingRequestState extends State<PendingRequest> {
   RequestInterface? request;
   HttpRequest? httpRequest;
-  List<RequestInterface>? requestsPending;
+  List<RequestInterface>? requests;
   @override
   void initState() {
+    print("Aqui debe entrar tmr");
     httpRequest = HttpRequest();
-    print(widget.requests?.length);
-    print('requests: ${widget.requests}');
-    print('userProfile: ${widget.userProfile}');
-    print('businessProfile: ${widget.businessProfile}');
+    print("Aqui debe entrar tmr 2");
+    getRequest();
     super.initState();
   }
-
+  Future getRequest() async{
+    print("Aqui debe entrar tmr 3");
+    if(widget.businessProfile != null){
+      requests = await httpRequest?.getAllBusinessProfileIdAndStatus(widget.businessProfile!.id!, widget.status);
+    }else{
+      requests = await httpRequest?.getAllUserProfileIdAndStatus(widget.userProfile!.id!, widget.status);
+    }
+    setState(() {
+      requests = requests;
+    });
+  }
   Future changeStatus(int requestId, String status) async {
     request = await httpRequest?.changeStatus(requestId, status);
     if (request != null) {
       if (widget.userProfile != null){
-      requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
-          widget.userProfile!.id!, "Pendiente");
+        requests = await httpRequest?.getAllUserProfileIdAndStatus(
+          widget.userProfile!.id!, widget.status);
       }
       else{
-        requestsPending = await httpRequest?.getAllBusinessProfileIdAndStatus(
-        widget.businessProfile!.id!, "Pendiente");
+        requests = await httpRequest?.getAllBusinessProfileIdAndStatus(
+        widget.businessProfile!.id!, widget.status);
       }
       setState(() {
         request = request;
-        widget.requests = requestsPending;
+        requests = requests;
       });
     }
   }
@@ -74,12 +83,12 @@ class _PendingRequestState extends State<PendingRequest> {
           if (widget.userProfile != null)
             Expanded(
               child: ListView.builder(
-                itemCount: widget.requests?.length ?? 0,
+                itemCount: requests?.length ?? 0,
                 itemBuilder: (context, index) {
                   return RequestCard(
-                      '${widget.requests![index].name}',
-                      '${widget.requests![index].description}',
-                      SeeDetails(widget.requests![index], 'Request to ${widget.requests![index].name}'),
+                      '${requests![index].name}',
+                      '${requests![index].description}',
+                      SeeDetails(requests![index], 'Request to ${requests![index].name}'),
                       Container());
                 },
               ),
@@ -87,22 +96,22 @@ class _PendingRequestState extends State<PendingRequest> {
           if (widget.userProfile == null)
             Expanded(
               child: ListView.builder(
-                itemCount: widget.requests?.length ?? 0,
+                itemCount: requests?.length ?? 0,
                 itemBuilder: (context, index) {
                   return RequestCard(
-                      '${widget.requests![index].firstName} ${widget.requests![index].lastName}',
-                      '${widget.requests![index].description}',
-                      SeeDetails(widget.requests![index], "Request by ${widget.requests![index].firstName} ${widget.requests![index].lastName}"),
+                      '${requests![index].firstName} ${requests![index].lastName}',
+                      '${requests![index].description}',
+                      SeeDetails(requests![index], "Request by ${requests![index].firstName} ${requests![index].lastName}"),
                       AcceptRejectButtons(
                         onAcceptPressed: () {
                           // Lógica para cuando se presiona el botón "Accept"
                           print('Accept button pressed');
-                          changeStatus(widget.requests![index].id!, "Aprobado");
+                          changeStatus(requests![index].id!, "Aprobado");
                         },
                         onRejectPressed: () {
                           // Lógica para cuando se presiona el botón "Reject"
                           print('Reject button pressed');
-                          changeStatus(widget.requests![index].id!, "Cancelado");
+                          changeStatus(requests![index].id!, "Cancelado");
                         },
                       ),);
                 },

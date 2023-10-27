@@ -39,15 +39,10 @@ class _OptionsState extends State<Options> {
   ];
   HttpRequest? httpRequest;
   HttpAccount? httpAccount;
-  HttpProposal? httpProposal;
-  HttpProject? httpProject;
   HttpBusinessProfile? httpBusinessProfile;
   BusinessProfile? businessProfile;
   Account? account;
 
-  List<RequestInterface>? requestsPending;
-  List<Proposal>? requestsPendingProposal;
-  List<ProjectInterface>? inProcess;
   List<RequestInterface>? canceled;
   List<RequestInterface>? finished;
 
@@ -57,9 +52,7 @@ class _OptionsState extends State<Options> {
   void initState() {
     httpRequest = HttpRequest();
     httpAccount = HttpAccount();
-    httpProject = HttpProject();
     httpBusinessProfile = HttpBusinessProfile();
-    httpProposal = HttpProposal();
 
     print('Account: ${widget.account}');
     print('UserProfile: ${widget.userProfile}');
@@ -86,41 +79,24 @@ class _OptionsState extends State<Options> {
 
 
   Future getRequestUserProfile() async {
-    requestsPending = await httpRequest?.getAllUserProfileIdAndStatus(
-        widget.userProfile!.id!, "Pendiente");
-
-    requestsPendingProposal = await httpProposal?.getProposals();
-
-    inProcess = await httpProject?.getAllProjects();
 
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "Cancelado");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "FINISHED");
     setState(() {
-      requestsPending = requestsPending;
-      requestsPendingProposal = requestsPendingProposal;
-      inProcess = inProcess;
       canceled = canceled;
       finished = finished;
     });
   }
 
   Future getRequestBusinessProfile() async {
-    requestsPending = await httpRequest?.getAllBusinessProfileIdAndStatus(
-        businessProfile!.id!, "Pendiente");
 
-    requestsPendingProposal = await httpProposal?.getProposals();
-
-    inProcess = await httpProject?.getAllProjects();
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "Cancelado");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "FINISHED");
     setState(() {
-      requestsPending = requestsPending;
-      requestsPendingProposal = requestsPendingProposal;
-      inProcess = inProcess;
       canceled = canceled;
       finished = finished;
     });
@@ -167,7 +143,7 @@ class _OptionsState extends State<Options> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => PendingRequest(
-                                  requestsPending,
+                                  "Pendiente",
                                   widget.userProfile,
                                   businessProfile)),
                         );
@@ -177,7 +153,6 @@ class _OptionsState extends State<Options> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => PendingProposal(
-                                  requestsPendingProposal,
                                   widget.userProfile,
                                   businessProfile)),
                         );
@@ -186,7 +161,7 @@ class _OptionsState extends State<Options> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RequestInProcess(inProcess,
+                              builder: (context) => RequestInProcess(
                                   widget.userProfile, businessProfile)),
                         );
                       }

@@ -7,14 +7,14 @@ import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Shared/Components/request_card.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
+import '../Services/Project_Service.dart';
 import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
 class RequestInProcess extends StatefulWidget {
-  List<ProjectInterface>? requests;
   UserProfile? userProfile;
   BusinessProfile? businessProfile;
-  RequestInProcess(this.requests, this.userProfile, this.businessProfile,
+  RequestInProcess(this.userProfile, this.businessProfile,
       {Key? key})
       : super(key: key);
 
@@ -26,17 +26,21 @@ class RequestInProcess extends StatefulWidget {
 class _RequestInProcessState extends State<RequestInProcess> {
   ProjectInterface? request;
   HttpRequest? httpRequest;
+  HttpProject? httpProject;
   List<RequestInterface>? requestsPending;
+  List<ProjectInterface>? inProcess;
   @override
   void initState() {
     httpRequest = HttpRequest();
-    // if (request != null){
-    //   requestsPending = httpRequest?.getAllUserProfileIdAndStatus(
-    //       widget.request![index].businessProfileId, "PENDING")
-    // }
-    print(widget.requests?.length);
-    print('Projects requests: ${widget.requests}');
+    httpProject = HttpProject();
+    getProject();
     super.initState();
+  }
+  Future getProject() async{
+    inProcess = await httpProject?.getAllProjects();
+    setState(() {
+      inProcess = inProcess;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -60,11 +64,11 @@ class _RequestInProcessState extends State<RequestInProcess> {
           if (widget.userProfile != null)
             Expanded(
               child: ListView.builder(
-                itemCount: widget.requests?.length ?? 0, // Número de elementos en la lista
+                itemCount: inProcess?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   return RequestCard(
-                      '${widget.requests![index].title}',
-                      '${widget.requests![index].description}',
+                      '${inProcess![index].title}',
+                      '${inProcess![index].description}',
                       Container(),
                       Container(
                         decoration: BoxDecoration(
@@ -74,7 +78,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            navigate(context, SeeProjectProgress(widget.requests![index]));
+                            navigate(context, SeeProjectProgress(inProcess![index]));
                             // Coloca aquí la acción que deseas realizar cuando se presiona el botón
                           },
                           style: TextButton.styleFrom(primary: Color(0XFF02AA8B)),  // Color del texto verde
@@ -87,11 +91,11 @@ class _RequestInProcessState extends State<RequestInProcess> {
           if (widget.userProfile == null)
             Expanded(
               child: ListView.builder(
-                itemCount: widget.requests?.length ?? 0, // Número de elementos en la lista
+                itemCount: inProcess?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   return RequestCard(
-                      '${widget.requests![index].title}',
-                      '${widget.requests![index].description}',
+                      '${inProcess![index].title}',
+                      '${inProcess![index].description}',
                       Container(),
                       Container(
                         decoration: BoxDecoration(
@@ -101,7 +105,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            navigate(context, SeeProjectProgress(widget.requests![index]));
+                            navigate(context, SeeProjectProgress(inProcess![index]));
                             // Coloca aquí la acción que deseas realizar cuando se presiona el botón
                           },
                           style: TextButton.styleFrom(primary: Color(0XFF02AA8B)),  // Color del texto verde
