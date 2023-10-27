@@ -31,6 +31,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
   HttpProposal? httpProject;
   List<RequestInterface>? requestsPending;
   List<Proposal>? inProcess;
+
   @override
   void initState() {
     httpRequest = HttpRequest();
@@ -145,8 +146,9 @@ class _RequestInProcessState extends State<RequestInProcess> {
 }
 class ActivityList extends StatefulWidget {
   final List<Map<String, dynamic>> activities;
-
-  ActivityList(this.activities);
+  UserProfile? userProfile;
+  BusinessProfile? businessProfile;
+  ActivityList(this.activities, this.userProfile, this.businessProfile);
 
   @override
   _ActivityListState createState() => _ActivityListState();
@@ -167,6 +169,7 @@ class _ActivityListState extends State<ActivityList> {
 
         return Row(
           children: [
+            if (widget.businessProfile != null)
             Checkbox(
               value: _isChecked,
               onChanged: (bool? newValue) {
@@ -175,6 +178,12 @@ class _ActivityListState extends State<ActivityList> {
                 });
               },
             ),
+            if (widget.userProfile != null)
+              Icon(
+                widget.activities[index].values.last == true ? Icons.check : Icons.crop_square, // Icono de cuadrado o marca de verificación (check)
+                size: 30.0, // Tamaño ajustado
+                color: widget.activities[index].values.last == true ? Colors.green : Colors.blue, // Color según el estado
+              ),
             SizedBox(width: 8),
             Text("${activity["description"].toString()}"),
           ],
@@ -187,8 +196,9 @@ class _ActivityListState extends State<ActivityList> {
 
 class ResourceList extends StatefulWidget {
   final List<Map<String, dynamic>> resources;
-
-  ResourceList(this.resources);
+  UserProfile? userProfile;
+  BusinessProfile? businessProfile;
+  ResourceList(this.resources, this.userProfile, this.businessProfile);
 
   @override
   _ResourceListState createState() => _ResourceListState();
@@ -208,14 +218,21 @@ class _ResourceListState extends State<ResourceList> {
 
         return Row(
           children: [
-            Checkbox(
-              value: _isChecked,
-              onChanged: (bool? newValue) {
-                setState(() {
-                  _isCheckedMap[index] = newValue ?? false;
-                });
-              },
-            ),
+            if (widget.businessProfile != null)
+              Checkbox(
+                value: _isChecked,
+                onChanged: (bool? newValue) {
+                  setState(() {
+                    _isCheckedMap[index] = newValue ?? false;
+                  });
+                },
+              ),
+            if (widget.userProfile != null)
+              Icon(
+                widget.resources[index].values.last == true ? Icons.check : Icons.crop_square, // Icono de cuadrado o marca de verificación (check)
+                size: 30.0, // Tamaño ajustado
+                color: widget.resources[index].values.last == true ? Colors.green : Colors.blue, // Color según el estado
+              ),
             SizedBox(width: 8),
             Text("Resource: ${resource["resourceType"].toString()}"),
             SizedBox(width: 8),
@@ -228,13 +245,24 @@ class _ResourceListState extends State<ResourceList> {
 }
 
 
-class SeeProjectProgress extends StatelessWidget {
+class SeeProjectProgress extends StatefulWidget {
   final Proposal request;
   UserProfile? userProfile;
   BusinessProfile? businessProfile;
 
   SeeProjectProgress(this.request, this.userProfile, this.businessProfile);
 
+  @override
+  State<SeeProjectProgress> createState() => _SeeProjectProgressState();
+}
+
+class _SeeProjectProgressState extends State<SeeProjectProgress> {
+    late TextEditingController descriptionController = TextEditingController();
+    @override
+    void initState() {
+      super.initState();
+      descriptionController = TextEditingController(text: widget.request.description);
+    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,22 +283,28 @@ class SeeProjectProgress extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Nombre de la empresa: ${request.name}"),
-            Text("Descripción: ${request.description}"),
-            if (request.projectActivities != null)
+            Text("Nombre de la empresa: ${widget.request.name}"),
+            if (widget.businessProfile != null)
+            TextField(
+              controller: descriptionController,
+              decoration: InputDecoration(labelText: 'Descripción'),
+            ),
+            if (widget.userProfile != null)
+            Text("Nombre de la empresa: ${widget.request.description}"),
+            if (widget.request.projectActivities != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Activities"),
-                  ActivityList(request.projectActivities!),
+                  ActivityList(widget.request.projectActivities!, widget.userProfile, widget.businessProfile),
                 ],
               ),
-            if (request.projectResources != null)
+            if (widget.request.projectResources != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Resources"),
-                  ResourceList(request.projectResources!),
+                  ResourceList(widget.request.projectResources!, widget.userProfile, widget.businessProfile),
                 ],
               ),
           ],
