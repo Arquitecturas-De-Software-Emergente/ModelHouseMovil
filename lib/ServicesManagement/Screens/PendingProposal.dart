@@ -6,6 +6,7 @@ import 'package:model_house/Shared/Components/navigate.dart';
 
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/UserProfile.dart';
+import '../../Shared/Components/acceptRejectButtons.dart';
 import '../../Shared/Components/request_card.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
