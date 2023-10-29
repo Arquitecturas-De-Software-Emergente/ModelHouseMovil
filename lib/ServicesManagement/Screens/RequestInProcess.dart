@@ -263,6 +263,9 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
       super.initState();
       descriptionController = TextEditingController(text: widget.request.description);
     }
+    void validateAndSubmit(){
+
+    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -284,29 +287,54 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Nombre de la empresa: ${widget.request.name}"),
+            SizedBox(height: 12.0),
             if (widget.businessProfile != null)
             TextField(
               controller: descriptionController,
               decoration: InputDecoration(labelText: 'Descripción'),
             ),
             if (widget.userProfile != null)
-            Text("Nombre de la empresa: ${widget.request.description}"),
+              Text("Description: "),
+            if (widget.userProfile != null)
+              Text("${widget.request.description}"),
+            SizedBox(height: 12.0),
             if (widget.request.projectActivities != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Activities"),
+                  Text("Activities",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),),
                   ActivityList(widget.request.projectActivities!, widget.userProfile, widget.businessProfile),
                 ],
               ),
+            SizedBox(height: 12.0),
             if (widget.request.projectResources != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Resources"),
+                  Text("Resources",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),),
                   ResourceList(widget.request.projectResources!, widget.userProfile, widget.businessProfile),
                 ],
               ),
+            SizedBox(height: 12.0),
+            if (widget.businessProfile != null)
+            ElevatedButton(
+              onPressed: validateAndSubmit,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+              ),
+              child: Text("Save Progress"),
+            )
           ],
         ),
       ),
