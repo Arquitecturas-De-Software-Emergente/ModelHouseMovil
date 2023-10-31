@@ -5,6 +5,7 @@ import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 import 'package:model_house/ServicesManagement/Services/Project_Service.dart';
 import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 import '../../Security/Interfaces/Account.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
@@ -31,6 +32,25 @@ class RequestInProcess extends StatefulWidget {
 class _RequestInProcessState extends State<RequestInProcess> {
   HttpProject? httpProject;
   List<ProjectInterface>? projects;
+
+  void showRatingDialog(BuildContext context) {
+    final _ratingDialog = RatingDialog(
+      title: Text("Rate the company's service"),
+      image: const Icon(Icons.check_circle, size: 60, color: Colors.green),
+      submitButtonText: 'Send',
+      onCancelled: () => print('Diálogo de calificación cancelado'),
+      onSubmitted: (response) {
+        print('Calificación: ${response.rating}');
+        print('Descripción: ${response.comment}');
+        Navigator.of(context).pop();
+      },
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) => _ratingDialog,
+    );
+  }
 
   @override
   void initState() {
@@ -62,7 +82,13 @@ class _RequestInProcessState extends State<RequestInProcess> {
       ),
       body: Column(
         children: [
-          Container(),
+          Container(
+            child: ElevatedButton(
+              onPressed: (){
+                showRatingDialog(context);
+              }, child: Text("Calificar")
+            ),
+          ),
           if (widget.userProfile != null)
             Expanded(
               child: ListView.builder(
