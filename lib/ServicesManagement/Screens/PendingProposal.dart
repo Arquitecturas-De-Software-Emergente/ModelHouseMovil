@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingRequest.dart';
 import 'package:model_house/ServicesManagement/Screens/request/FormProposal.dart';
+import 'package:model_house/Shared/Components/PrincipalView.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
 
+import '../../Security/Interfaces/Account.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/UserProfile.dart';
 import '../../Shared/Components/acceptRejectButtons.dart';
 import '../../Shared/Components/request_card.dart';
+import '../../Shared/DialogModelHouse.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
 import '../Services/Proposal_Service.dart';
@@ -16,7 +19,8 @@ import '../Services/Request_Service.dart';
 class PendingProposal extends StatefulWidget {
   UserProfile? userProfile;
   BusinessProfile? businessProfile;
-  PendingProposal(this.userProfile, this.businessProfile, {Key? key})
+  Account? account;
+  PendingProposal(this.userProfile, this.businessProfile, this.account, {Key? key})
       : super(key: key);
 
   @override
@@ -50,6 +54,10 @@ class _PendingProposalState extends State<PendingProposal> {
         proposal = proposal;
         proposals = proposalsPending;
       });
+      showCustomDialog(context, "Success", "Successful request submission", true, PrincipalView(widget.account!, 1));
+    }
+    else{
+      showCustomDialog(context, "Error", "Error sending request", false, PrincipalView(widget.account!, 1));
     }
   }
 
@@ -122,7 +130,7 @@ class _PendingProposalState extends State<PendingProposal> {
                             padding: const EdgeInsets.all(2.0),
                             child: TextButton(
                               onPressed: () {
-                                  navigate(context, FormProposal(proposals![index].id!, widget.userProfile, widget.businessProfile));
+                                  navigate(context, FormProposal(proposals![index].id!, widget.userProfile, widget.businessProfile, widget.account));
                                 // Coloca aquí la acción que deseas realizar cuando se presiona el botón
                               },
                               style: TextButton.styleFrom(primary: Color(0XFF02AA8B)),  // Color del texto verde

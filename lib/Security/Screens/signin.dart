@@ -54,7 +54,7 @@ class _SigninState extends State<Signin> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return PrincipalView(account!);
+                return PrincipalView(account!, null);
               },
             ),
           );

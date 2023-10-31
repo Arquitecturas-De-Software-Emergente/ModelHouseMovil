@@ -2,25 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/ServicesManagement/Interfaces/RequestInterface.dart';
+import 'package:model_house/ServicesManagement/Screens/BusinessProfileContent.dart';
+import 'package:model_house/ServicesManagement/Screens/Home.dart';
 import 'package:model_house/ServicesManagement/Services/Request_Service.dart';
+import 'package:model_house/Shared/Components/PrincipalView.dart';
+
+import '../../Security/Interfaces/Account.dart';
+import '../../Security/Interfaces/UserProfile.dart';
+import '../../Security/Services/User_Profile.dart';
+import '../../Shared/DialogModelHouse.dart';
 
 class CreateRequest extends StatefulWidget {
   BusinessProfile businessProfile;
   String userProfileId;
-  CreateRequest(this.businessProfile, this.userProfileId, {super.key});
+  Account account;
+  CreateRequest(this.businessProfile, this.userProfileId, this.account, {super.key});
   @override
   _CreateRequestState createState() => _CreateRequestState();
 }
 
 class _CreateRequestState extends State<CreateRequest> {
   final httpRequest = HttpRequest();
-
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController estimatedBudgetController =
       TextEditingController();
   final TextEditingController areaController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
+  Future iniState() async {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,120 +166,16 @@ class _CreateRequestState extends State<CreateRequest> {
                           description);
 
                       if (success != null) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Icon(
-                              Icons.check,
-                              color: Colors.green,
-                              size: 64,
-                            ),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'The request was sent successfully',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          ),
-                        );
+                        showCustomDialog(context, "Success", "The request was sent successfully", true, PrincipalView(widget.account, 0));
                       }
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Icon(
-                            Icons.clear,
-                            color: Colors.red,
-                            size: 64,
-                          ),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                'Error: The value of area is not a valid number.',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('OK'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
+                      showCustomDialog(context, "Error", "The value of area is not a valid number.", false, PrincipalView(widget.account, 0));
                     }
                   } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Icon(
-                          Icons.clear,
-                          color: Colors.red,
-                          size: 64,
-                        ),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Error: The area field cannot be empty.',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                    showCustomDialog(context, "Error", "The area field cannot be empty", false, PrincipalView(widget.account, 0));
                   }
                 } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Icon(
-                        Icons.clear,
-                        color: Colors.red,
-                        size: 64,
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            'Validation error: Please fill in all required fields.',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('OK'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  );
+                  showCustomDialog(context, "Validation error", "Please fill in all required fields.", false, PrincipalView(widget.account, 0));
                 }
               },
               child: Text(

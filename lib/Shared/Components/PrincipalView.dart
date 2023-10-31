@@ -13,7 +13,8 @@ import 'Routes.dart';
 // ignore: must_be_immutable
 class PrincipalView extends StatefulWidget {
   Account account;
-  PrincipalView(this.account, {Key? key}) : super(key: key);
+  int? index;
+  PrincipalView(this.account, this.index, {Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -21,7 +22,7 @@ class PrincipalView extends StatefulWidget {
 }
 
 class _PrincipalVireState extends State<PrincipalView> {
-  int index = 0;
+  int? index;
   Navigation? myNavigation;
   Account? cuenta;
   HttpUserProfile? httpUserProfile;
@@ -42,6 +43,9 @@ class _PrincipalVireState extends State<PrincipalView> {
     httpAccount = HttpAccount();
     httpUserProfile = HttpUserProfile();
     httpBusinessProfile = HttpBusinessProfile();
+    setState(() {
+      index =  widget.index != null ? widget.index! : 0;
+    });
     myNavigation = Navigation(currentIndex: (i) {
       setState(() {
         index = i;
@@ -73,7 +77,7 @@ class _PrincipalVireState extends State<PrincipalView> {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: myNavigation,
-      body: Routes(index, widget.account, userProfile, businessProfile),
+      body: Routes(index!, widget.account, userProfile, businessProfile),
     );
   }
 }

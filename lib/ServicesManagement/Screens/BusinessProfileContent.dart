@@ -327,9 +327,10 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                         MaterialPageRoute(
                           builder: (context) => CreateRequest(
                               widget.businessProfile,
-                              widget.account!.userProfileId!),
+                              widget.account!.userProfileId!,
+                              widget.account!
                         ),
-                      );
+                      ));
                     },
                     child: const Text(
                       "Send Request",

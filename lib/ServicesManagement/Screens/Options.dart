@@ -145,7 +145,8 @@ class _OptionsState extends State<Options> {
                               builder: (context) => PendingRequest(
                                   "Pendiente",
                                   widget.userProfile,
-                                  businessProfile)),
+                                  businessProfile,
+                                  widget.account)),
                         );
                       }
                       if (typesOptions[index] == "Proposal") {
@@ -154,7 +155,8 @@ class _OptionsState extends State<Options> {
                           MaterialPageRoute(
                               builder: (context) => PendingProposal(
                                   widget.userProfile,
-                                  businessProfile)),
+                                  businessProfile,
+                                  widget.account)),
                         );
                       }
                       if (typesOptions[index] == "Project") {

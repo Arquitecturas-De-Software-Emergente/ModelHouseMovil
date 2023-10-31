@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:model_house/ServicesManagement/Screens/PendingProposal.dart';
 import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 import 'package:model_house/ServicesManagement/Services/ProyectActivity_Service.dart';
 import 'package:model_house/ServicesManagement/Services/ProyectResource_Service.dart';
+import 'package:model_house/Shared/Components/PrincipalView.dart';
+import '../../../Security/Interfaces/Account.dart';
 import '../../../Security/Interfaces/BusinessProfile.dart';
 import '../../../Security/Interfaces/UserProfile.dart';
+import '../../../Shared/DialogModelHouse.dart';
 import '../../../Shared/Widgets/texts/titles.dart';
 
 import '../../Interfaces/Proposal.dart';
@@ -14,8 +21,8 @@ class FormProposal extends StatefulWidget {
   final int proposalId;
   final UserProfile? userProfile;
   final BusinessProfile? businessProfile;
-
-  FormProposal(this.proposalId, this.userProfile, this.businessProfile, {Key? key}) : super(key: key);
+  Account? account;
+  FormProposal(this.proposalId, this.userProfile, this.businessProfile, this.account, {Key? key}) : super(key: key);
 
   @override
   State<FormProposal> createState() => _FormProposalState();
@@ -36,6 +43,7 @@ class _FormProposalState extends State<FormProposal> {
   String descriptionError = "";
   String activitiesError = "";
   String resourcesError = "";
+  File? _image;
 
 
   HttpProposal? httpProposal;
@@ -85,12 +93,13 @@ class _FormProposalState extends State<FormProposal> {
     });
   }
 
-  void selectAndAddFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final PickedFile? pickedImage = await _picker.getImage(source: ImageSource.gallery);
 
-    if (result != null) {
+    if (pickedImage != null) {
       setState(() {
-        selectedFiles.add(result.files.first);
+        _image = File(pickedImage.path);
       });
     }
   }
@@ -161,6 +170,7 @@ class _FormProposalState extends State<FormProposal> {
         httpProjectResource?.createProjectResource(widget.proposalId, resource['name']!, int.tryParse(resource['quantity']!));
       });
       changeStatus(widget.proposalId, "Enviado");
+      showCustomDialog(context, "Success", "The request was sent successfully", true, PrincipalView(widget.account!, 1));
     }
   }
   @override
@@ -206,8 +216,21 @@ class _FormProposalState extends State<FormProposal> {
             ),
             SizedBox(height: 20),
             TextButton(
-              onPressed: selectAndAddFile,
-              child: Text("Subir Archivo"),
+              onPressed: _pickImage,
+              child: _image == null ? ElevatedButton(
+                onPressed: _pickImage,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                child: const Icon(Icons.person_4_outlined, color: Colors.black, size: 75),
+              ) : Image.file(
+                _image!,
+                width: 300,
+                height: 300,
+              ),
             ),
             SizedBox(height: 20),
             Text(

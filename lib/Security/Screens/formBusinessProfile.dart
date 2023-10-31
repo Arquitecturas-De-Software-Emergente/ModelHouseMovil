@@ -76,7 +76,7 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return PrincipalView(widget.account);
+                    return PrincipalView(widget.account, null);
                   },
                 ),
               );
