@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
   final algo = TextEditingController();
   HttpBusinessProfile? httpBusinessProfile;
   List<BusinessProfile>? businesses;
+  List<int> favoriteBusinesses = [];
 
   @override
   void initState() {
@@ -36,7 +37,16 @@ class _HomeState extends State<Home> {
     businesses = await httpBusinessProfile?.getAllBusinessProfile();
     setState(() {
       businesses = businesses;
-      print(businesses);
+    });
+  }
+
+  void toggleFavorite(int businessId) {
+    setState(() {
+      if (favoriteBusinesses.contains(businessId)) {
+        favoriteBusinesses.remove(businessId);
+      } else {
+        favoriteBusinesses.add(businessId);
+      }
     });
   }
 
@@ -60,6 +70,9 @@ class _HomeState extends State<Home> {
                     itemCount: businesses!.length,
                     itemBuilder: (context, index) {
                       final business = businesses![index];
+                      final isFavorite =
+                          favoriteBusinesses.contains(business.id);
+
                       return BusinessProfileCard(
                         widget.account!,
                         id: business.id!,
@@ -69,6 +82,12 @@ class _HomeState extends State<Home> {
                         name: business.name,
                         phoneNumber: business.phoneNumber,
                         webSite: business.webSite,
+                        /*
+                        isFavorite: isFavorite,
+                        onFavoritePressed: () {
+                          toggleFavorite(business.id!);
+                        },
+                        */
                       );
                     },
                   ),

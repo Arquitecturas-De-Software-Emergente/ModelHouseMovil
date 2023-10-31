@@ -58,166 +58,183 @@ class _MenuState extends State<Menu> {
     }
   }
 
+  String truncateText(String text, int maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.substring(0, maxLength) + '...';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        widget.account.userProfileId != null
-            ? ElevatedButton(
-                onPressed: () {
-                  navigate(
-                      context,
-                      Profile(
-                        widget.userProfile != null ? widget.userProfile! : null,
-                        widget.businessProfile != null
-                            ? widget.businessProfile!
-                            : null,
-                      ));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(25),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: widget.userProfile?.image != null
-                            ? NetworkImage(widget.userProfile!.image!)
-                            : const AssetImage('../images/profile.png')
-                                as ImageProvider,
-                      ),
-                      const SizedBox(width: 30),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${widget.userProfile?.firstName} ${widget.userProfile?.lastName}',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                widget.account.emailAddress,
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ))
-            : ElevatedButton(
-                onPressed: () {
-                  navigate(
-                      context,
-                      Profile(
-                        widget.userProfile != null ? widget.userProfile! : null,
-                        widget.businessProfile != null
-                            ? widget.businessProfile!
-                            : null,
-                      ));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(25),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: widget.businessProfile?.image != null
-                            ? NetworkImage(widget.businessProfile!.image!)
-                            : const AssetImage('../images/profile.png')
-                                as ImageProvider,
-                      ),
-                      SizedBox(width: 30),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${widget.businessProfile?.name}',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                widget.account.emailAddress,
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(15),
-            children: const [
-              Activities(),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
-                child: Adicional(),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(15),
-          child: MaterialButton(
-            height: 45,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            color: const Color(0XFF02AA8B),
-            onPressed: () async {
-              final persitence = await SharedPreferences.getInstance();
-              persitence.remove("token");
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return const WelcomeApplication();
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: Column(
+        children: [
+          widget.account.userProfileId != null
+              ? ElevatedButton(
+                  onPressed: () {
+                    navigate(
+                        context,
+                        Profile(
+                          widget.userProfile != null
+                              ? widget.userProfile!
+                              : null,
+                          widget.businessProfile != null
+                              ? widget.businessProfile!
+                              : null,
+                        ));
                   },
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
-                    child: Icon(
-                      Icons.logout_outlined,
-                      size: 25,
-                      color: Colors.white,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.all(25),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: widget.userProfile?.image != null
+                              ? NetworkImage(widget.userProfile!.image!)
+                              : const AssetImage('../images/profile.png')
+                                  as ImageProvider,
+                        ),
+                        const SizedBox(width: 30),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${truncateText(widget.userProfile?.firstName ?? "", 12)} ${(widget.userProfile?.firstName?.length ?? 0) <= 12 ? widget.userProfile?.lastName : ""}',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  widget.account.emailAddress,
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  ))
+              : ElevatedButton(
+                  onPressed: () {
+                    navigate(
+                        context,
+                        Profile(
+                          widget.userProfile != null
+                              ? widget.userProfile!
+                              : null,
+                          widget.businessProfile != null
+                              ? widget.businessProfile!
+                              : null,
+                        ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
                   ),
-                  Text(
-                    "Log Out",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  child: Container(
+                    margin: const EdgeInsets.all(25),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: widget.businessProfile?.image != null
+                              ? NetworkImage(widget.businessProfile!.image!)
+                              : const AssetImage('../images/profile.png')
+                                  as ImageProvider,
+                        ),
+                        SizedBox(width: 30),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${widget.businessProfile?.name}',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  widget.account.emailAddress,
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(15),
+              children: const [
+                Activities(),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
+                  child: Adicional(),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(15),
+            child: MaterialButton(
+              height: 45,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              color: const Color(0XFF02AA8B),
+              onPressed: () async {
+                final persitence = await SharedPreferences.getInstance();
+                persitence.remove("token");
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const WelcomeApplication();
+                    },
                   ),
-                ],
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
+                      child: Icon(
+                        Icons.logout_outlined,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Log Out",
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

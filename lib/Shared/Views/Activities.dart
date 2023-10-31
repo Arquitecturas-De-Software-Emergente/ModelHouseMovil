@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:model_house/Shared/Views/Favorites.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 
 class Activities extends StatefulWidget {
@@ -17,7 +18,15 @@ class _ActivitiesState extends State<Activities> {
         Titles(20, "Activities"),
         Card(
           child: MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const Favorites();
+                  },
+                ),
+              );
+            },
             child: Row(children: const <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 12, 20, 12),

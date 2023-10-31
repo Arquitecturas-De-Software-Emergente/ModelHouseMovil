@@ -32,6 +32,14 @@ class _ProfileState extends State<Profile> {
           ),
           onPressed: () => {Navigator.of(context).pop()},
         ),
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: ListView(
         children: [
