@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
+import 'package:model_house/ServicesManagement/Services/Project_Service.dart';
 import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
 
+import '../../Security/Interfaces/Account.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Shared/Components/request_card.dart';
+import '../../Shared/Components/seeProjectProgress.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
-import '../Services/Project_Service.dart';
 import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
 class RequestInProcess extends StatefulWidget {
+  Account? account;
   UserProfile? userProfile;
   BusinessProfile? businessProfile;
-  RequestInProcess(this.userProfile, this.businessProfile,
+  RequestInProcess(this.account, this.userProfile, this.businessProfile,
       {Key? key})
       : super(key: key);
 
@@ -26,23 +29,19 @@ class RequestInProcess extends StatefulWidget {
 }
 
 class _RequestInProcessState extends State<RequestInProcess> {
-  ProjectInterface? request;
-  HttpRequest? httpRequest;
-  HttpProposal? httpProject;
-  List<RequestInterface>? requestsPending;
-  List<Proposal>? inProcess;
+  HttpProject? httpProject;
+  List<ProjectInterface>? projects;
 
   @override
   void initState() {
-    httpRequest = HttpRequest();
-    httpProject = HttpProposal();
-    getProject();
+    httpProject = HttpProject();
+    getProjects();
     super.initState();
   }
-  Future getProject() async{
-    inProcess = await httpProject?.getProposals();
+  Future getProjects() async{
+    projects = await httpProject?.getAllProjects();
     setState(() {
-      inProcess = inProcess;
+      projects = projects;
     });
   }
   @override
@@ -67,13 +66,13 @@ class _RequestInProcessState extends State<RequestInProcess> {
           if (widget.userProfile != null)
             Expanded(
               child: ListView.builder(
-                itemCount: inProcess?.length ?? 0, // Número de elementos en la lista
+                itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
-                  var status = inProcess![index].status;
+                  var status = projects![index].status;
                   if (status == "Aprobado") {
                     return RequestCard(
-                        '${inProcess![index].name}',
-                        '${inProcess![index].description}',
+                        '${projects![index].name}',
+                        '${projects![index].description}',
                         Container(),
                         Container(
                           decoration: BoxDecoration(
@@ -87,7 +86,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                           child: TextButton(
                             onPressed: () {
                               navigate(context,
-                                  SeeProjectProgress(inProcess![index], widget.userProfile, widget.businessProfile));
+                                  SeeProjectProgress(widget.account, projects![index], widget.userProfile, widget.businessProfile));
                               // Coloca aquí la acción que deseas realizar cuando se presiona el botón
                             },
                             style: TextButton.styleFrom(primary: Color(
@@ -104,14 +103,14 @@ class _RequestInProcessState extends State<RequestInProcess> {
           if (widget.businessProfile != null)
             Expanded(
               child: ListView.builder(
-                itemCount: inProcess?.length ?? 0, // Número de elementos en la lista
+                itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
-                  var status = inProcess![index].status;
+                  var status = projects![index].status;
                   if (status == "Aprobado") {
                     return RequestCard(
-                        '${inProcess![index].firstName} ${inProcess![index]
+                        '${projects![index].firstName} ${projects![index]
                             .lastName}',
-                        '${inProcess![index].description}',
+                        '${projects![index].description}',
                         Container(),
                         Container(
                           decoration: BoxDecoration(
@@ -125,7 +124,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                           child: TextButton(
                             onPressed: () {
                               navigate(context,
-                                  SeeProjectProgress(inProcess![index], widget.userProfile, widget.businessProfile));
+                                  SeeProjectProgress(widget.account, projects![index], widget.userProfile, widget.businessProfile));
                               // Coloca aquí la acción que deseas realizar cuando se presiona el botón
                             },
                             style: TextButton.styleFrom(primary: Color(
@@ -144,200 +143,6 @@ class _RequestInProcessState extends State<RequestInProcess> {
     );
   }
 }
-class ActivityList extends StatefulWidget {
-  final List<Map<String, dynamic>> activities;
-  UserProfile? userProfile;
-  BusinessProfile? businessProfile;
-  ActivityList(this.activities, this.userProfile, this.businessProfile);
-
-  @override
-  _ActivityListState createState() => _ActivityListState();
-}
-
-class _ActivityListState extends State<ActivityList> {
-  
-  Map<int, bool> _isCheckedMap = {}; // Usaremos un mapa para rastrear el estado de cada Checkbox
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: widget.activities.asMap().entries.map((entry) {
-        final int index = entry.key;
-        final Map<String, dynamic> activity = entry.value;
-        bool _isChecked = _isCheckedMap[index] ?? false;
-
-        return Row(
-          children: [
-            if (widget.businessProfile != null)
-            Checkbox(
-              value: _isChecked,
-              onChanged: (bool? newValue) {
-                setState(() {
-                  _isCheckedMap[index] = newValue ?? false;
-                });
-              },
-            ),
-            if (widget.userProfile != null)
-              Icon(
-                widget.activities[index].values.last == true ? Icons.check : Icons.crop_square, // Icono de cuadrado o marca de verificación (check)
-                size: 30.0, // Tamaño ajustado
-                color: widget.activities[index].values.last == true ? Colors.green : Colors.blue, // Color según el estado
-              ),
-            SizedBox(width: 8),
-            Text("${activity["description"].toString()}"),
-          ],
-        );
-      }).toList(),
-    );
-  }
-}
 
 
-class ResourceList extends StatefulWidget {
-  final List<Map<String, dynamic>> resources;
-  UserProfile? userProfile;
-  BusinessProfile? businessProfile;
-  ResourceList(this.resources, this.userProfile, this.businessProfile);
 
-  @override
-  _ResourceListState createState() => _ResourceListState();
-}
-
-class _ResourceListState extends State<ResourceList> {
-  Map<int, bool> _isCheckedMap = {}; // Usaremos un mapa para rastrear el estado de cada Checkbox
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: widget.resources.asMap().entries.map((entry) {
-        final int index = entry.key;
-        final Map<String, dynamic> resource = entry.value;
-        bool _isChecked = _isCheckedMap[index] ?? false;
-
-        return Row(
-          children: [
-            if (widget.businessProfile != null)
-              Checkbox(
-                value: _isChecked,
-                onChanged: (bool? newValue) {
-                  setState(() {
-                    _isCheckedMap[index] = newValue ?? false;
-                  });
-                },
-              ),
-            if (widget.userProfile != null)
-              Icon(
-                widget.resources[index].values.last == true ? Icons.check : Icons.crop_square, // Icono de cuadrado o marca de verificación (check)
-                size: 30.0, // Tamaño ajustado
-                color: widget.resources[index].values.last == true ? Colors.green : Colors.blue, // Color según el estado
-              ),
-            SizedBox(width: 8),
-            Text("Resource: ${resource["resourceType"].toString()}"),
-            SizedBox(width: 8),
-            Text("Quantity: ${resource["quantity"].toString()}"),
-          ],
-        );
-      }).toList(),
-    );
-  }
-}
-
-
-class SeeProjectProgress extends StatefulWidget {
-  final Proposal request;
-  UserProfile? userProfile;
-  BusinessProfile? businessProfile;
-
-  SeeProjectProgress(this.request, this.userProfile, this.businessProfile);
-
-  @override
-  State<SeeProjectProgress> createState() => _SeeProjectProgressState();
-}
-
-class _SeeProjectProgressState extends State<SeeProjectProgress> {
-    late TextEditingController descriptionController = TextEditingController();
-    @override
-    void initState() {
-      super.initState();
-      descriptionController = TextEditingController(text: widget.request.description);
-    }
-    void validateAndSubmit(){
-
-    }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalles de la solicitud'),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0XFF02AA8B),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Nombre de la empresa: ${widget.request.name}"),
-            SizedBox(height: 12.0),
-            if (widget.businessProfile != null)
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Descripción'),
-            ),
-            if (widget.userProfile != null)
-              Text("Description: "),
-            if (widget.userProfile != null)
-              Text("${widget.request.description}"),
-            SizedBox(height: 12.0),
-            if (widget.request.projectActivities != null)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Activities",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),),
-                  ActivityList(widget.request.projectActivities!, widget.userProfile, widget.businessProfile),
-                ],
-              ),
-            SizedBox(height: 12.0),
-            if (widget.request.projectResources != null)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Resources",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),),
-                  ResourceList(widget.request.projectResources!, widget.userProfile, widget.businessProfile),
-                ],
-              ),
-            SizedBox(height: 12.0),
-            if (widget.businessProfile != null)
-            ElevatedButton(
-              onPressed: validateAndSubmit,
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-                onPrimary: Colors.white,
-              ),
-              child: Text("Save Progress"),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

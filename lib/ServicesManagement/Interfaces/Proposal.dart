@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'ProjectActivity.dart';
-import 'ProyectResource.dart';
 
 List<Proposal> proposalFromJson(String str) =>
     List<Proposal>.from(json.decode(str).map((x) => Proposal.fromJson(x)));
@@ -19,6 +17,7 @@ class Proposal {
   String? businessDescription;
   List<Map<String, dynamic>>? projectActivities;
   List<Map<String, dynamic>>? projectResources;
+  String? title;
   Proposal(
       {this.id,
       this.description,
@@ -29,6 +28,7 @@ class Proposal {
         this.businessDescription,
         this.projectActivities,
         this.projectResources,
+        this.title,
       });
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
         id: json["id"],
@@ -40,6 +40,7 @@ class Proposal {
         businessDescription: json["request"]["businessProfile"]["description"],
         projectActivities: List<Map<String, dynamic>>.from(json["projectActivities"]),
         projectResources: List<Map<String, dynamic>>.from(json["projectResources"]),
+        title: json["title"],
   );
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -51,5 +52,6 @@ class Proposal {
         "businessDescription": businessDescription,
         "projectActivities": projectActivities,
         "projectResources": projectResources,
+        "title": title,
       };
 }

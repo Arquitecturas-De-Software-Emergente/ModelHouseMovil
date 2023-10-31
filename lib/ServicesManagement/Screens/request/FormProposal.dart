@@ -115,7 +115,7 @@ class _FormProposalState extends State<FormProposal> {
   void validateAndSubmit() {
     if (titleController.text.isEmpty) {
       setState(() {
-        titleError = "Este campo es obligatorio";
+        titleError = "This field is required";
       });
     } else {
       setState(() {
@@ -125,7 +125,7 @@ class _FormProposalState extends State<FormProposal> {
 
     if (descriptionController.text.isEmpty) {
         setState(() {
-          descriptionError = "Este campo es obligatorio";
+          descriptionError = "This field is required";
         });
     } else {
       setState(() {
@@ -135,7 +135,7 @@ class _FormProposalState extends State<FormProposal> {
 
     if (activities.isEmpty) {
       setState(() {
-        activitiesError = "Este campo es obligatorio";
+        activitiesError = "This field is required";
       });
     } else {
       setState(() {
@@ -145,7 +145,7 @@ class _FormProposalState extends State<FormProposal> {
 
     if (resources.isEmpty) {
       setState(() {
-        resourcesError = "Este campo es obligatorio";
+        resourcesError = "This field is required";
       });
     } else {
       setState(() {
@@ -195,7 +195,7 @@ class _FormProposalState extends State<FormProposal> {
           children: [
             TextField(
               controller: titleController,
-              decoration: InputDecoration(labelText: 'Título'),
+              decoration: InputDecoration(labelText: 'Title'),
             ),
             Text(
               titleError,
@@ -206,7 +206,7 @@ class _FormProposalState extends State<FormProposal> {
             SizedBox(height: 20),
             TextField(
               controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Descripción'),
+              decoration: InputDecoration(labelText: 'Description'),
             ),
             Text(
               descriptionError,
@@ -234,7 +234,7 @@ class _FormProposalState extends State<FormProposal> {
             ),
             SizedBox(height: 20),
             Text(
-              "Archivos Seleccionados",
+              "Selected files",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -246,7 +246,7 @@ class _FormProposalState extends State<FormProposal> {
                 return Row(
                   children: [
                     Expanded(
-                      child: Text("Archivo: ${file.name}"),
+                      child: Text("File: ${file.name}"),
                     ),
                     IconButton(
                       icon: Icon(Icons.delete, color: Colors.red,),
@@ -258,7 +258,7 @@ class _FormProposalState extends State<FormProposal> {
             ),
             SizedBox(height: 20),
             Text(
-              "Actividades",
+              "Activities",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -269,7 +269,7 @@ class _FormProposalState extends State<FormProposal> {
                 Flexible(
                   child: TextField(
                     controller: activityTitleController,
-                    decoration: InputDecoration(labelText: 'Título de Actividad'),
+                    decoration: InputDecoration(labelText: 'Activity Title'),
                   ),
                 ),
                 IconButton(
@@ -301,7 +301,7 @@ class _FormProposalState extends State<FormProposal> {
             ),
             SizedBox(height: 20),
             Text(
-              "Recursos",
+              "Resources",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -312,13 +312,13 @@ class _FormProposalState extends State<FormProposal> {
                 Flexible(
                   child: TextField(
                     controller: resourceTitleController,
-                    decoration: InputDecoration(labelText: 'Título de Recurso'),
+                    decoration: InputDecoration(labelText: 'Resource Title'),
                   ),
                 ),
                 Flexible(
                   child: TextField(
                     controller: resourceQuantityController,
-                    decoration: InputDecoration(labelText: 'Cantidad'),
+                    decoration: InputDecoration(labelText: 'Quantity'),
                     keyboardType: TextInputType.number, // Configura el teclado para aceptar solo números.
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly, // Acepta solo dígitos.
@@ -344,7 +344,7 @@ class _FormProposalState extends State<FormProposal> {
                 return Row(
                   children: [
                     Expanded(
-                      child: Text('Recurso: ${resource["name"]}, Cantidad: ${resource["quantity"]}'),
+                      child: Text('Resource: ${resource["name"]}, Quantity: ${resource["quantity"]}'),
                     ),
                     IconButton(
                       icon: Icon(Icons.delete, color: Colors.red,),
@@ -361,7 +361,7 @@ class _FormProposalState extends State<FormProposal> {
                 primary: Colors.green,
                 onPrimary: Colors.white,
               ),
-              child: Text("Enviar"),
+              child: Text("Send Proposal"),
             )
           ],
         ),

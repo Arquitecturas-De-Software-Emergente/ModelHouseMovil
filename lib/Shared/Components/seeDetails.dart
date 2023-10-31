@@ -6,7 +6,7 @@ import '../../ServicesManagement/Interfaces/RequestInterface.dart';
 class SeeDetails extends StatelessWidget {
   final RequestInterface request;
   String? name;
-
+  
   SeeDetails(this.request, this.name);
 
   @override

@@ -164,6 +164,7 @@ class _OptionsState extends State<Options> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => RequestInProcess(
+                                widget.account,
                                   widget.userProfile, businessProfile)),
                         );
                       }
