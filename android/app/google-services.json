@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039371106649",
+    "project_id": "modelhouseemergentes",
+    "storage_bucket": "modelhouseemergentes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039371106649:android:0e25c0a9a901731f1d3448",
+        "android_client_info": {
+          "package_name": "com.example.model_house"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeXhQADW_FIXt0g1yPhXK86pC4aEkPYi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

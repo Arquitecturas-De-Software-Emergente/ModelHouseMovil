@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:model_house/Security/Screens/signin.dart';
 import 'package:model_house/Security/Screens/signup.dart';
 
+import '../../ServicesManagement/Services/messaging_service.dart';
 import '../../Shared/Widgets/buttons/ActiveButton.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 
@@ -14,6 +15,13 @@ class WelcomeApplication extends StatefulWidget {
 }
 
 class _WelcomeApplicationState extends State<WelcomeApplication> {
+  final _messagingService =  MessagingService();
+  @override
+  void initState() {
+    super.initState();
+    _messagingService
+        .init(context); // Initialize MessagingService to handle notifications
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

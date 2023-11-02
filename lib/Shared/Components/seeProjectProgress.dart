@@ -142,7 +142,9 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
       showCustomDialog(context, "Error", "Error sending request", false, PrincipalView(widget.account!, 1));
     }
   }
+  void finishTheProject(){
 
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,7 +193,11 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
                 controller: titleController,
                 decoration: InputDecoration(labelText: 'Title'),
               ),
-            if (widget.userProfile != null) Text("Title: "),
+            if (widget.userProfile != null) Text("Title: ", style: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),),
             if (widget.userProfile != null) Text("${widget.project.title}"),
             SizedBox(height: 12.0),
 
@@ -201,7 +207,11 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
                 controller: descriptionController,
                 decoration: InputDecoration(labelText: 'Description'),
               ),
-            if (widget.userProfile != null) Text("Description: "),
+            if (widget.userProfile != null) Text("Description: ", style: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),),
             if (widget.userProfile != null) Text("${widget.project.description}"),
             SizedBox(height: 12.0),
 
@@ -362,7 +372,7 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
             ),
 
             // Save Progress Button
-            if (widget.businessProfile != null)
+            if (widget.businessProfile != null )
               ElevatedButton(
                 onPressed: () {
                   validateAndSubmit(activities, resources);
@@ -373,6 +383,15 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
                 ),
                 child: Text("Save Progress"),
               ),
+            // if (widget.businessProfile != null && ((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) == "100.00")
+            //   ElevatedButton(
+            //     onPressed: finishTheProject,
+            //     style: ElevatedButton.styleFrom(
+            //       primary: Colors.green,
+            //       onPrimary: Colors.white,
+            //     ),
+            //     child: Text("Finish Project"),
+            //   ),
           ],
         ),
       ),

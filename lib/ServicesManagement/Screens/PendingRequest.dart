@@ -13,6 +13,8 @@ import '../../Shared/DialogModelHouse.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
 import '../Services/Request_Service.dart';
+import '../Services/messaging_service.dart';
+import '../Services/notification_service.dart';
 
 class PendingRequest extends StatefulWidget {
   String status;
@@ -31,13 +33,17 @@ class _PendingRequestState extends State<PendingRequest> {
   RequestInterface? request;
   HttpRequest? httpRequest;
   List<RequestInterface>? requests;
+  final _messagingService =  MessagingService();
   @override
   void initState() {
+    _messagingService
+        .init(context);
     httpRequest = HttpRequest();
     getRequest();
     super.initState();
   }
   Future getRequest() async{
+    sendNotification("c5cVrMEHTyavZkweDRIcWY:APA91bG4cFSRCu3oa4BSRQphfkjNoJpYHZ1ApwHTvNmTcsth7riW__yKle59-ZFgipqF_6qbJLUtZbEBbJqCTfvFj3fkpKMKOoohLej3-O-ebjEn6bLGzEh6zqEVX8bwLbRA2SEKremB");
     if(widget.businessProfile != null){
       requests = await httpRequest?.getAllBusinessProfileIdAndStatus(widget.businessProfile!.id!, widget.status);
     }else{
@@ -112,9 +118,11 @@ class _PendingRequestState extends State<PendingRequest> {
                       AcceptRejectButtons(
                         onAcceptPressed: () {
                           changeStatus(requests![index].id!, "Aprobado");
+                          sendNotification("ej2nOsjuRaaV_AHKf_eS-C:APA91bE55x8i3rjaJqS8WuDboiDSe1Nme7XKeAWX2AGB2-uEESw8v_PPETERt6ZF0pVcbU7kH4Y2BMz6GVxJB1cdQOhCZzjxvuGL3MqeyQNrp1njCk0B95LqiN2rvZ4Q_7OHTQo-v2Jy");
                         },
                         onRejectPressed: () {
                           changeStatus(requests![index].id!, "Cancelado");
+                          sendNotification("ej2nOsjuRaaV_AHKf_eS-C:APA91bE55x8i3rjaJqS8WuDboiDSe1Nme7XKeAWX2AGB2-uEESw8v_PPETERt6ZF0pVcbU7kH4Y2BMz6GVxJB1cdQOhCZzjxvuGL3MqeyQNrp1njCk0B95LqiN2rvZ4Q_7OHTQo-v2Jy");
                         },
                       ),);
                 },
