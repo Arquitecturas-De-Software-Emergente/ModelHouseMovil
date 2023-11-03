@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
@@ -42,8 +43,29 @@ class _PendingRequestState extends State<PendingRequest> {
     getRequest();
     super.initState();
   }
+  void showNotification(String status){
+    final DatabaseReference _databaseReference = FirebaseDatabase.instance.ref().child('/users/user/');
+    _databaseReference.get().then((DataSnapshot dataSnapshot) {
+      if (dataSnapshot.value != null) {
+        final data = dataSnapshot.value as Map<dynamic, dynamic>?;
+        if (data != null) {
+          final token = data['deviceId'] as String?;
+          if (token != null) {
+            print('DEVICE ID: $token');
+            sendNotification(token, "Request", "Your request was ${status}");
+          } else {
+            print('deviceId is null');
+          }
+        } else {
+          print('Data is not in the expected format.');
+        }
+      } else {
+        print('No data found at the specified path.');
+      }
+    });
+  }
   Future getRequest() async{
-    sendNotification("c5cVrMEHTyavZkweDRIcWY:APA91bG4cFSRCu3oa4BSRQphfkjNoJpYHZ1ApwHTvNmTcsth7riW__yKle59-ZFgipqF_6qbJLUtZbEBbJqCTfvFj3fkpKMKOoohLej3-O-ebjEn6bLGzEh6zqEVX8bwLbRA2SEKremB");
+
     if(widget.businessProfile != null){
       requests = await httpRequest?.getAllBusinessProfileIdAndStatus(widget.businessProfile!.id!, widget.status);
     }else{
@@ -56,6 +78,12 @@ class _PendingRequestState extends State<PendingRequest> {
   Future changeStatus(int requestId, String status) async {
     request = await httpRequest?.changeStatus(requestId, status);
     if (request != null) {
+      if (status == "Aprobado"){
+        showNotification("accepted");
+      }
+      else {
+        showNotification("rejected");
+      }
       if (widget.userProfile != null){
         requests = await httpRequest?.getAllUserProfileIdAndStatus(
           widget.userProfile!.id!, widget.status);
@@ -118,11 +146,10 @@ class _PendingRequestState extends State<PendingRequest> {
                       AcceptRejectButtons(
                         onAcceptPressed: () {
                           changeStatus(requests![index].id!, "Aprobado");
-                          sendNotification("ej2nOsjuRaaV_AHKf_eS-C:APA91bE55x8i3rjaJqS8WuDboiDSe1Nme7XKeAWX2AGB2-uEESw8v_PPETERt6ZF0pVcbU7kH4Y2BMz6GVxJB1cdQOhCZzjxvuGL3MqeyQNrp1njCk0B95LqiN2rvZ4Q_7OHTQo-v2Jy");
+
                         },
                         onRejectPressed: () {
                           changeStatus(requests![index].id!, "Cancelado");
-                          sendNotification("ej2nOsjuRaaV_AHKf_eS-C:APA91bE55x8i3rjaJqS8WuDboiDSe1Nme7XKeAWX2AGB2-uEESw8v_PPETERt6ZF0pVcbU7kH4Y2BMz6GVxJB1cdQOhCZzjxvuGL3MqeyQNrp1njCk0B95LqiN2rvZ4Q_7OHTQo-v2Jy");
                         },
                       ),);
                 },

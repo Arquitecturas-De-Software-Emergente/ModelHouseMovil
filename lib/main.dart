@@ -6,11 +6,13 @@ import 'ServicesManagement/Services/messaging_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: "modelhouseemergentes",
       options: const FirebaseOptions(
           apiKey: "AIzaSyAeXhQADW_FIXt0g1yPhXK86pC4aEkPYi0",
           appId: "1:1039371106649:android:0e25c0a9a901731f1d3448",
           messagingSenderId: "1039371106649",
           projectId: "modelhouseemergentes",
+          databaseURL: "https://modelhouseemergentes-default-rtdb.firebaseio.com"
       )
   );
 

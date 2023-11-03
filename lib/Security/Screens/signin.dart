@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:model_house/Security/Screens/userType.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../ServicesManagement/Services/messaging_service.dart';
 import '../../Shared/Components/PrincipalView.dart';
 import '../../Shared/Widgets/buttons/ActiveButton.dart';
 import '../../Shared/Widgets/buttons/DisabledButton.dart';
@@ -22,6 +24,9 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  final DatabaseReference _databaseReference =
+  FirebaseDatabase.instance.ref().child('/users/');
+  String? fcm;
   final email = TextEditingController();
   final password = TextEditingController();
   Account? account;
@@ -30,6 +35,7 @@ class _SigninState extends State<Signin> {
   @override
   void initState() {
     httpAccount = HttpAccount();
+    fcm = MessagingService.fcmToken;
     super.initState();
   }
 
@@ -42,6 +48,23 @@ class _SigninState extends State<Signin> {
       if (account != null) {
         print(account?.businessProfileId);
         print(account?.userProfileId);
+        if (account?.businessProfileId != null) {
+          print("Business Profile");
+          FirebaseDatabase.instance.ref('/users/').update({
+            "business": {
+              "businessId": account!.businessProfileId,
+              "deviceId": fcm,
+            }});
+        } else {
+          print("User Profile");
+          FirebaseDatabase.instance.ref('/users/').update({
+            "user": {
+              "userId": account!.userProfileId,
+              "deviceId": fcm,
+            }});
+        }
+
+
         if(account?.businessProfileId == null && account?.userProfileId == null) {
           Navigator.of(context).push(
             MaterialPageRoute(

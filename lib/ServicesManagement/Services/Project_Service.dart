@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Shared/HttpComon.dart';
 import '../Interfaces/ProjectInterface.dart';
+import '../Interfaces/Rating.dart';
 
 class HttpProject {
   var project = http.Client();
@@ -69,6 +70,48 @@ class HttpProject {
     print("FINISH PROJECT: ${response.body}");
     if (response.statusCode == 200) {
       return ProjectInterface.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  Future<Rating?> getRating(int? projectId) async {
+    final persitence = await SharedPreferences.getInstance();
+    var uri = Uri.parse("$httpBaseServiceManagement/review/${projectId}");
+    var response = await project.get(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+          'Authorization': 'Bearer ${persitence.getString("token")}'
+        },);
+
+    print("GET RATING: ${response.body}");
+    if (response.statusCode == 200) {
+      return ratingFromJson(response.body)[0];
+    }
+    return null;
+  }
+
+
+  Future<Rating?> createRating(
+      int projectId,
+      double score,
+      String comment
+      ) async {
+    final persitence = await SharedPreferences.getInstance();
+    var uri = Uri.parse("$httpBaseServiceManagement/project/${projectId}/review");
+    var response = await project.post(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+          'Authorization': 'Bearer ${persitence.getString("token")}'
+        },
+        body: jsonEncode({
+          "score": score,
+          "comment": comment
+        }));
+    print("CREATE RATING: ${response.body}");
+    if (response.statusCode == 200) {
+      return Rating.fromJson(jsonDecode(response.body));
     }
     return null;
   }

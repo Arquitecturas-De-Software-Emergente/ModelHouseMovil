@@ -172,7 +172,7 @@ class _OptionsState extends State<Options> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RequestCanceled(finished,
+                              builder: (context) => RequestFinished(finished,
                                   widget.userProfile, businessProfile)),
                         );
                       }
@@ -180,7 +180,7 @@ class _OptionsState extends State<Options> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RequestFinished(canceled,
+                              builder: (context) => RequestCanceled(canceled,
                                   widget.userProfile, businessProfile)),
                         );
                       }

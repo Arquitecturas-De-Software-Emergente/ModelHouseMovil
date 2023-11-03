@@ -1,14 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<void> sendNotification(String recipientToken) async {
+Future<void> sendNotification(String recipientToken, String title, String message) async {
   final String serverKey = 'AAAA8f9YeVk:APA91bE52LPetgXpuEOdy8pD5EKSdEkhLBy_DT8nP2dlgbACLCj--EuXMuejbFzYUPfuP0DunlCr6tE8GjFByDoHmjpkPap0rf6wCZNn92rBx_Vv1QZFsPZI_MhtTepXSwzTm8f0tM3u'; // Reemplaza con tu clave de servidor de Firebase
   final String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
   final Map<String, dynamic> body = {
     'notification': {
-      'title': 'Título de la notificación',
-      'body': 'Cuerpo de la notificación',
+      'title': title,
+      'body': message,
     },
     'priority': 'high',
     'data': {
