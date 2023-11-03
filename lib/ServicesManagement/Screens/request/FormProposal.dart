@@ -43,8 +43,6 @@ class _FormProposalState extends State<FormProposal> {
   String descriptionError = "";
   String activitiesError = "";
   String resourcesError = "";
-  File? _image;
-
 
   HttpProposal? httpProposal;
   HttpProyectActivity? httpProjectActivity;
@@ -91,17 +89,6 @@ class _FormProposalState extends State<FormProposal> {
     setState(() {
       resources.removeAt(index);
     });
-  }
-
-  Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final PickedFile? pickedImage = await _picker.getImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-    }
   }
 
   void deleteFile(int index) {
@@ -212,24 +199,6 @@ class _FormProposalState extends State<FormProposal> {
               descriptionError,
               style: TextStyle(
                 color: Colors.red,
-              ),
-            ),
-            SizedBox(height: 20),
-            TextButton(
-              onPressed: _pickImage,
-              child: _image == null ? ElevatedButton(
-                onPressed: _pickImage,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                ),
-                child: const Icon(Icons.person_4_outlined, color: Colors.black, size: 75),
-              ) : Image.file(
-                _image!,
-                width: 300,
-                height: 300,
               ),
             ),
             SizedBox(height: 20),

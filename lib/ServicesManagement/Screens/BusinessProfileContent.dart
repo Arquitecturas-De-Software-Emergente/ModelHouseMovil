@@ -28,7 +28,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
   HttpProyect? httpProyect;
   HttpAccount? httpAccount;
   Account? account;
-  List<Proyect>? proyects;
+  List<Proyect>? projects;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController description = TextEditingController();
 
@@ -47,10 +47,10 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
 
   Future getProjects() async {
     if (widget.businessProfile.id != null) {
-      proyects =
+      projects =
           await httpProyect?.getAllByBusinessId(widget.businessProfile.id!);
       setState(() {
-        proyects = proyects;
+        projects = projects;
       });
     }
   }
@@ -269,12 +269,12 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                 ],
               ),
             ),
-            proyects != null
+            projects != null
                 ? CarouselSlider(
                     options: CarouselOptions(
                       height: 200,
                     ),
-                    items: proyects!.map((project) {
+                    items: projects!.where((project) => project.status == "Completado").map((project) {
                       return Builder(
                         builder: (BuildContext context) {
                           return GestureDetector(

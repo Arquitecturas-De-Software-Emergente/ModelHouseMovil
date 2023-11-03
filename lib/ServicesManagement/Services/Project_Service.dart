@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,7 +52,21 @@ class HttpProject {
     }
     return null;
   }
+  Future<bool?> uploadFile(File file, int projectId) async {
+    print("IMAGE IMAGE");
+    var request = http.MultipartRequest('POST',
+        Uri.parse('$httpBaseSecurity/project/upload/$projectId'));
+    request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
+    var response = await request.send();
+    print(response);
+    print("IMAGE IMAGE");
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   Future<ProjectInterface?> finishProject(
       int projectId,
       String status
@@ -94,11 +109,12 @@ class HttpProject {
 
   Future<Rating?> createRating(
       int projectId,
+      int userProfileId,
       double score,
       String comment
       ) async {
     final persitence = await SharedPreferences.getInstance();
-    var uri = Uri.parse("$httpBaseServiceManagement/project/${projectId}/review");
+    var uri = Uri.parse("$httpBaseServiceManagement/project/$projectId/user_profile/$userProfileId/review");
     var response = await project.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',

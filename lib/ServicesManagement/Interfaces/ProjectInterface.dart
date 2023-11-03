@@ -15,6 +15,7 @@ class ProjectInterface {
   String? lastName;
   String? name;
   String? businessDescription;
+  String? reviewId;
   List<Map<String, dynamic>>? projectActivities;
   List<Map<String, dynamic>>? projectResources;
   String? title;
@@ -29,11 +30,13 @@ class ProjectInterface {
         this.projectActivities,
         this.projectResources,
         this.title,
+        this.reviewId
       });
   factory ProjectInterface.fromJson(Map<String, dynamic> json) => ProjectInterface(
     id: json["id"],
     description: json["description"],
     status: json["status"],
+    reviewId: json["reviewId"],
     firstName: json["proposal"]["request"]["userProfile"]["firstName"],
     lastName: json["proposal"]["request"]["userProfile"]["lastName"],
     name: json["proposal"]["request"]["businessProfile"]["name"],
@@ -53,5 +56,6 @@ class ProjectInterface {
     "projectActivities": projectActivities,
     "projectResources": projectResources,
     "title": title,
+    "reviewId": reviewId,
   };
 }

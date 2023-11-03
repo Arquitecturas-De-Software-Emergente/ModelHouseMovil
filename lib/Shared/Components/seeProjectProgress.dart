@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dialogs/flutter_dialogs.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:model_house/Shared/DialogModelHouse.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 
@@ -33,6 +37,7 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
   List<Map<String, dynamic>> activities = [];
   List<Map<String, dynamic>> resources = [];
   HttpProject? httpProject;
+  File? _image;
 
   @override
   void initState() {
@@ -43,7 +48,16 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
     getActivityList();
     getResourceList();
   }
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final PickedFile? pickedImage = await _picker.getImage(source: ImageSource.gallery);
 
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
   void getActivityList() {
     if (widget.project.projectActivities != null) {
       activities = widget.project.projectActivities!;
@@ -112,20 +126,10 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
     String title = titleController.text;
     String description = descriptionController.text;
 
-    print('Title: $title');
-    print('Description: $description');
-    print('Number of Activities: ${activities.length}');
-    print('Number of Resources: ${resources.length}');
-
     double generalProgress = calculateProgress(activities + resources);
     double activityProgress = calculateProgress(activities);
     double resourceProgress = calculateProgress(resources);
 
-    print('General Progress: $generalProgress%');
-    print('Activity Progress: $activityProgress%');
-    print('Resource Progress: $resourceProgress%');
-
-    // Actualiza el proyecto
     var projectValue = httpProject?.updateProject(
       widget.project.id ?? 0,
       title,
@@ -142,43 +146,53 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
       showCustomDialog(context, "Error", "Error sending request", false, PrincipalView(widget.account!, 1));
     }
   }
-  void finishTheProject(context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Confirmation"),
+  void finishTheProject(context, List<Map<String, dynamic>> activities, List<Map<String, dynamic>> resources) {
+    if(_image != null){
+      validateAndSubmit(activities, resources);
+      showPlatformDialog(
+        context: context,
+        builder: (_) => BasicDialogAlert(
+          title: Text("Confirmation", style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text("Are you sure you want to submit your project?"),
           actions: <Widget>[
-            TextButton(
-              child: Text("Go Back"),
+            BasicDialogAction(
+              title: Text("Go Back"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
-              child: Text("Continue"),
+            BasicDialogAction(
+              title: Text("Continue"),
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo de confirmación
-                performFinishProject(); // Llama a la función para finalizar el proyecto
+                Navigator.of(context).pop();
+                performFinishProject();
               },
             ),
           ],
-        );
-      },
-    );
+        ),
+      );
+    }else{
+      showCustomDialog(context, "Error", "You have to enter an image of the project", false, null);
+    }
   }
 
-  void performFinishProject() {
-    var projectValue = httpProject?.finishProject(widget.project.id!, "Completado");
-    setState(() {
-      projectValue = projectValue;
+  Future performFinishProject() async {
+    bool? upload = await httpProject?.uploadFile(_image!, widget.project.id!);
+    setState(() async {
+      upload = upload;
+      if(upload != true){
+        showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
+      }
     });
-    if (projectValue != null) {
-      showCustomDialog(context, "Success", "The project was completed successfully", true, PrincipalView(widget.account!, 1));
-    } else {
-      showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
-    }
+    var projectValue = httpProject?.finishProject(widget.project.id!, "Completado");
+    setState(() async {
+      projectValue = projectValue;
+      if(projectValue == null){
+        showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
+      }else{
+        showCustomDialog(context, "Success", "The project was completed successfully", true, PrincipalView(widget.account!, 1));
+      }
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -249,7 +263,27 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
             ),),
             if (widget.userProfile != null) Text("${widget.project.description}"),
             SizedBox(height: 12.0),
-
+            Center(
+              child: TextButton(
+                onPressed: _pickImage,
+                child: _image == null ? ElevatedButton(
+                  onPressed: _pickImage,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    primary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  child: const Icon(Icons.photo_album_rounded, color: Color(0xff7da4a3e), size: 75),
+                ) : Image.file(
+                  _image!,
+                  width: 300,
+                  height: 300,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.0),
             // Activities Progress Indicator
             Text(
               "Activity Progress: ${calculateProgress(activities).toStringAsFixed(2)}%",
@@ -408,26 +442,32 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
 
             // Save Progress Button
             if (widget.businessProfile != null &&((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) != "100.00")
-              ElevatedButton(
-                onPressed: () {
-                  validateAndSubmit(activities, resources);
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  onPrimary: Colors.white,
-                ),
-                child: Text("Save Progress"),
-              ),
-            if (widget.businessProfile != null && ((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) == "100.00")
-              ElevatedButton(
-                onPressed: () {
-                    finishTheProject(context);
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    validateAndSubmit(activities, resources);
                   },
                   style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  onPrimary: Colors.white,
+                    primary: Colors.green,
+                    onPrimary: Colors.white,
+                    padding: EdgeInsets.fromLTRB(13, 13, 13, 13),
+                  ),
+                  child: Text("Save Progress"),
                 ),
-                child: Text("Finish Project"),
+              ),
+            if (widget.businessProfile != null && ((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) == "100.00")
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                      finishTheProject(context, activities, resources);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.fromLTRB(13, 13, 13, 13),
+                  ),
+                  child: Text("Finish Project"),
+                ),
               ),
           ],
         ),

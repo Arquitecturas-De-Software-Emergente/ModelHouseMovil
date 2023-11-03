@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
 
-void showCustomDialog(BuildContext context, String title, String content, bool isSuccess, Widget next) {
+void showCustomDialog(BuildContext context, String title, String content, bool isSuccess, Widget? next) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -54,7 +54,7 @@ void showCustomDialog(BuildContext context, String title, String content, bool i
               TextButton(
                 onPressed: () {
                   !isSuccess ? Navigator.of(context).pop() :
-                  navigate(context, next);
+                  navigate(context, next!);
                 },
                 child: Text("OK"),
               ),

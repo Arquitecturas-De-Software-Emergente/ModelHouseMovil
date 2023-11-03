@@ -33,25 +33,6 @@ class _RequestInProcessState extends State<RequestInProcess> {
   HttpProject? httpProject;
   List<ProjectInterface>? projects;
 
-  // void showRatingDialog(BuildContext context) {
-  //   final _ratingDialog = RatingDialog(
-  //     title: Text("Rate the company's service"),
-  //     image: const Icon(Icons.check_circle, size: 60, color: Colors.green),
-  //     submitButtonText: 'Send',
-  //     onCancelled: () => print('Diálogo de calificación cancelado'),
-  //     onSubmitted: (response) {
-  //       print('Calificación: ${response.rating}');
-  //       print('Descripción: ${response.comment}');
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-  //
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => _ratingDialog,
-  //   );
-  // }
-
   @override
   void initState() {
     httpProject = HttpProject();
@@ -95,7 +76,9 @@ class _RequestInProcessState extends State<RequestInProcess> {
                 itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   var status = projects![index].status;
-                  if (status == null) {
+                  if (status != "Completado") {
+                    return SizedBox.shrink();
+                  }else{
                     return RequestCard(
                         '${projects![index].name}',
                         '${projects![index].description}',
@@ -121,8 +104,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                                 'See Project Progress'), // Texto del botón
                           ),
                         ));
-                  };
-                  return SizedBox.shrink();
+                  }
                 }
               ),
             ),
@@ -132,7 +114,9 @@ class _RequestInProcessState extends State<RequestInProcess> {
                 itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   var status = projects![index].status;
-                  if (status == null) {
+                  if (status == "Completado") {
+                    return SizedBox.shrink();
+                  }else{
                     return RequestCard(
                         '${projects![index].firstName} ${projects![index]
                             .lastName}',
@@ -160,7 +144,6 @@ class _RequestInProcessState extends State<RequestInProcess> {
                           ),
                         ));
                   }
-                  return SizedBox.shrink();
                 },
               ),
             ),

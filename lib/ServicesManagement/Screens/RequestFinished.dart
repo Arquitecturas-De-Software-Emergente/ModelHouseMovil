@@ -46,19 +46,12 @@ class _RequestFinishedState extends State<RequestFinished> {
       submitButtonText: 'Send',
       onCancelled: () => print('Diálogo de calificación cancelado'),
       onSubmitted: (response) {
-        var review = httpProject?.getRating(projects![index].id!);
+        var rating = httpProject?.createRating(projects![index].id!, widget.userProfile!.id!, response.rating, response.comment);
         setState(() {
-          review = review;
+          rating = rating;
         });
-        if (review != null){
-          var rating = httpProject?.createRating(projects![index].id!, response.rating, response.comment);
-          setState(() {
-            rating = rating;
-          });
-        }
-        print('Calificación: ${response.rating}');
-        print('Descripción: ${response.comment}');
         Navigator.of(context).pop();
+        getProjects();
       },
     );
 
@@ -100,14 +93,14 @@ class _RequestFinishedState extends State<RequestFinished> {
                         children: [
                           Text("Completed"),
                           SizedBox(width: 10,),
-                          Container(
-                            decoration: BoxDecoration(
+                          projects![index].reviewId == null ? Container(
+                            decoration:  BoxDecoration(
                               color: Colors.white, // Fondo blanco
                               borderRadius:
                               BorderRadius.circular(10.0), // Bordes redondeados de 10px
                               border: Border.all(color: Colors.green, width: 2.0), // Borde verde
                             ),
-                            child: TextButton(
+                              child: TextButton(
                               onPressed: (){
                                 showRatingDialog(context, index);
                               },
@@ -115,7 +108,7 @@ class _RequestFinishedState extends State<RequestFinished> {
                                   primary: Colors.green), // Color del texto verde
                               child: const Text('Leave a Comment'), // Texto del botón
                             ),
-                          ),
+                          ): const Text('Review complete', style: TextStyle(color: Color(0XFF02AA8B), fontWeight: FontWeight.bold)),
                         ],
                       ));
                 },

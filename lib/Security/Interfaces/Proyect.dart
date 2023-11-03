@@ -11,6 +11,7 @@ class Proyect {
   String title;
   String description;
   String image;
+  String? status;
   int businessProfileId;
   Proyect({
     required this.id,
@@ -18,18 +19,21 @@ class Proyect {
     required this.description,
     required this.image,
     required this.businessProfileId,
+    this.status
   });
   factory Proyect.fromJson(Map<String, dynamic> json) => Proyect(
       id: json["id"],
       title: json["title"],
       description: json["description"],
       image: json["image"],
+      status: json["status"],
       businessProfileId: json["businessProfileId"]);
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
         "description": description,
         "image": image,
+        "status": status,
         "businessProfileId": businessProfileId,
       };
 }
