@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
+import 'package:model_house/SmartHome/connectivity.dart';
 import '../../ServicesManagement/Screens/Options.dart';
 import '../../ServicesManagement/Screens/Home.dart';
 import '../../ServicesManagement/Screens/Payment.dart';
@@ -33,7 +34,7 @@ class _RoutesState extends State<Routes> {
     List<Widget> myList = [
       Home(widget.userProfile, widget.account),
       Options(widget.account, widget.userProfile),
-      Payment(widget.userProfile),
+      MyConnection(),
       Menu(widget.account, widget.userProfile, widget.businessProfile),
     ];
     return myList[widget.index];
