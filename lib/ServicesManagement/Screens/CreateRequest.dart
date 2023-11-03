@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/ServicesManagement/Interfaces/RequestInterface.dart';
@@ -6,12 +10,24 @@ import 'package:model_house/ServicesManagement/Screens/BusinessProfileContent.da
 import 'package:model_house/ServicesManagement/Screens/Home.dart';
 import 'package:model_house/ServicesManagement/Services/Request_Service.dart';
 import 'package:model_house/Shared/Components/PrincipalView.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../Security/Interfaces/Account.dart';
 import '../../Security/Interfaces/UserProfile.dart';
 import '../../Security/Services/User_Profile.dart';
 import '../../Shared/DialogModelHouse.dart';
+import 'package:http/http.dart' as http;
+class Place {
+  final String placeId;
+  final String description;
 
+  Place(this.placeId, this.description);
+
+  @override
+  String toString() {
+    return 'Place(description: $description, placeId: $placeId)';
+  }
+}
 class CreateRequest extends StatefulWidget {
   BusinessProfile businessProfile;
   String userProfileId;
@@ -29,6 +45,49 @@ class _CreateRequestState extends State<CreateRequest> {
   final TextEditingController areaController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final apiKey = 'AIzaSyAUkXe3mWmqdi9LbB_dFVHcZ7-wLjZbxao'; // Reemplaza con tu clave de API de Google Places
+  final sessionToken = Uuid().v4();
+  List<Place> _suggestions = [];
+  Timer? _debounce; // Para retrasar la llamada a fetchSuggestions
+
+  @override
+  void dispose() {
+    locationController.dispose();
+    super.dispose();
+  }
+
+  void fetchSuggestions(String input) async {
+    final request = Uri.parse(
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=$apiKey&sessiontoken=$sessionToken&components=country:PE');
+    final response = await http.get(request);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      if (result['status'] == 'OK') {
+        setState(() {
+          _suggestions = (result['predictions'] as List)
+              .map((prediction) => Place(
+              prediction['place_id'] as String,
+              prediction['description'] as String))
+              .toList();
+        });
+      } else {
+        setState(() {
+          _suggestions = [];
+        });
+      }
+    } else {
+      throw Exception('Failed to fetch suggestions');
+    }
+  }
+
+  void onTextChanged(String text) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      // Llama fetchSuggestions después de un retraso de 500 ms
+      fetchSuggestions(text);
+    });
+  }
 
   Future iniState() async {
     super.initState();
@@ -36,6 +95,12 @@ class _CreateRequestState extends State<CreateRequest> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> estimatedBudgetOptions = [
+      'Less than 1000 soles',
+      'Between 1000 and 3000 soles',
+      'Between 3000 and 5000 soles',
+      'More than 5000 soles',
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -76,12 +141,26 @@ class _CreateRequestState extends State<CreateRequest> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   clipBehavior: Clip.none,
-                  child: TextField(
-                    controller: estimatedBudgetController,
-                    decoration: InputDecoration(
-                      labelText: 'Estimated Budget',
-                      contentPadding: EdgeInsets.all(16),
-                    ),
+                  child: DropdownButton<String>(
+                    value: estimatedBudgetOptions.contains(estimatedBudgetController.text)
+                        ? estimatedBudgetController.text
+                        : estimatedBudgetOptions[0],
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        estimatedBudgetController.text = newValue ?? '';
+                      });
+                    },
+                    items: estimatedBudgetOptions.map((String option) {
+                      return DropdownMenuItem<String>(
+                        value: option,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(option),
+                        ),
+                      );
+                    }).toList(),
+                    isExpanded: true,
+                    underline: Container(), // Para ocultar la línea bajo el desplegable
                   ),
                 ),
                 SizedBox(height: 14),
@@ -93,6 +172,10 @@ class _CreateRequestState extends State<CreateRequest> {
                   clipBehavior: Clip.none,
                   child: TextField(
                     controller: areaController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     decoration: InputDecoration(
                       labelText: 'Area',
                       contentPadding: EdgeInsets.all(16),
@@ -106,12 +189,31 @@ class _CreateRequestState extends State<CreateRequest> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   clipBehavior: Clip.none,
-                  child: TextField(
-                    controller: locationController,
-                    decoration: InputDecoration(
-                      labelText: 'Location',
-                      contentPadding: EdgeInsets.all(16),
-                    ),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: locationController,
+                        onChanged: onTextChanged,
+                        decoration: InputDecoration(
+                          labelText: 'Location',
+                          contentPadding: EdgeInsets.all(16),
+                        ),
+                      ),
+                      if (_suggestions.isNotEmpty)
+                        Column(
+                          children: _suggestions
+                              .map((suggestion) => ListTile(
+                            title: Text(suggestion.description),
+                            onTap: () {
+                              setState(() {
+                                locationController.text = suggestion.description;
+                                _suggestions = [];
+                              });
+                            },
+                          ))
+                              .toList(),
+                        )
+                    ],
                   ),
                 ),
                 SizedBox(height: 14),

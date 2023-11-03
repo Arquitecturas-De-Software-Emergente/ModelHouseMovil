@@ -3,6 +3,7 @@ import 'package:model_house/Security/Screens/welcomeApplication.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'ServicesManagement/Services/messaging_service.dart';
+import 'ServicesManagement/Services/place_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
