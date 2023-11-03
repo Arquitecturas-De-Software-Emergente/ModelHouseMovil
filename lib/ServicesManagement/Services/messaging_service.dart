@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class MessagingService {
   static String? fcmToken; // Variable to store the FCM token
@@ -13,8 +14,16 @@ class MessagingService {
   MessagingService._internal();
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
   Future<void> init(BuildContext context) async {
+    // Initialize FlutterLocalNotificationsPlugin
+    final initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher'); // Reemplaza 'app_icon' con el nombre de tu ícono
+    final initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
     // Requesting permission for notifications
     NotificationSettings settings = await _fcm.requestPermission(
       alert: true,
@@ -33,10 +42,7 @@ class MessagingService {
     fcmToken = await _fcm.getToken();
     log('fcmToken: $fcmToken');
 
-    // Handling background messages using the specified handler
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    // Listening for incoming messages while the app is in the foreground
+    // Handling incoming messages while the app is in the foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       debugPrint('Got a message whilst in the foreground!');
       debugPrint('Message data: ${message.notification!.title.toString()}');
@@ -47,41 +53,14 @@ class MessagingService {
           final notificationData = message.data;
           final screen = notificationData['screen'];
 
-          // Showing an alert dialog when a notification is received (Foreground state)
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return WillPopScope(
-                onWillPop: () async => false,
-                child: AlertDialog(
-                  title: Text(message.notification!.title!),
-                  content: Text(message.notification!.body!),
-                  actions: [
-                    if (notificationData.containsKey('screen'))
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.of(context).pushNamed(screen);
-                        },
-                        child: const Text('Open Screen'),
-                      ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Dismiss'),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
+          // Show a notification in the system tray
+          _showNotification(message.notification!.title!,
+              message.notification!.body!, screen);
         }
       }
     });
 
-    // Handling the initial message received when the app is launched from dead (killed state)
-    // When the app is killed and a new notification arrives when user clicks on it
-    // It gets the data to which screen to open
+    // Handling the initial message received when the app is launched from the background (killed state)
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         _handleNotificationClick(context, message);
@@ -96,6 +75,25 @@ class MessagingService {
     });
   }
 
+  // Show a notification in the system tray
+  Future<void> _showNotification(
+      String title, String body, String? screen) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      title, // Notification title
+      body, // Notification body
+      platformChannelSpecifics,
+      payload: screen,
+    );
+  }
+
   // Handling a notification click event by navigating to the specified screen
   void _handleNotificationClick(BuildContext context, RemoteMessage message) {
     final notificationData = message.data;
@@ -105,12 +103,4 @@ class MessagingService {
       Navigator.of(context).pushNamed(screen);
     }
   }
-}
-
-// Handler for background messages
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  debugPrint('Handling a background message: ${message.notification!.title}');
 }

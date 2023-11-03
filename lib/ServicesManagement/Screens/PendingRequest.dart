@@ -34,11 +34,11 @@ class _PendingRequestState extends State<PendingRequest> {
   RequestInterface? request;
   HttpRequest? httpRequest;
   List<RequestInterface>? requests;
-  final _messagingService =  MessagingService();
+  // final _messagingService =  MessagingService();
   @override
   void initState() {
-    _messagingService
-        .init(context);
+    // _messagingService
+    //     .init(context);
     httpRequest = HttpRequest();
     getRequest();
     super.initState();
