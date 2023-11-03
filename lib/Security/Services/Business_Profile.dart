@@ -8,10 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpBusinessProfile {
   var business = http.Client();
-  Future<List<BusinessProfile>?> getAllBusinessProfile() async {
-    var uri = Uri.parse("$httpBaseSecurity/business_profile");
+  Future<List<BusinessProfile>?> getAllBusinessProfile(String filter) async {
+    var uri = Uri.parse("$httpBaseSecurity/business_profile?filter=$filter");
     var response = await business.get(uri);
-    print(response.body);
     if (response.statusCode == 200) {
       var json = response.body;
       return businessProfileFromJson(json);

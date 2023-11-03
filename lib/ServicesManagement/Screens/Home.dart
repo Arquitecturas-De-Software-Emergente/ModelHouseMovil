@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
@@ -21,7 +22,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final algo = TextEditingController();
+  final search = TextEditingController();
   HttpBusinessProfile? httpBusinessProfile;
   List<BusinessProfile>? businesses;
   List<int> favoriteBusinesses = [];
@@ -29,12 +30,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     httpBusinessProfile = HttpBusinessProfile();
-    getBusiness();
+    getBusiness("");
     super.initState();
   }
 
-  Future getBusiness() async {
-    businesses = await httpBusinessProfile?.getAllBusinessProfile();
+  Future getBusiness(String filter) async {
+    businesses = await httpBusinessProfile?.getAllBusinessProfile(filter);
     setState(() {
       businesses = businesses;
     });
@@ -61,8 +62,27 @@ class _HomeState extends State<Home> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-            child: Input(Icons.search, "Search on Model House", true, algo,
-                false, TextInputType.text),
+            child: TextField(
+                keyboardType: TextInputType.text,
+                controller: search,
+                style:
+                GoogleFonts.poppins(fontSize: 14, color: const Color(0XFF02AA8B)),
+                decoration: InputDecoration(
+                  hintText: "Search Business",
+                  hintStyle: const TextStyle(color: Color(0XFF02AA8B)),
+                  fillColor: Colors.white,
+                  filled: true,
+                  focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0XFF02AA8B))),
+                  enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0XFF02AA8B))),
+                ),
+                onChanged: (text){
+                  print(text + " text");
+                  getBusiness(text);
+                },
+              )
+            ,
           ),
           businesses != null
               ? Expanded(
