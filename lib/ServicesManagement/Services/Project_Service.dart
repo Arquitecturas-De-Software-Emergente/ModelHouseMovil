@@ -50,4 +50,26 @@ class HttpProject {
     }
     return null;
   }
+
+  Future<ProjectInterface?> finishProject(
+      int projectId,
+      String status
+      ) async {
+    final persitence = await SharedPreferences.getInstance();
+    var uri = Uri.parse("$httpBaseSecurity/project/${projectId}/status/${status}");
+    var response = await project.put(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+          'Authorization': 'Bearer ${persitence.getString("token")}'
+        },
+        body: jsonEncode({
+
+        }));
+    print("FINISH PROJECT: ${response.body}");
+    if (response.statusCode == 200) {
+      return ProjectInterface.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
 }

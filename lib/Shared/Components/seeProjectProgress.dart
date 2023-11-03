@@ -142,8 +142,43 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
       showCustomDialog(context, "Error", "Error sending request", false, PrincipalView(widget.account!, 1));
     }
   }
-  void finishTheProject(){
+  void finishTheProject(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Confirmation"),
+          content: Text("Are you sure you want to submit your project?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Go Back"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Continue"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo de confirmación
+                performFinishProject(); // Llama a la función para finalizar el proyecto
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
+  void performFinishProject() {
+    var projectValue = httpProject?.finishProject(widget.project.id!, "Completado");
+    setState(() {
+      projectValue = projectValue;
+    });
+    if (projectValue != null) {
+      showCustomDialog(context, "Success", "The project was completed successfully", true, PrincipalView(widget.account!, 1));
+    } else {
+      showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -372,7 +407,7 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
             ),
 
             // Save Progress Button
-            if (widget.businessProfile != null )
+            if (widget.businessProfile != null &&((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) != "100.00")
               ElevatedButton(
                 onPressed: () {
                   validateAndSubmit(activities, resources);
@@ -383,18 +418,21 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
                 ),
                 child: Text("Save Progress"),
               ),
-            // if (widget.businessProfile != null && ((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) == "100.00")
-            //   ElevatedButton(
-            //     onPressed: finishTheProject,
-            //     style: ElevatedButton.styleFrom(
-            //       primary: Colors.green,
-            //       onPrimary: Colors.white,
-            //     ),
-            //     child: Text("Finish Project"),
-            //   ),
+            if (widget.businessProfile != null && ((calculateProgress(activities) + calculateProgress(resources)) / 2).toStringAsFixed(2) == "100.00")
+              ElevatedButton(
+                onPressed: () {
+                    finishTheProject(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  onPrimary: Colors.white,
+                ),
+                child: Text("Finish Project"),
+              ),
           ],
         ),
       ),
     );
   }
 }
+

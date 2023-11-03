@@ -95,7 +95,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                 itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   var status = projects![index].status;
-                  if (status == "Aprobado") {
+                  if (status == null) {
                     return RequestCard(
                         '${projects![index].name}',
                         '${projects![index].description}',
@@ -132,7 +132,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                 itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   var status = projects![index].status;
-                  if (status == "Aprobado") {
+                  if (status == null) {
                     return RequestCard(
                         '${projects![index].firstName} ${projects![index]
                             .lastName}',

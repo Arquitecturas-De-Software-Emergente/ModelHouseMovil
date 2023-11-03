@@ -33,7 +33,7 @@ class ProjectInterface {
   factory ProjectInterface.fromJson(Map<String, dynamic> json) => ProjectInterface(
     id: json["id"],
     description: json["description"],
-    status: json["proposal"]["request"]["status"],
+    status: json["status"],
     firstName: json["proposal"]["request"]["userProfile"]["firstName"],
     lastName: json["proposal"]["request"]["userProfile"]["lastName"],
     name: json["proposal"]["request"]["businessProfile"]["name"],
