@@ -11,6 +11,7 @@ import 'package:social_media_flutter/social_media_flutter.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Security/Interfaces/Proyect.dart';
 import '../../Security/Services/Proyect_Service.dart';
+import '../../Shared/Widgets/CustomInformCard.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -60,55 +61,76 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
     return Scaffold(
       appBar: AppBar(
         title: Titles(20, "Business Profile"),
-        backgroundColor: const Color(0xffffffff),
+        backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
             color: Color(0XFF02AA8B),
           ),
-          onPressed: () => {Navigator.of(context).pop()},
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 200,
-              child: Image.network(
-                widget.businessProfile.image!,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: Positioned(
-                top: 70,
-                child: CircleAvatar(
-                  radius: 75,
-                  backgroundImage: NetworkImage(widget.businessProfile.image!),
+            Stack(
+              children: [
+                Container(
+                  height: 250,
                 ),
-              ),
+                Positioned(
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 6),
+                    height: 180,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      image: DecorationImage(
+                        image: NetworkImage(widget.businessProfile.image!), // Reemplaza con la ruta de tu imagen
+                        fit: BoxFit.cover, // Ajusta la forma en que la imagen se ajusta al contenedor
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2), // Color de la sombra y opacidad
+                          blurRadius: 5, // Radio de desenfoque
+                          spreadRadius: 1, // Radio de expansión
+                          offset: Offset(0, 4), // Desplazamiento (horizontal, vertical)
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: -10, // Ajusta la posición vertical para que el círculo flote hacia arriba
+                  left: (MediaQuery.of(context).size.width - 150) / 2, // Ajusta la posición horizontal para centrar el círculo
+                  child: CircleAvatar(
+                    radius: 75,
+                    backgroundImage: NetworkImage(widget.businessProfile.image!),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     widget.businessProfile.name,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.favorite_border,
                       color: Colors.red,
                     ),
@@ -116,235 +138,239 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             RatingBar.builder(
-              initialRating: 3, // review
+              initialRating: 3,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
               itemSize: 25,
-              itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+              itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
               itemBuilder: (context, _) => Icon(
                 Icons.star,
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-                // actualización de la puntuación de la revisión
+                // Actualización de la puntuación de la revisión
               },
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Text(
-                        "Phone Number: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        "${widget.businessProfile.phoneNumber}",
-                      ),
-                    ],
+                  CustomInfoCard(
+                    Icons.phone_iphone_outlined,
+                    "Phone Number:",
+                    "${widget.businessProfile.phoneNumber}",
                   ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Text(
-                        "Official Web Page: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        "${widget.businessProfile.webSite}",
-                      ),
-                    ],
+                  SizedBox(height: 5),
+                  CustomInfoCard(
+                    Icons.web_outlined,
+                    "Official Web Page: ",
+                    "${widget.businessProfile.webSite}",
                   ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Text(
-                        "Address: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        "${widget.businessProfile.address}",
-                      ),
-                    ],
+                  SizedBox(height: 5),
+                  CustomInfoCard(
+                    Icons.map_outlined,
+                    "Address: ",
+                    "${widget.businessProfile.address}",
                   ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text(
-                        "Email Address: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        "fre",
-                      ),
-                    ],
+                  SizedBox(height: 5),
+                  CustomInfoCard(
+                    Icons.email_outlined,
+                    "Email Address: ",
+                    "Free",
                   ),
-                  const SizedBox(height: 5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                  SizedBox(height: 15 ),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                       Text(
                         "Categories:",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
                       ),
-                      const SizedBox(height: 5),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 4,
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: categories.map((category) {
                           return Chip(
                             label: Text(
                               category.name,
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
+                                color: Color(0xFF02AA8B), // Color del texto
+                                fontSize: 14,
                               ),
                             ),
-                            backgroundColor: const Color(0xFF02AA8B),
+                            backgroundColor: Colors.white, // Color de fondo del Chip
+                            elevation: 3,
+                            labelPadding: EdgeInsets.symmetric(horizontal: 8),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Color(0xFF02AA8B), // Color del borde
+                                width: 1.5, // Ancho del borde
+                              ),
+                              borderRadius: BorderRadius.circular(30), // Bordes redondeados
+                            ),
+                            labelStyle: TextStyle(
+                              color: Colors.black, // Color del texto
+                            ),
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 5),
+                      SizedBox(height: 10),
                     ],
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Text(
-                        "Social Media: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SocialWidget(
-                        placeholderText: '',
-                        iconData: SocialIconsFlutter.instagram,
-                        iconColor: const Color(0xFF02AA8B),
-                        link: 'https://www.instagram.com/',
-                        iconSize: 20,
-                      ),
-                      SocialWidget(
-                        placeholderText: '',
-                        iconData: SocialIconsFlutter.linkedin,
-                        iconColor: const Color(0xFF02AA8B),
-                        link: 'https://www.linkedin.com/',
-                        iconSize: 20,
-                      ),
-                      SocialWidget(
-                        placeholderText: '',
-                        iconData: SocialIconsFlutter.facebook,
-                        iconColor: const Color(0xFF02AA8B),
-                        link: 'https://www.facebook.com/',
-                        iconSize: 20,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    "About Us:",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Text(widget.businessProfile.description),
-                  const SizedBox(height: 30),
-                  const Text(
-                    "Our Specialization:",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 30),
-                  const Text(
+                  )),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Social Media: ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SocialWidget(
+                          placeholderText: '',
+                          iconData: SocialIconsFlutter.instagram,
+                          iconColor: Color(0xFF02AA8B),
+                          link: 'https://www.instagram.com/',
+                          iconSize: 20,
+                        ),
+                        SocialWidget(
+                          placeholderText: '',
+                          iconData: SocialIconsFlutter.linkedin,
+                          iconColor: Color(0xFF02AA8B),
+                          link: 'https://www.linkedin.com/',
+                          iconSize: 20,
+                        ),
+                        SocialWidget(
+                          placeholderText: '',
+                          iconData: SocialIconsFlutter.facebook,
+                          iconColor: Color(0xFF02AA8B),
+                          link: 'https://www.facebook.com/',
+                          iconSize: 20,
+                        ),
+                      ],
+                  )),
+                  SizedBox(height: 10),
+                  Text(
                     "Projects:",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
             projects != null
                 ? CarouselSlider(
-                    options: CarouselOptions(
-                      height: 200,
-                    ),
-                    items: projects!.where((project) => project.status == "Completado").map((project) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ProjectDetail(project),
-                              ));
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.network(
-                                  project.image,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }).toList(),
-                  )
-                : Card(
-                    child: Container(
-                      height: 200,
-                      width: 250,
-                      padding: const EdgeInsets.all(30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Titles(20, "you do not have projects"),
-                          const Icon(
-                            Icons.sentiment_dissatisfied_outlined,
-                            size: 60,
-                            color: Color(0XFF02AA8B),
+              options: CarouselOptions(
+                height: 200,
+              ),
+              items: projects!.where((project) => project.status == "Completado").map((project) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProjectDetail(project),
+                        ));
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(
+                            project.image,
+                            fit: BoxFit.cover,
                           ),
-                        ],
+                        ),
                       ),
+                    );
+                  },
+                );
+              }).toList(),
+            )
+                : Card(
+              child: Container(
+                height: 200,
+                width: 250,
+                padding: const EdgeInsets.all(30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Titles(20, "You do not have projects"),
+                    Icon(
+                      Icons.sentiment_dissatisfied_outlined,
+                      size: 60,
+                      color: Color(0XFF02AA8B),
                     ),
-                  ),
+                  ],
+                ),
+              ),
+            ),
             SizedBox(height: 25),
             widget.account?.userProfileId != null &&
-                    widget.account?.businessProfileId == null
+                widget.account?.businessProfileId == null
                 ? ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateRequest(
-                              widget.businessProfile,
-                              widget.account!.userProfileId!,
-                              widget.account!
-                        ),
-                      ));
-                    },
-                    child: const Text(
-                      "Send Request",
-                      style: TextStyle(fontSize: 15),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateRequest(
+                      widget.businessProfile,
+                      widget.account!.userProfileId!,
+                      widget.account!,
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF02AA8B),
-                      minimumSize: const Size(350, 60),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10.0), // Border redondeado
-                      ),
-                    ),
-                  )
+                  ),
+                );
+              },
+              child: Text(
+                "Send Request",
+                style: TextStyle(fontSize: 15),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF02AA8B),
+                minimumSize: Size(350, 60),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            )
                 : Container(),
             SizedBox(height: 70),
           ],
