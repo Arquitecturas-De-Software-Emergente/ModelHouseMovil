@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:model_house/Shared/Widgets/CustomInformCard.dart';
 
 import '../../ServicesManagement/Interfaces/RequestInterface.dart';
+import '../Widgets/texts/titles.dart';
 
 class SeeDetails extends StatelessWidget {
   final RequestInterface request;
@@ -13,37 +15,38 @@ class SeeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Detalles de la Solicitud',
-          style: TextStyle(
-            color: Colors.black, // Color del texto del título del AppBar
-            fontSize: 20.0, // Tamaño de fuente del título del AppBar
-          ),
-        ),
-        backgroundColor: Colors.white, // Ajusta el color de fondo del AppBar según tus preferencias
+        title: Titles(28, "Detalles de la solicitud"),
+        backgroundColor: const Color(0xffffffff),
         centerTitle: true,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color(0XFF02AA8B), // Color del botón de retroceso
+            color: Color(0XFF02AA8B),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => {Navigator.of(context).pop()},
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            _buildDetailRow(name ?? "N/A", ""),
-            _buildDetailRow("Categoría:", request.category ?? "N/A"),
-            _buildDetailRow("Presupuesto Estimado:", request.estimatedBudget != null
+            CustomInfoCard(Icons.person, "Name:", name ?? "N/A"),
+            const SizedBox(height: 10),
+            CustomInfoCard(Icons.category, "Categoría:", request.category ?? "N/A"),
+            const SizedBox(height: 10),
+            CustomInfoCard(Icons.price_change_outlined, "Presupuesto Estimado:", request.estimatedBudget!= null
                 ? "${request.estimatedBudget!}"
-                : "N/A"), // Formatea el presupuesto como moneda
-            _buildDetailRow("Área en m^2:", request.area != null ? "${request.area} m^2" : "N/A"),
-            _buildDetailRow("Ubicación:", request.location ?? "N/A"),
-            _buildDetailRow("Archivos:", request.file ?? "N/A"),
-            _buildDetailRow("Descripción:", request.description ?? "N/A"),
+                : "N/A"),
+            const SizedBox(height: 10),
+            CustomInfoCard(Icons.area_chart_outlined, "Área en m^2: ", request.area != null ? "${request.area} m^2" : "N/A"),
+            const SizedBox(height: 10),
+            CustomInfoCard(Icons.map_outlined, "Ubicación: ", request.location ?? "N/A"),
+            const SizedBox(height: 10),
+            CustomInfoCard(Icons.file_copy_outlined, "Archivos: ", request.file ?? "N/A"),
+            const SizedBox(height: 10),
+            CustomInfoCard(Icons.description, "Descripción: ", request.description ?? "N/A"),
+            const SizedBox(height: 10),
           ],
         ),
       ),
