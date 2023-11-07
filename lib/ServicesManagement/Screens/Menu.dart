@@ -58,14 +58,6 @@ class _MenuState extends State<Menu> {
     }
   }
 
-  String truncateText(String text, int maxLength) {
-    if (text.length <= maxLength) {
-      return text;
-    } else {
-      return text.substring(0, maxLength) + '...';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -110,15 +102,24 @@ class _MenuState extends State<Menu> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${truncateText(widget.userProfile?.firstName ?? "", 12)} ${(widget.userProfile?.firstName?.length ?? 0) <= 12 ? widget.userProfile?.lastName : ""}',
+                                  '${(widget.userProfile?.firstName ?? "") + (" ") + (widget.userProfile?.lastName ?? "")}'
+                                              .length <=
+                                          12
+                                      ? (widget.userProfile?.firstName ?? "") +
+                                          (" ") +
+                                          (widget.userProfile?.lastName ?? "")
+                                      : '${(widget.userProfile?.firstName ?? "") + (" ") + (widget.userProfile?.lastName ?? "").substring(0, 9)}...',
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 Text(
                                   widget.account.emailAddress,
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ],
                             ),

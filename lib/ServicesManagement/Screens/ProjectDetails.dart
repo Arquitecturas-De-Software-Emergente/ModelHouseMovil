@@ -22,10 +22,12 @@ class ProjectDetail extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 400,
-
-              child: Image.network(
-                project.image,
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(
+                  project.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -50,7 +52,9 @@ class ProjectDetail extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10), // Espacio vertical entre el avatar y la información
+              padding: const EdgeInsets.symmetric(
+                  vertical:
+                      10), // Espacio vertical entre el avatar y la información
               child: Row(
                 children: [
                   CircleAvatar(
@@ -58,7 +62,9 @@ class ProjectDetail extends StatelessWidget {
                     backgroundImage: NetworkImage(
                         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fillustrations%2Ficon-user-male-avatar-business-5359553%2F&psig=AOvVaw3z-QpkAnlKp_EtzqyU1AkC&ust=1698165957853000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNjat6zPjIIDFQAAAAAdAAAAABAu"),
                   ),
-                  const SizedBox(width: 10), // Espacio horizontal entre el avatar y la información
+                  const SizedBox(
+                      width:
+                          10), // Espacio horizontal entre el avatar y la información
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -69,7 +75,8 @@ class ProjectDetail extends StatelessWidget {
                         allowHalfRating: true,
                         itemCount: 5,
                         itemSize: 20,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -88,7 +95,9 @@ class ProjectDetail extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(width: 10), // Espacio horizontal entre el nombre de usuario y el texto de la revisión
+                          const SizedBox(
+                              width:
+                                  10), // Espacio horizontal entre el nombre de usuario y el texto de la revisión
                           Text(
                             'It’s a good business',
                             style: TextStyle(

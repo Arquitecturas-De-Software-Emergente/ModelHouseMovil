@@ -25,7 +25,7 @@ class Signin extends StatefulWidget {
 
 class _SigninState extends State<Signin> {
   final DatabaseReference _databaseReference =
-  FirebaseDatabase.instance.ref().child('/users/');
+      FirebaseDatabase.instance.ref().child('/users/');
   String? fcm;
   final email = TextEditingController();
   final password = TextEditingController();
@@ -54,18 +54,20 @@ class _SigninState extends State<Signin> {
             "business": {
               "businessId": account!.businessProfileId,
               "deviceId": fcm,
-            }});
+            }
+          });
         } else {
           print("User Profile");
           FirebaseDatabase.instance.ref('/users/').update({
             "user": {
               "userId": account!.userProfileId,
               "deviceId": fcm,
-            }});
+            }
+          });
         }
 
-
-        if(account?.businessProfileId == null && account?.userProfileId == null) {
+        if (account?.businessProfileId == null &&
+            account?.userProfileId == null) {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {

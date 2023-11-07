@@ -115,9 +115,28 @@ class _BusinessProfileCardState extends State<BusinessProfileCard> {
                       color: const Color(0xFF02AA8B),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => BusinessProfileContent(
-                                businessprofile, widget.account),
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return BusinessProfileContent(
+                                  businessprofile, widget.account);
+                            },
+                            transitionDuration:
+                                const Duration(milliseconds: 700),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin = Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+                              var offsetAnimation = animation.drive(tween);
+
+                              return SlideTransition(
+                                position: offsetAnimation,
+                                child: child,
+                              );
+                            },
                           ),
                         );
                       },

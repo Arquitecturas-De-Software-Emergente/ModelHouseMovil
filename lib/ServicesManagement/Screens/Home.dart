@@ -63,26 +63,25 @@ class _HomeState extends State<Home> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
             child: TextField(
-                keyboardType: TextInputType.text,
-                controller: search,
-                style:
-                GoogleFonts.poppins(fontSize: 14, color: const Color(0XFF02AA8B)),
-                decoration: InputDecoration(
-                  hintText: "Search Business",
-                  hintStyle: const TextStyle(color: Color(0XFF02AA8B)),
-                  fillColor: Colors.white,
-                  filled: true,
-                  focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0XFF02AA8B))),
-                  enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0XFF02AA8B))),
-                ),
-                onChanged: (text){
-                  print(text + " text");
-                  getBusiness(text);
-                },
-              )
-            ,
+              keyboardType: TextInputType.text,
+              controller: search,
+              style: GoogleFonts.poppins(
+                  fontSize: 14, color: const Color(0XFF02AA8B)),
+              decoration: InputDecoration(
+                hintText: "Search Business",
+                hintStyle: const TextStyle(color: Color(0XFF02AA8B)),
+                fillColor: Colors.white,
+                filled: true,
+                focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0XFF02AA8B))),
+                enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0XFF02AA8B))),
+              ),
+              onChanged: (text) {
+                print(text + " text");
+                getBusiness(text);
+              },
+            ),
           ),
           businesses != null
               ? Expanded(
@@ -96,7 +95,9 @@ class _HomeState extends State<Home> {
                       return BusinessProfileCard(
                         widget.account!,
                         id: business.id!,
-                        address: business.address,
+                        address: business.address.length > 12
+                            ? business.address.substring(0, 12) + "..."
+                            : business.address,
                         description: business.description,
                         image: business.image!,
                         name: business.name,

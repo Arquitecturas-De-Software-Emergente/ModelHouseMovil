@@ -14,6 +14,7 @@ import '../../Security/Services/Proyect_Service.dart';
 import '../../Shared/Widgets/CustomInformCard.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:animations/animations.dart';
 
 class BusinessProfileContent extends StatefulWidget {
   BusinessProfile businessProfile;
@@ -92,26 +93,33 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       image: DecorationImage(
-                        image: NetworkImage(widget.businessProfile.image!), // Reemplaza con la ruta de tu imagen
-                        fit: BoxFit.cover, // Ajusta la forma en que la imagen se ajusta al contenedor
+                        image: NetworkImage(widget.businessProfile
+                            .image!), // Reemplaza con la ruta de tu imagen
+                        fit: BoxFit
+                            .cover, // Ajusta la forma en que la imagen se ajusta al contenedor
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Color de la sombra y opacidad
+                          color: Colors.black.withOpacity(
+                              0.2), // Color de la sombra y opacidad
                           blurRadius: 5, // Radio de desenfoque
                           spreadRadius: 1, // Radio de expansión
-                          offset: Offset(0, 4), // Desplazamiento (horizontal, vertical)
+                          offset: Offset(
+                              0, 4), // Desplazamiento (horizontal, vertical)
                         ),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
-                  bottom: -10, // Ajusta la posición vertical para que el círculo flote hacia arriba
-                  left: (MediaQuery.of(context).size.width - 150) / 2, // Ajusta la posición horizontal para centrar el círculo
+                  bottom:
+                      -10, // Ajusta la posición vertical para que el círculo flote hacia arriba
+                  left: (MediaQuery.of(context).size.width - 150) /
+                      2, // Ajusta la posición horizontal para centrar el círculo
                   child: CircleAvatar(
                     radius: 75,
-                    backgroundImage: NetworkImage(widget.businessProfile.image!),
+                    backgroundImage:
+                        NetworkImage(widget.businessProfile.image!),
                   ),
                 ),
               ],
@@ -184,109 +192,112 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     "Email Address: ",
                     "Free",
                   ),
-                  SizedBox(height: 15 ),
+                  SizedBox(height: 15),
                   Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 5,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text(
-                        "Categories:",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 5,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: categories.map((category) {
-                          return Chip(
-                            label: Text(
-                              category.name,
-                              style: TextStyle(
-                                color: Color(0xFF02AA8B), // Color del texto
-                                fontSize: 14,
-                              ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Categories:",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.black,
                             ),
-                            backgroundColor: Colors.white, // Color de fondo del Chip
-                            elevation: 3,
-                            labelPadding: EdgeInsets.symmetric(horizontal: 8),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Color(0xFF02AA8B), // Color del borde
-                                width: 1.5, // Ancho del borde
-                              ),
-                              borderRadius: BorderRadius.circular(30), // Bordes redondeados
-                            ),
-                            labelStyle: TextStyle(
-                              color: Colors.black, // Color del texto
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  )),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: categories.map((category) {
+                              return Chip(
+                                label: Text(
+                                  category.name,
+                                  style: TextStyle(
+                                    color: Color(0xFF02AA8B), // Color del texto
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                backgroundColor:
+                                    Colors.white, // Color de fondo del Chip
+                                elevation: 3,
+                                labelPadding:
+                                    EdgeInsets.symmetric(horizontal: 8),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Color(0xFF02AA8B), // Color del borde
+                                    width: 1.5, // Ancho del borde
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      30), // Bordes redondeados
+                                ),
+                                labelStyle: TextStyle(
+                                  color: Colors.black, // Color del texto
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      )),
                   SizedBox(height: 10),
                   Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 5,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Social Media: ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 5,
+                            offset: Offset(0, 2),
                           ),
-                        ),
-                        SocialWidget(
-                          placeholderText: '',
-                          iconData: SocialIconsFlutter.instagram,
-                          iconColor: Color(0xFF02AA8B),
-                          link: 'https://www.instagram.com/',
-                          iconSize: 20,
-                        ),
-                        SocialWidget(
-                          placeholderText: '',
-                          iconData: SocialIconsFlutter.linkedin,
-                          iconColor: Color(0xFF02AA8B),
-                          link: 'https://www.linkedin.com/',
-                          iconSize: 20,
-                        ),
-                        SocialWidget(
-                          placeholderText: '',
-                          iconData: SocialIconsFlutter.facebook,
-                          iconColor: Color(0xFF02AA8B),
-                          link: 'https://www.facebook.com/',
-                          iconSize: 20,
-                        ),
-                      ],
-                  )),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Social Media: ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SocialWidget(
+                            placeholderText: '',
+                            iconData: SocialIconsFlutter.instagram,
+                            iconColor: Color(0xFF02AA8B),
+                            link: 'https://www.instagram.com/',
+                            iconSize: 20,
+                          ),
+                          SocialWidget(
+                            placeholderText: '',
+                            iconData: SocialIconsFlutter.linkedin,
+                            iconColor: Color(0xFF02AA8B),
+                            link: 'https://www.linkedin.com/',
+                            iconSize: 20,
+                          ),
+                          SocialWidget(
+                            placeholderText: '',
+                            iconData: SocialIconsFlutter.facebook,
+                            iconColor: Color(0xFF02AA8B),
+                            link: 'https://www.facebook.com/',
+                            iconSize: 20,
+                          ),
+                        ],
+                      )),
                   SizedBox(height: 10),
                   Text(
                     "Projects:",
@@ -297,80 +308,90 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
             ),
             projects != null
                 ? CarouselSlider(
-              options: CarouselOptions(
-                height: 200,
-              ),
-              items: projects!.where((project) => project.status == "Completado").map((project) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProjectDetail(project),
-                        ));
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(
-                            project.image,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
-            )
-                : Card(
-              child: Container(
-                height: 200,
-                width: 250,
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Titles(20, "You do not have projects"),
-                    Icon(
-                      Icons.sentiment_dissatisfied_outlined,
-                      size: 60,
-                      color: Color(0XFF02AA8B),
+                    options: CarouselOptions(
+                      height: 200,
                     ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 25),
-            widget.account?.userProfileId != null &&
-                widget.account?.businessProfileId == null
-                ? ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreateRequest(
-                      widget.businessProfile,
-                      widget.account!.userProfileId!,
-                      widget.account!,
+                    items: projects!
+                        .where((project) => project.status == "Completado")
+                        .map((project) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return OpenContainer(
+                            transitionDuration:
+                                const Duration(milliseconds: 600),
+                            transitionType: ContainerTransitionType.fade,
+                            openBuilder: (BuildContext context,
+                                VoidCallback openContainer) {
+                              return ProjectDetail(project);
+                            },
+                            closedBuilder: (BuildContext context,
+                                VoidCallback openContainer) {
+                              return GestureDetector(
+                                onTap: openContainer,
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(
+                                      project.image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }).toList(),
+                  )
+                : Card(
+                    child: Container(
+                      height: 200,
+                      width: 250,
+                      padding: const EdgeInsets.all(30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Titles(20, "You do not have projects"),
+                          Icon(
+                            Icons.sentiment_dissatisfied_outlined,
+                            size: 60,
+                            color: Color(0XFF02AA8B),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                );
-              },
-              child: Text(
-                "Send Request",
-                style: TextStyle(fontSize: 15),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF02AA8B),
-                minimumSize: Size(350, 60),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-            )
+            SizedBox(height: 25),
+            widget.account?.userProfileId != null &&
+                    widget.account?.businessProfileId == null
+                ? ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateRequest(
+                            widget.businessProfile,
+                            widget.account!.userProfileId!,
+                            widget.account!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Send Request",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF02AA8B),
+                      minimumSize: Size(350, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  )
                 : Container(),
             SizedBox(height: 70),
           ],

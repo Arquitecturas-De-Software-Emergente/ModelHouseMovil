@@ -8,7 +8,7 @@ import '../Widgets/texts/titles.dart';
 class SeeDetails extends StatelessWidget {
   final RequestInterface request;
   String? name;
-  
+
   SeeDetails(this.request, this.name);
 
   @override
@@ -33,19 +33,27 @@ class SeeDetails extends StatelessWidget {
           children: [
             CustomInfoCard(Icons.person, "Name:", name ?? "N/A"),
             const SizedBox(height: 10),
-            CustomInfoCard(Icons.category, "Categoría:", request.category ?? "N/A"),
+            CustomInfoCard(
+                Icons.category, "Categoría:", request.category ?? "N/A"),
             const SizedBox(height: 10),
-            CustomInfoCard(Icons.price_change_outlined, "Presupuesto Estimado:", request.estimatedBudget!= null
-                ? "${request.estimatedBudget!}"
-                : "N/A"),
+            CustomInfoCard(
+                Icons.price_change_outlined,
+                "Presupuesto Estimado:",
+                request.estimatedBudget != null
+                    ? "${request.estimatedBudget!}"
+                    : "N/A"),
             const SizedBox(height: 10),
-            CustomInfoCard(Icons.area_chart_outlined, "Área en m^2: ", request.area != null ? "${request.area} m^2" : "N/A"),
+            CustomInfoCard(Icons.area_chart_outlined, "Área en m^2: ",
+                request.area != null ? "${request.area} m^2" : "N/A"),
             const SizedBox(height: 10),
-            CustomInfoCard(Icons.map_outlined, "Ubicación: ", request.location ?? "N/A"),
+            CustomInfoCard(
+                Icons.map_outlined, "Ubicación: ", request.location ?? "N/A"),
             const SizedBox(height: 10),
-            CustomInfoCard(Icons.file_copy_outlined, "Archivos: ", request.file ?? "N/A"),
+            CustomInfoCard(
+                Icons.file_copy_outlined, "Archivos: ", request.file ?? "N/A"),
             const SizedBox(height: 10),
-            CustomInfoCard(Icons.description, "Descripción: ", request.description ?? "N/A"),
+            CustomInfoCard(Icons.description, "Descripción: ",
+                request.description ?? "N/A"),
             const SizedBox(height: 10),
           ],
         ),
@@ -62,7 +70,8 @@ class SeeDetails extends StatelessWidget {
           style: TextStyle(
             color: Colors.black, // Color del texto de la etiqueta
             fontSize: 16.0, // Tamaño de fuente de la etiqueta
-            fontWeight: FontWeight.bold, // Establece el texto de etiqueta en negrita
+            fontWeight:
+                FontWeight.bold, // Establece el texto de etiqueta en negrita
           ),
         ),
         Text(
@@ -72,7 +81,8 @@ class SeeDetails extends StatelessWidget {
             fontSize: 18.0, // Tamaño de fuente del valor
           ),
         ),
-        SizedBox(height: 12.0), // Agrega espacio entre cada par de etiqueta y valor
+        SizedBox(
+            height: 12.0), // Agrega espacio entre cada par de etiqueta y valor
       ],
     );
   }

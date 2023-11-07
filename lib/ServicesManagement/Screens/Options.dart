@@ -46,8 +46,6 @@ class _OptionsState extends State<Options> {
   List<RequestInterface>? canceled;
   List<RequestInterface>? finished;
 
-
-
   @override
   void initState() {
     httpRequest = HttpRequest();
@@ -67,7 +65,8 @@ class _OptionsState extends State<Options> {
 
   Future getBusinessProfile() async {
     if (widget.account != null) {
-      businessProfile = await httpBusinessProfile?.getbusinessProfileAccountById(widget.account!.id!);
+      businessProfile = await httpBusinessProfile
+          ?.getbusinessProfileAccountById(widget.account!.id!);
       if (businessProfile != null) {
         setState(() {
           businessProfile = businessProfile;
@@ -77,9 +76,7 @@ class _OptionsState extends State<Options> {
     }
   }
 
-
   Future getRequestUserProfile() async {
-
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         widget.userProfile!.id!, "Cancelado");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -91,7 +88,6 @@ class _OptionsState extends State<Options> {
   }
 
   Future getRequestBusinessProfile() async {
-
     canceled = await httpRequest?.getAllUserProfileIdAndStatus(
         businessProfile!.id!, "Cancelado");
     finished = await httpRequest?.getAllUserProfileIdAndStatus(
@@ -126,15 +122,20 @@ class _OptionsState extends State<Options> {
               itemBuilder: (BuildContext context, int index) {
                 String imageAssetPath = '';
                 if (typesOptions[index] == "Request") {
-                  imageAssetPath = 'images/first-step-icon.png'; // Replace with the actual asset path
+                  imageAssetPath =
+                      'images/request.png'; // Replace with the actual asset path
                 } else if (typesOptions[index] == "Proposal") {
-                  imageAssetPath = 'images/second-step-icon.png'; // Replace with the actual asset path
+                  imageAssetPath =
+                      'images/proposal.png'; // Replace with the actual asset path
                 } else if (typesOptions[index] == "Project") {
-                  imageAssetPath = 'images/third-step-icon.png'; // Replace with the actual asset path
+                  imageAssetPath =
+                      'images/project.png'; // Replace with the actual asset path
                 } else if (typesOptions[index] == "Completed Projects") {
-                  imageAssetPath = 'images/fourth-step-icon.png'; // Replace with the actual asset path
+                  imageAssetPath =
+                      'images/completedProject.png'; // Replace with the actual asset path
                 } else if (typesOptions[index] == "Canceled") {
-                  imageAssetPath = 'images/fifth-step-icon.png'; // Replace with the actual asset path
+                  imageAssetPath =
+                      'images/canceled.png'; // Replace with the actual asset path
                 }
                 return MaterialButton(
                     onPressed: () {
@@ -164,8 +165,9 @@ class _OptionsState extends State<Options> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => RequestInProcess(
-                                widget.account,
-                                  widget.userProfile, businessProfile)),
+                                  widget.account,
+                                  widget.userProfile,
+                                  businessProfile)),
                         );
                       }
                       if (typesOptions[index] == "Completed Projects") {
