@@ -148,7 +148,6 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
   }
   void finishTheProject(context, List<Map<String, dynamic>> activities, List<Map<String, dynamic>> resources) {
     if(_image != null){
-      validateAndSubmit(activities, resources);
       showPlatformDialog(
         context: context,
         builder: (_) => BasicDialogAlert(
@@ -165,6 +164,7 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
               title: Text("Continue"),
               onPressed: () {
                 Navigator.of(context).pop();
+                validateAndSubmit(activities, resources);
                 performFinishProject();
               },
             ),
@@ -182,17 +182,19 @@ class _SeeProjectProgressState extends State<SeeProjectProgress> {
       upload = upload;
       if(upload != true){
         showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
-      }
-    });
-    var projectValue = httpProject?.finishProject(widget.project.id!, "Completado");
-    setState(() async {
-      projectValue = projectValue;
-      if(projectValue == null){
-        showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
       }else{
-        showCustomDialog(context, "Success", "The project was completed successfully", true, PrincipalView(widget.account!, 1));
+        var projectValue = await httpProject?.finishProject(widget.project.id!, "Completado");
+        setState(() {
+          projectValue = projectValue;
+          if(projectValue == null){
+            showCustomDialog(context, "Error", "An error occurred in your project", false, PrincipalView(widget.account!, 1));
+          }else{
+            //showCustomDialog(context, "Success", "The project was completed successfully", true, PrincipalView(widget.account!, 1));
+          }
+        });
       }
     });
+
   }
   @override
   Widget build(BuildContext context) {

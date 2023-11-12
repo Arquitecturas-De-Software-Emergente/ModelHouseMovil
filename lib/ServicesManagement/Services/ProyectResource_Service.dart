@@ -13,7 +13,7 @@ class HttpProyectResource {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_activity");
     var response = await proyectResource.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
@@ -29,7 +29,7 @@ class HttpProyectResource {
     var uri = Uri.parse("$httpBaseServiceManagement/proposal/$proposalId/project_resource");
     var response = await proyectResource.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -53,7 +53,7 @@ class HttpProyectResource {
 
     var response = await proyectResource.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },

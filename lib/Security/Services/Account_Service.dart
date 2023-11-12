@@ -12,7 +12,7 @@ class HttpAccount {
     var uri = Uri.parse(accountUrl);
     var response = await account.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json"
         },
         body: jsonEncode({
@@ -31,7 +31,7 @@ class HttpAccount {
     var uri = Uri.parse(postUrl);
     var response = await account.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json"
         },
         body: jsonEncode({

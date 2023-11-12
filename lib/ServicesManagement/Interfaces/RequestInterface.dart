@@ -4,6 +4,13 @@ List<RequestInterface> requestFromJson(String str) =>
     List<RequestInterface>.from(
         json.decode(str).map((x) => RequestInterface.fromJson(x)));
 
+List<RequestInterface> requestFromJson2(String str) {
+  final Iterable<dynamic> decoded = json.decode(str);
+  return List<RequestInterface>.from(
+    decoded.map((x) => RequestInterface.fromJson(x)),
+  );
+}
+
 String requestToJson(List<RequestInterface> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 

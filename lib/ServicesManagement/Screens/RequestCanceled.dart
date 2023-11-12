@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
+import 'package:model_house/ServicesManagement/Screens/RequestFinished.dart';
+import 'package:model_house/Shared/Components/seeDetails.dart';
 
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Shared/Components/request_card.dart';
@@ -64,7 +66,7 @@ class _RequestCanceledState extends State<RequestCanceled> {
                   return RequestCard(
                       '${widget.requests![index].name}',
                       '${widget.requests![index].description}',
-                      SeeDetails(widget.requests![index]),
+                      SeeDetails(widget.requests![index], "${widget.requests![index].name}"),
                       Text("Canceled"));
                 },
               ),
@@ -77,52 +79,13 @@ class _RequestCanceledState extends State<RequestCanceled> {
                   return RequestCard(
                       '${widget.requests![index].firstName} ${widget.requests![index].lastName}',
                       '${widget.requests![index].description}',
-                      SeeDetails(widget.requests![index]),
+                      SeeDetails(widget.requests![index], "${widget.requests![index].firstName} ${widget.requests![index].lastName}"),
                       Text("Canceled", style: TextStyle(color: Colors.red),)
                   );
                 },
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class SeeDetails extends StatelessWidget {
-  final RequestInterface request;
-
-  SeeDetails(this.request);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalles de la solicitud'),
-        backgroundColor: Colors.white, // Ajusta el color de fondo del AppBar según tus preferencias
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0XFF02AA8B), // Color del botón de retroceso
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Nombre de la empresa: ${request.name}"),
-            Text("Categoría: ${request.category}"),
-            Text("Presupuesto estimado: ${request.estimatedBudget}"),
-            Text("Área en m^2: ${request.area}"),
-            Text("Ubicación: ${request.location}"),
-            Text("Archivos: ${request.file}"),
-            Text("Descripción: ${request.description}"),
-          ],
-        ),
       ),
     );
   }

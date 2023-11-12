@@ -16,7 +16,7 @@ class HttpProposal {
       final persistence = await SharedPreferences.getInstance();
       var uri = Uri.parse("$httpBaseServiceManagement/proposal");
       var response = await proposal.get(uri, headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
         "Accept": "application/json",
         'Authorization': 'Bearer ${persistence.getString("token")}'
       });
@@ -34,7 +34,7 @@ class HttpProposal {
     var uri = Uri.parse("$httpBaseServiceManagement/request/$requestId/proposal");
     var response = await proposal.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -57,7 +57,7 @@ class HttpProposal {
     var uri = Uri.parse("$httpBaseServiceManagement/proposal/${proposalId}");
     var response = await proposal.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -86,7 +86,7 @@ class HttpProposal {
 
     var response = await proposal.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -115,7 +115,7 @@ class HttpProposal {
     var uri = Uri.parse(putUrl);
     var response = await proposal.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persistence.getString("token")}'
         },
@@ -132,7 +132,7 @@ class HttpProposal {
       final persistence = await SharedPreferences.getInstance();
       var uri = Uri.parse("$httpBaseServiceManagement/proposal");
       var response = await proposal.get(uri, headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
         "Accept": "application/json",
         'Authorization': 'Bearer ${persistence.getString("token")}'
       });

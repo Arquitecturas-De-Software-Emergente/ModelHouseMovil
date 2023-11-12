@@ -4,6 +4,7 @@ import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
+import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 import 'package:model_house/ServicesManagement/Screens/CreateRequest.dart';
 import 'package:model_house/ServicesManagement/Screens/ProjectDetails.dart';
 import 'package:model_house/Shared/Views/Category.dart';
@@ -30,7 +31,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
   HttpProyect? httpProyect;
   HttpAccount? httpAccount;
   Account? account;
-  List<Proyect>? projects;
+  List<ProjectInterface>? projects;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController description = TextEditingController();
 
@@ -306,10 +307,11 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                 ],
               ),
             ),
-            projects != null
+            projects != null && projects!.isNotEmpty
                 ? CarouselSlider(
                     options: CarouselOptions(
                       height: 200,
+                      enableInfiniteScroll: false,
                     ),
                     items: projects!
                         .where((project) => project.status == "Completado")
@@ -334,7 +336,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
                                     child: Image.network(
-                                      project.image,
+                                      project.image!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -350,16 +352,13 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     child: Container(
                       height: 200,
                       width: 250,
+                      color: Colors.white,
                       padding: const EdgeInsets.all(30),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Titles(20, "You do not have projects"),
-                          Icon(
-                            Icons.sentiment_dissatisfied_outlined,
-                            size: 60,
-                            color: Color(0XFF02AA8B),
-                          ),
+                          Titles(15, "You do not have projects"),
+                          Image.asset("images/person_sad.png", height: 110,),
                         ],
                       ),
                     ),
@@ -382,7 +381,7 @@ class _BusinessProfileContentState extends State<BusinessProfileContent> {
                     },
                     child: Text(
                       "Send Request",
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF02AA8B),

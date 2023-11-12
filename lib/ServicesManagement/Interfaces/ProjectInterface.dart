@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
+
 
 List<ProjectInterface> projectFromJson(String str) =>
     List<ProjectInterface>.from(json.decode(str).map((x) => ProjectInterface.fromJson(x)));
@@ -12,10 +14,12 @@ class ProjectInterface {
   String? description;
   String? status;
   String? firstName;
+  String? image;
   String? lastName;
   String? name;
   String? businessDescription;
   String? reviewId;
+  Proposal? proposal;
   List<Map<String, dynamic>>? projectActivities;
   List<Map<String, dynamic>>? projectResources;
   String? title;
@@ -24,9 +28,11 @@ class ProjectInterface {
         this.description,
         this.status,
         this.firstName,
+        this.image,
         this.lastName,
         this.name,
         this.businessDescription,
+        this.proposal,
         this.projectActivities,
         this.projectResources,
         this.title,
@@ -39,7 +45,9 @@ class ProjectInterface {
     reviewId: json["reviewId"],
     firstName: json["proposal"]["request"]["userProfile"]["firstName"],
     lastName: json["proposal"]["request"]["userProfile"]["lastName"],
+    image: json["image"],
     name: json["proposal"]["request"]["businessProfile"]["name"],
+    proposal: Proposal.fromJson(Map<String, dynamic>.from(json["proposal"])),
     businessDescription: json["proposal"]["request"]["businessProfile"]["description"],
     projectActivities: List<Map<String, dynamic>>.from(json["proposal"]["projectActivities"]),
     projectResources: List<Map<String, dynamic>>.from(json["proposal"]["projectResources"]),
@@ -52,7 +60,9 @@ class ProjectInterface {
     "firstName": firstName,
     "lastName": lastName,
     "name": name,
+    "image": image,
     "businessDescription": businessDescription,
+    "proposal": proposal,
     "projectActivities": projectActivities,
     "projectResources": projectResources,
     "title": title,

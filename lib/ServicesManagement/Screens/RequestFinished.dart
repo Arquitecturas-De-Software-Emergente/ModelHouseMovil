@@ -6,6 +6,7 @@ import 'package:rating_dialog/rating_dialog.dart';
 
 import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Shared/Components/request_card.dart';
+import '../../Shared/Components/seeDetails.dart';
 import '../../Shared/Widgets/texts/titles.dart';
 import '../Interfaces/RequestInterface.dart';
 import '../Services/Request_Service.dart';
@@ -35,6 +36,7 @@ class _RequestFinishedState extends State<RequestFinished> {
   }
   Future getProjects() async{
     projects = await httpProject?.getAllProjects();
+    print(projects?.length);
     setState(() {
       projects = projects;
     });
@@ -85,32 +87,39 @@ class _RequestFinishedState extends State<RequestFinished> {
               child: ListView.builder(
                 itemCount: projects?.length ?? 0,
                 itemBuilder: (context, index) {
-                  return RequestCard(
+                  if (projects![index].status == "Completado") {
+                    return RequestCard(
                       '${projects![index].name}',
                       '${projects![index].description}',
-                      SeeDetails(projects![index]),
-                      Row(
+                      SeeDetails(projects![index].proposal!.request!, "${projects![index].proposal?.request!.name}"),
+                      Column(
                         children: [
-                          Text("Completed"),
                           SizedBox(width: 10,),
                           projects![index].reviewId == null ? Container(
+                            width: 150,
+                            height: 40,
                             decoration:  BoxDecoration(
-                              color: Colors.white, // Fondo blanco
-                              borderRadius:
-                              BorderRadius.circular(10.0), // Bordes redondeados de 10px
-                              border: Border.all(color: Colors.green, width: 2.0), // Borde verde
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(color: Colors.green, width: 2.0),
                             ),
-                              child: TextButton(
+                            child: TextButton(
                               onPressed: (){
                                 showRatingDialog(context, index);
                               },
                               style: TextButton.styleFrom(
-                                  primary: Colors.green), // Color del texto verde
-                              child: const Text('Leave a Comment'), // Texto del botón
+                                primary: Colors.green,
+                              ),
+                              child: const Text('Leave a Comment'),
                             ),
                           ): const Text('Review complete', style: TextStyle(color: Color(0XFF02AA8B), fontWeight: FontWeight.bold)),
                         ],
-                      ));
+                      ),
+                    );
+                  } else {
+                    // Si no cumple con la condición, retorna un contenedor vacío
+                    return Container();
+                  }
                 },
               ),
             ),
@@ -122,71 +131,13 @@ class _RequestFinishedState extends State<RequestFinished> {
                   return RequestCard(
                     '${projects![index].firstName} ${projects![index].lastName}',
                     '${projects![index].description}',
-                      SeeDetails(projects![index]),
-                      Text("Completed")
+                      SeeDetails(projects![index].proposal!.request!, "${projects![index].proposal?.request!.name}"),
+                      Text('Waiting for an answer', style: TextStyle(color: Color(0XFFECA11E), fontWeight: FontWeight.bold))
                   );
                 },
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class SeeDetails extends StatelessWidget {
-  final ProjectInterface project;
-
-  SeeDetails(this.project);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Project Completed Details'),
-        backgroundColor: Colors.white, // Ajusta el color de fondo del AppBar según tus preferencias
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0XFF02AA8B), // Color del botón de retroceso
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Nombre de la empresa: ${project.name}"),
-            Text("Categoría: ${project.title}"),
-            Text("Presupuesto estimado: ${project.description}"),
-            Text('Actividades del Proyecto:'),
-            // Column(
-            //   children: project.projectActivities!.asMap().entries.map((entry) {
-            //     final index = entry.key;
-            //     final activity = entry.value;
-            //     return
-            //         Expanded(child: Text(activity["description"]));
-            //
-            //   }).toList(),
-            // ),
-            // Text('Recursos del Proyecto:'),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: project.projectResources?.length,
-            //     itemBuilder: (context, index) {
-            //       final resource = project.projectResources![index];
-            //       return Row(children: [
-            //         Text('Description: ${resource["description"]}'),
-            //         Text('Quantity: ${resource["quantity"]}'),
-            //       ]);
-            //     },
-            //   ),
-            // ),
-          ],
-        ),
       ),
     );
   }

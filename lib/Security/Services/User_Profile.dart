@@ -12,7 +12,7 @@ class HttpUserProfile {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse('$httpBaseSecurity/account/$accountId/user_profile');
     var response = await businessProfile.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
@@ -41,7 +41,7 @@ class HttpUserProfile {
     var uri = Uri.parse('$httpBaseSecurity/account/$id/user_profile');
     var response = await businessProfile.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
         },
         body: jsonEncode({
@@ -63,7 +63,7 @@ class HttpUserProfile {
     var uri = Uri.parse('$httpBaseSecurity/user_profile/$id');
     var response = await businessProfile.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
         },
         body: jsonEncode({

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
+import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 
 import '../../Security/Interfaces/Proyect.dart';
 import '../../Security/Services/Proyect_Service.dart';
@@ -19,7 +20,7 @@ class ProfileBusiness extends StatefulWidget {
 
 class _ProfileBusinessState extends State<ProfileBusiness> {
   HttpProyect? httpProyect;
-  List<Proyect>? proyects;
+  List<ProjectInterface>? proyects;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController description = TextEditingController();
 
@@ -112,7 +113,7 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.network(
-                                proyects![index].image,
+                                proyects![index].image!,
                                 fit: BoxFit.cover,
                               ),
                             ));

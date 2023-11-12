@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Shared/HttpComon.dart';
@@ -9,16 +10,16 @@ import '../Interfaces/Proyect.dart';
 class HttpProyect {
   var proyect = http.Client();
 
-  Future<List<Proyect>?> getAllByBusinessId(int? businessId) async {
+  Future<List<ProjectInterface>?> getAllByBusinessId(int? businessId) async {
     final persitence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseSecurity/business_profile/$businessId/project");
     var response = await proyect.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
     if (response.statusCode == 200) {
-      return proyectFromJson(response.body);
+      return projectFromJson(response.body);
     }
     return null;
   }
@@ -29,7 +30,7 @@ class HttpProyect {
     var uri = Uri.parse("$httpBaseSecurity/project/$id/profile");
     var response = await proyect.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -49,7 +50,7 @@ class HttpProyect {
 
     var response = await proyect.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },

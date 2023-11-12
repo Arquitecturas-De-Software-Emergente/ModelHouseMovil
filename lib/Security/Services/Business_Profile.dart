@@ -24,7 +24,7 @@ class HttpBusinessProfile {
         Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
 
     var response = await business.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
@@ -41,7 +41,7 @@ class HttpBusinessProfile {
         Uri.parse("$httpBaseSecurity/account/$accountId/business_profile");
     var response = await business.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -83,7 +83,7 @@ class HttpBusinessProfile {
     var uri = Uri.parse("$httpBaseSecurity/business_profile/$accountId");
     var response = await business.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },

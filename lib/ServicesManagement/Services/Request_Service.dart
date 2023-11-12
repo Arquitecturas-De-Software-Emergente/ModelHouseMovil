@@ -16,7 +16,7 @@ class HttpRequest {
     var uri = Uri.parse(
         "$httpBaseServiceManagement/businessProfile/$businessProfileId/status/$status/request");
     var response = await request.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
@@ -34,7 +34,7 @@ class HttpRequest {
     var uri = Uri.parse(
         "$httpBaseServiceManagement/userProfile/$userProfileId/status/$status/request");
     var response = await request.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
@@ -60,7 +60,7 @@ class HttpRequest {
 
     var response = await request.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -84,7 +84,7 @@ class HttpRequest {
 
     var response = await request.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 import 'package:model_house/ServicesManagement/Screens/PendingRequest.dart';
+import 'package:model_house/ServicesManagement/Screens/RequestCanceled.dart';
 import 'package:model_house/ServicesManagement/Screens/request/FormProposal.dart';
 import 'package:model_house/Shared/Components/PrincipalView.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
+import 'package:model_house/Shared/Components/seeDetails.dart';
 
 import '../../Security/Interfaces/Account.dart';
 import '../../Security/Interfaces/BusinessProfile.dart';
@@ -90,7 +92,7 @@ class _PendingProposalState extends State<PendingProposal> {
                     return RequestCard(
                       '${proposals![index].name}',
                       '${proposals![index].description}',
-                      Container(),
+                      SeeDetails(proposals![index].request!, "${proposals![index].request!.name}"),
                       AcceptRejectButtons(onAcceptPressed: () {
                         changeStatus(proposals![index], "Aprobado");
                       }, onRejectPressed: () {
@@ -101,8 +103,8 @@ class _PendingProposalState extends State<PendingProposal> {
                     return RequestCard(
                       '${proposals![index].name}',
                       '${proposals![index].description}',
-                      Container(),
-                      const Text('Waiting for an answer', style: TextStyle(color: Color(0XFFECA11E), fontWeight: FontWeight.bold))
+                        SeeDetails(proposals![index].request!, "${proposals![index].request!.name}"),
+                        const Text('Waiting for an answer', style: TextStyle(color: Color(0XFFECA11E), fontWeight: FontWeight.bold))
                     );
                   }
                   return SizedBox.shrink(); // No matching condition, so hide the card.
@@ -119,7 +121,7 @@ class _PendingProposalState extends State<PendingProposal> {
                     return RequestCard(
                       '${proposals![index].firstName} ${proposals![index].lastName}',
                       '${proposals![index].description}',
-                      Container(),
+                        SeeDetails(proposals![index].request!, "${proposals![index].request!.name}"),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,  // Fondo blanco
@@ -144,7 +146,7 @@ class _PendingProposalState extends State<PendingProposal> {
                     return RequestCard(
                         '${proposals![index].firstName} ${proposals![index].lastName}',
                         '${proposals![index].description}',
-                        Container(),
+                        SeeDetails(proposals![index].request!, "${proposals![index].request!.name}"),
                         const Text('Waiting for an answer', style: TextStyle(color: Color(0XFFECA11E), fontWeight: FontWeight.bold))
                     );
                   }
@@ -152,7 +154,7 @@ class _PendingProposalState extends State<PendingProposal> {
                     return RequestCard(
                         '${proposals![index].firstName} ${proposals![index].lastName}',
                         '${proposals![index].description}',
-                        Container(),
+                        SeeDetails(proposals![index].request!, "${proposals![index].request!.name}"),
                         const Text('Canceled Proposal', style: TextStyle(color: Color(0XFFE91717), fontWeight: FontWeight.bold))
                     );
                   }
@@ -160,7 +162,7 @@ class _PendingProposalState extends State<PendingProposal> {
                     return RequestCard(
                         '${proposals![index].firstName} ${proposals![index].lastName}',
                         '${proposals![index].description}',
-                        Container(),
+                        SeeDetails(proposals![index].request!, "${proposals![index].request!.name}"),
                         const Text('Accepted Proposal', style: TextStyle(color: Color(0XFF02AA8B), fontWeight: FontWeight.bold))
                     );
                   }

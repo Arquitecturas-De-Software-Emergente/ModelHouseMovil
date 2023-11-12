@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
+import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
 import 'package:model_house/Shared/Widgets/texts/titles.dart';
 import 'package:model_house/Shared/Widgets/texts/subtitles.dart';
@@ -21,7 +22,7 @@ class ProfileBusiness extends StatefulWidget {
 
 class _ProfileBusinessState extends State<ProfileBusiness> {
   HttpProyect? httpProyect;
-  List<Proyect>? proyects;
+  List<ProjectInterface>? proyects;
   HttpBusinessProfile? httpBusinessProfile;
   String? name;
   String? webSite;
@@ -242,7 +243,7 @@ class _ProfileBusinessState extends State<ProfileBusiness> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: Image.network(
-                                    project.image,
+                                    project.image!,
                                     fit: BoxFit.cover,
                                   ),
                                 ),

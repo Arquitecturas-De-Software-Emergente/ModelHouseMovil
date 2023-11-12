@@ -2,21 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:model_house/Security/Interfaces/Account.dart';
 import 'package:model_house/Security/Interfaces/BusinessProfile.dart';
 import 'package:model_house/Security/Interfaces/UserProfile.dart';
-import 'package:model_house/Security/Screens/formUserProfile.dart';
 import 'package:model_house/Security/Screens/welcomeApplication.dart';
 import 'package:model_house/Security/Services/Account_Service.dart';
 import 'package:model_house/Security/Services/Business_Profile.dart';
 import 'package:model_house/ServicesManagement/Screens/Profile.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
-import 'package:model_house/Shared/Views/FormBusinessProfile.dart';
-import 'package:model_house/Shared/Views/PerfilBusiness.dart';
-import 'package:model_house/Shared/Widgets/buttons/ActiveButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:model_house/ServicesManagement/Screens/Plans.dart';
 
 import '../../Shared/Views/Activities.dart';
 import '../../Shared/Views/Adicional.dart';
-import '../../Shared/Views/Perfil.dart';
 
 // ignore: must_be_immutable
 class Menu extends StatefulWidget {
@@ -79,8 +73,8 @@ class _MenuState extends State<Menu> {
                         ));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
+                    primary: Colors.white
                   ),
                   child: Container(
                     margin: const EdgeInsets.all(25),

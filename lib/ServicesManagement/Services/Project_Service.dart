@@ -14,7 +14,7 @@ class HttpProject {
     final persistence = await SharedPreferences.getInstance();
     var uri = Uri.parse("$httpBaseSecurity/project");
     var response = await project.get(uri, headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       "Accept": "application/json",
       'Authorization': 'Bearer ${persistence.getString("token")}'
     });
@@ -36,7 +36,7 @@ class HttpProject {
     var uri = Uri.parse("$httpBaseSecurity/project/${projectId}");
     var response = await project.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -75,7 +75,7 @@ class HttpProject {
     var uri = Uri.parse("$httpBaseSecurity/project/${projectId}/status/${status}");
     var response = await project.put(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },
@@ -94,7 +94,7 @@ class HttpProject {
     var uri = Uri.parse("$httpBaseServiceManagement/review/${projectId}");
     var response = await project.get(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },);
@@ -117,7 +117,7 @@ class HttpProject {
     var uri = Uri.parse("$httpBaseServiceManagement/project/$projectId/user_profile/$userProfileId/review");
     var response = await project.post(uri,
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           'Authorization': 'Bearer ${persitence.getString("token")}'
         },

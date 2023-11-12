@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:model_house/Security/Interfaces/Proyect.dart';
+import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
+import 'package:model_house/ServicesManagement/Interfaces/Rating.dart';
 import 'package:model_house/Shared/Views/ProfileUser.dart';
 
-class ProjectDetail extends StatelessWidget {
-  final Proyect project;
+import '../Services/ReviewService.dart';
 
-  ProjectDetail(this.project);
+class ProjectDetail extends StatefulWidget {
+  ProjectInterface? project;
+
+  ProjectDetail(this.project, {super.key});
+
+  @override
+  State<ProjectDetail> createState() => _ProjectDetailState();
+}
+
+class _ProjectDetailState extends State<ProjectDetail> {
+  Rating? rating;
+  HttpReview? httpReview;
+  @override
+  void initState() {
+    httpReview = HttpReview();
+    super.initState();
+  }
+
+  Future getReview() async {
+    rating = await HttpReview().getReviewId(widget.project!.id!);
+    setState(() {
+      rating = rating;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +49,7 @@ class ProjectDetail extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  project.image,
+                  widget.project!.image!,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -33,7 +57,7 @@ class ProjectDetail extends StatelessWidget {
             const SizedBox(height: 10),
             Center(
               child: Text(
-                '${project.title}',
+                '${widget.project?.title}',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -41,7 +65,7 @@ class ProjectDetail extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Text('Description: ${project.description}'),
+            Text('Description: ${widget.project?.description}'),
             const SizedBox(height: 20),
             const Text(
               'Review:',
@@ -89,7 +113,7 @@ class ProjectDetail extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'User Name',
+                            "$widget.project?.firstName! $widget.project!.lastName!",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

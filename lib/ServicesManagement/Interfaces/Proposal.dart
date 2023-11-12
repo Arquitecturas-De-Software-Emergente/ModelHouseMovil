@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
+import 'package:model_house/ServicesManagement/Interfaces/RequestInterface.dart';
+
 
 List<Proposal> proposalFromJson(String str) =>
     List<Proposal>.from(json.decode(str).map((x) => Proposal.fromJson(x)));
@@ -15,6 +18,7 @@ class Proposal {
   String? lastName;
   String? name;
   String? businessDescription;
+  RequestInterface? request;
   List<Map<String, dynamic>>? projectActivities;
   List<Map<String, dynamic>>? projectResources;
   String? title;
@@ -28,6 +32,7 @@ class Proposal {
         this.businessDescription,
         this.projectActivities,
         this.projectResources,
+        this.request,
         this.title,
       });
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
@@ -38,6 +43,7 @@ class Proposal {
         lastName: json["request"]["userProfile"]["lastName"],
         name: json["request"]["businessProfile"]["name"],
         businessDescription: json["request"]["businessProfile"]["description"],
+        request: RequestInterface.fromJson(Map<String, dynamic>.from(json["request"])),
         projectActivities: List<Map<String, dynamic>>.from(json["projectActivities"]),
         projectResources: List<Map<String, dynamic>>.from(json["projectResources"]),
         title: json["title"],
@@ -49,6 +55,7 @@ class Proposal {
         "firstName": firstName,
         "lastName": lastName,
         "name": name,
+        "request": request,
         "businessDescription": businessDescription,
         "projectActivities": projectActivities,
         "projectResources": projectResources,

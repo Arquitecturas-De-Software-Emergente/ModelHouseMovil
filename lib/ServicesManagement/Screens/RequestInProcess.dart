@@ -5,6 +5,7 @@ import 'package:model_house/ServicesManagement/Interfaces/Proposal.dart';
 import 'package:model_house/ServicesManagement/Services/Project_Service.dart';
 import 'package:model_house/ServicesManagement/Services/Proposal_Service.dart';
 import 'package:model_house/Shared/Components/navigate.dart';
+import 'package:model_house/Shared/Components/seeDetails.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
 import '../../Security/Interfaces/Account.dart';
@@ -12,8 +13,6 @@ import '../../Security/Interfaces/BusinessProfile.dart';
 import '../../Shared/Components/request_card.dart';
 import '../../Shared/Components/seeProjectProgress.dart';
 import '../../Shared/Widgets/texts/titles.dart';
-import '../Interfaces/RequestInterface.dart';
-import '../Services/Request_Service.dart';
 
 // ignore: must_be_immutable
 class RequestInProcess extends StatefulWidget {
@@ -41,6 +40,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
   }
   Future getProjects() async{
     projects = await httpProject?.getAllProjects();
+    print(projects?.length);
     setState(() {
       projects = projects;
     });
@@ -76,13 +76,13 @@ class _RequestInProcessState extends State<RequestInProcess> {
                 itemCount: projects?.length ?? 0, // Número de elementos en la lista
                 itemBuilder: (context, index) {
                   var status = projects![index].status;
-                  if (status != "Completado") {
+                  if (status == "Completado") {
                     return SizedBox.shrink();
                   }else{
                     return RequestCard(
                         '${projects![index].name}',
                         '${projects![index].description}',
-                        Container(),
+                        SeeDetails(projects![index].proposal!.request!, "${projects![index].proposal?.request!.name}"),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -121,7 +121,7 @@ class _RequestInProcessState extends State<RequestInProcess> {
                         '${projects![index].firstName} ${projects![index]
                             .lastName}',
                         '${projects![index].description}',
-                        Container(),
+                        SeeDetails(projects![index].proposal!.request!, "${projects![index].proposal?.request!.name}"),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
