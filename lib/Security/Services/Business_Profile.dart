@@ -13,7 +13,7 @@ class HttpBusinessProfile {
     var response = await business.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
-      return businessProfileFromJson(json);
+      return businessProfileFromJson(utf8.decode(response.bodyBytes));
     }
     return null;
   }
@@ -29,7 +29,7 @@ class HttpBusinessProfile {
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
     if (response.statusCode == 200) {
-      return BusinessProfile.fromJson(jsonDecode(response.body));
+      return BusinessProfile.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     }
     return null;
   }

@@ -17,7 +17,7 @@ class HttpUserProfile {
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
     if (response.statusCode == 200) {
-      return UserProfile.fromJson(jsonDecode(response.body));
+      return UserProfile.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     }
     return null;
   }

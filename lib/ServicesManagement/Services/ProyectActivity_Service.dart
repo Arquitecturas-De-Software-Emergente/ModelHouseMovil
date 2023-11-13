@@ -18,7 +18,7 @@ class HttpProyectActivity {
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
     if (response.statusCode == 200) {
-      return proyectActivityFromJson(jsonDecode(response.body));
+      return proyectActivityFromJson(utf8.decode(response.bodyBytes));
     }
     return null;
   }

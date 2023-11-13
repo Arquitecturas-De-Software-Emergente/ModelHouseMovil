@@ -15,6 +15,7 @@ class ProjectInterface {
   String? status;
   String? firstName;
   String? image;
+  String? imageUserProfile;
   String? lastName;
   String? name;
   String? businessDescription;
@@ -29,6 +30,7 @@ class ProjectInterface {
         this.status,
         this.firstName,
         this.image,
+        this.imageUserProfile,
         this.lastName,
         this.name,
         this.businessDescription,
@@ -45,6 +47,7 @@ class ProjectInterface {
     reviewId: json["reviewId"],
     firstName: json["proposal"]["request"]["userProfile"]["firstName"],
     lastName: json["proposal"]["request"]["userProfile"]["lastName"],
+    imageUserProfile: json["proposal"]["request"]["userProfile"]["image"],
     image: json["image"],
     name: json["proposal"]["request"]["businessProfile"]["name"],
     proposal: Proposal.fromJson(Map<String, dynamic>.from(json["proposal"])),
@@ -67,5 +70,6 @@ class ProjectInterface {
     "projectResources": projectResources,
     "title": title,
     "reviewId": reviewId,
+    "image": imageUserProfile,
   };
 }

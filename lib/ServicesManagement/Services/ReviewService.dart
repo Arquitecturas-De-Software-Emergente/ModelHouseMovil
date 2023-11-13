@@ -21,7 +21,7 @@ class HttpReview {
     print("getReviewId(): ${response.body}");
     if (response.statusCode == 200) {
       var json = response.body;
-      return Rating.fromJson(jsonDecode(json));
+      return Rating.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     }
     return null;
   }

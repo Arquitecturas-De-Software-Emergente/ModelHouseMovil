@@ -22,7 +22,7 @@ class HttpProposal {
       });
       print("PROPOSALS: ${response.body}");
       if (response.statusCode == 200) {
-        return proposalFromJson(response.body);
+        return proposalFromJson(utf8.decode(response.bodyBytes));
       }
       return null;
   }

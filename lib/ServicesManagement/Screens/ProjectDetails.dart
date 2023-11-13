@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:model_house/Security/Interfaces/Proyect.dart';
 import 'package:model_house/ServicesManagement/Interfaces/ProjectInterface.dart';
 import 'package:model_house/ServicesManagement/Interfaces/Rating.dart';
@@ -22,12 +23,14 @@ class _ProjectDetailState extends State<ProjectDetail> {
   @override
   void initState() {
     httpReview = HttpReview();
+    getReview();
     super.initState();
   }
 
   Future getReview() async {
     rating = await HttpReview().getReviewId(widget.project!.id!);
     setState(() {
+      print('$rating ALGO');
       rating = rating;
     });
   }
@@ -58,14 +61,19 @@ class _ProjectDetailState extends State<ProjectDetail> {
             Center(
               child: Text(
                 '${widget.project?.title}',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Text('Description: ${widget.project?.description}'),
+            Center(
+              child: Text(widget.project!.description!, style: GoogleFonts.poppins(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+              ),),
+            ),
             const SizedBox(height: 20),
             const Text(
               'Review:',
@@ -83,8 +91,7 @@ class _ProjectDetailState extends State<ProjectDetail> {
                 children: [
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: NetworkImage(
-                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fillustrations%2Ficon-user-male-avatar-business-5359553%2F&psig=AOvVaw3z-QpkAnlKp_EtzqyU1AkC&ust=1698165957853000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNjat6zPjIIDFQAAAAAdAAAAABAu"),
+                    backgroundImage: NetworkImage(widget.project!.imageUserProfile!),
                   ),
                   const SizedBox(
                       width:
@@ -110,11 +117,11 @@ class _ProjectDetailState extends State<ProjectDetail> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Row(
+                      Column(
                         children: [
                           Text(
-                            "$widget.project?.firstName! $widget.project!.lastName!",
-                            style: TextStyle(
+                            '${widget.project?.firstName!} ${widget.project!.lastName!}',
+                            style: GoogleFonts.poppins(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -123,7 +130,7 @@ class _ProjectDetailState extends State<ProjectDetail> {
                               width:
                                   10), // Espacio horizontal entre el nombre de usuario y el texto de la revisión
                           Text(
-                            'It’s a good business',
+                            '${rating?.comment}',
                             style: TextStyle(
                               fontSize: 15,
                             ),

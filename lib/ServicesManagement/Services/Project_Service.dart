@@ -20,7 +20,7 @@ class HttpProject {
     });
     print("PROYECTOS: ${response.body}");
     if (response.statusCode == 200) {
-      return projectFromJson(response.body);
+      return projectFromJson(utf8.decode(response.bodyBytes));
     }
     return null;
   }

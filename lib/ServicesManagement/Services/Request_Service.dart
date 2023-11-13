@@ -34,14 +34,14 @@ class HttpRequest {
     var uri = Uri.parse(
         "$httpBaseServiceManagement/userProfile/$userProfileId/status/$status/request");
     var response = await request.get(uri, headers: {
-      'Content-Type': 'application/json',
-      "Accept": "application/json",
-      'Authorization': 'Bearer ${persitence.getString("token")}'
+      'Content-Type': 'application/json; charset=UTF-8',
+      "Accept": "application/json"
     });
-    print("INGRESO: ${response.body}");
+    print(utf8.decode(response.bodyBytes));
+    print("ALGO");
     if (response.statusCode == 200) {
       var json = response.body;
-      return requestFromJson(json);
+      return requestFromJson(utf8.decode(response.bodyBytes));
     }
     return null;
   }

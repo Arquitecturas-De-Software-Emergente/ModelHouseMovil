@@ -19,7 +19,7 @@ class HttpProyect {
       'Authorization': 'Bearer ${persitence.getString("token")}'
     });
     if (response.statusCode == 200) {
-      return projectFromJson(response.body);
+      return projectFromJson(utf8.decode(response.bodyBytes));
     }
     return null;
   }
@@ -37,7 +37,7 @@ class HttpProyect {
         body: jsonEncode(
             {'title': title, 'description': description, 'image': image}));
     if (response.statusCode == 200) {
-      return Proyect.fromJson(jsonDecode(response.body));
+      return Proyect.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     }
     return null;
   }
