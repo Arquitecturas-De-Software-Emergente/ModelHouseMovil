@@ -148,7 +148,7 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Input(Icons.abc, "Phone Number", false, phoneNumber,
-                        false, TextInputType.text),
+                        false, TextInputType.number),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
@@ -163,7 +163,7 @@ class _FormBusinessProfileState extends State<FormBusinessProfile> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
                     child: Input(Icons.abc, "Description", false, description,
-                        false, TextInputType.number),
+                        false, TextInputType.text),
                   ),
                 ],
               ),
